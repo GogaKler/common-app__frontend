@@ -1,7 +1,12 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
+import VSwitch from '@components/UI/switch/VSwitch.vue';
 
-const emit = defineEmits(['click:bar', 'onUpdate:header-state']);
+const emit = defineEmits([
+  'click:bar',
+  'onUpdate:header-state',
+  'onChange:switch-theme'
+]);
 
 const header_REFLINK = ref(null);
 
@@ -31,7 +36,6 @@ const headerHeight = computed(() => defaultState.height);
 
 const resizeObserver = new ResizeObserver((entries) => {
   entries.forEach((entry) => {
-    console.log(entry);
     defaultState.width = entry.target.offsetWidth;
     defaultState.height = entry.target.offsetHeight;
   });
@@ -45,6 +49,12 @@ const resizeObserver = new ResizeObserver((entries) => {
 onMounted(() => {
   resizeObserver.observe(header_REFLINK.value);
 });
+
+/*
+ * theme switch
+ * */
+const themeSwitch = ref(localStorage.getItem('theme') === 'dark');
+watch(themeSwitch, () => emit('onChange:switch-theme', themeSwitch.value));
 </script>
 
 <template>
@@ -59,6 +69,16 @@ onMounted(() => {
       />
       <div class="header__logo-text">Vue-common</div>
     </div>
+    <div class="theme">
+      <v-switch
+        v-model:checked="themeSwitch"
+        :icon="{
+          on: 'fa-regular fa-moon',
+          off: 'fa-regular fa-lightbulb'
+        }"
+      />
+      <!--      <input v-model="themeSwitch" type="checkbox" class="theme-switch" />-->
+    </div>
   </div>
 </template>
 
@@ -67,6 +87,8 @@ onMounted(() => {
   position: fixed;
   width: 100vw;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 5px;
   background-color: rgba(24, 24, 24, 0.5);
 

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import HomeView from '@/views/HomeView.vue';
+import MessengerView from '@/views/MessengerView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,9 +11,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/test',
-      name: 'test',
-      redirect: { name: 'home' }
+      path: '/messenger',
+      name: 'messenger',
+      component: MessengerView
     }
   ]
 });
