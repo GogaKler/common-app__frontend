@@ -1,5 +1,5 @@
 <script setup>
-import { sidebarMenu } from '@/components/sidebar/utils/sidebarMenu';
+import { sidebarMenu } from '@components/sidebar/utils/sidebarMenu';
 import { computed, onMounted, reactive, ref } from 'vue';
 
 defineProps({

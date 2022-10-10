@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { RouterView } from 'vue-router';
-import AppHeader from '@/components/header/AppHeader.vue';
+import AppHeader from '@components/header/AppHeader.vue';
 import AppSidebar from '@components/sidebar/AppSidebar.vue';
 
 /*

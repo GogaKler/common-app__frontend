@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
-import MessengerView from '@/views/MessengerView.vue';
+import HomeView from '@views/HomeView.vue';
+import MessengerView from '@views/MessengerView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
