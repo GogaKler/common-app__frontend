@@ -48,21 +48,15 @@ onMounted(() => {
         <router-link
           v-for="(item, index) in sidebarMenu"
           :key="index"
-          :class="[
-            'sidebar__list-item',
-            { 'sidebar-active': sidebarCondition }
-          ]"
+          :class="['sidebar__list-item', { active: sidebarCondition }]"
           :to="{ name: item.to }"
         >
           <font-awesome-icon
             size="sm"
             :icon="item.icon"
-            :class="[
-              'sidebar__list-icon',
-              { 'sidebar-active': sidebarCondition }
-            ]"
+            :class="['sidebar__list-icon', { active: sidebarCondition }]"
           />
-          <div v-if="sidebarCondition" class="sidebar__list-text">
+          <div :class="['sidebar__list-text', { active: sidebarCondition }]">
             {{ item.title }}
           </div>
         </router-link>
@@ -78,9 +72,12 @@ onMounted(() => {
     position: fixed;
     height: 100vh;
     min-width: 60px;
-    background-color: rgba(24, 24, 24, 0.5);
     padding: 5px 0;
-    transition: 0.1s ease-out;
+    transition: $transition-bg, $transition-minWidth;
+    @include themed() {
+      border-right: 1px solid t($border);
+      background-color: t($background);
+    }
 
     &.active {
       min-width: 238px !important;
@@ -105,14 +102,17 @@ onMounted(() => {
     &-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      height: 27px;
-      margin-left: 10px;
-      margin-bottom: 10px;
-      border-radius: 15px;
-      transition: 0.2s ease-out;
 
-      &.sidebar-active {
+      height: 27px;
+
+      margin-bottom: 10px;
+      margin-left: 8px;
+      padding-left: 12px;
+
+      border-radius: 15px;
+      transition: 0.2s ease-out, $transition-bg;
+
+      &.active {
         margin-left: 0;
         justify-content: normal;
         padding-left: 20px;
@@ -120,17 +120,36 @@ onMounted(() => {
       }
 
       &.router-link-active {
-        background-color: aliceblue;
+        @include themed() {
+          background-color: t($background-secondary);
+        }
       }
 
       &:not(.router-link-active):hover {
-        background-color: rgba(240, 248, 255, 0.6);
+        @include themed() {
+          background-color: rgba(t($background-secondary), 0.5);
+        }
       }
     }
 
     &-icon {
-      &.sidebar-active {
+      &.active {
         margin: 0 10px 0 0;
+      }
+    }
+
+    &-text {
+      opacity: 0;
+      cursor: default;
+      pointer-events: none;
+      width: 0;
+      transition: $transition-bg;
+
+      &.active {
+        opacity: 1;
+        cursor: pointer;
+        pointer-events: all;
+        transition: $transition-bg;
       }
     }
   }

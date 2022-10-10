@@ -54,10 +54,10 @@ const htmlElement = ref(document.documentElement);
 watch(isDarkMode, () => {
   if (isDarkMode.value) {
     localStorage.setItem('theme', 'dark');
-    htmlElement.value.setAttribute('theme', 'dark');
+    htmlElement.value.setAttribute('class', 'theme--dark');
   } else {
     localStorage.setItem('theme', 'light');
-    htmlElement.value.setAttribute('theme', 'light');
+    htmlElement.value.setAttribute('class', 'theme--light');
   }
 });
 
@@ -68,11 +68,15 @@ watch(isDarkMode, () => {
 const setOnMountTheme = (theme) => {
   switch (theme) {
     case 'dark':
-      htmlElement.value.setAttribute('theme', 'dark');
+      htmlElement.value.setAttribute('class', 'theme--dark');
       isDarkMode.value = true;
       break;
     case 'light':
-      htmlElement.value.setAttribute('theme', 'light');
+      htmlElement.value.setAttribute('class', 'theme--light');
+      isDarkMode.value = false;
+      break;
+    default:
+      htmlElement.value.setAttribute('class', 'theme--light');
       isDarkMode.value = false;
       break;
   }
@@ -114,7 +118,10 @@ onMounted(() => {
 <style lang="scss">
 .app {
   &__main {
-    background: var(--bg);
+    transition: $transition-bg;
+    @include themed() {
+      background-color: t($background);
+    }
   }
 }
 

@@ -102,7 +102,7 @@ const preparedIcon = computed(() => {
       :checked="checked"
       @change="$emit('update:checked', $event.target.checked)"
     />
-    <span class="switch">
+    <span class="switch" onmousedown="return false">
       <span class="switch__circle">
         <span v-if="icon" class="switch__circle--icon__wrapper">
           <font-awesome-icon
@@ -150,19 +150,12 @@ const preparedIcon = computed(() => {
   border-width: 0;
 
   &:checked {
-    + .switch {
-      background-color: var(--second-dark);
-    }
-
     + .switch .switch__circle {
-      border-color: var(--second-dark);
-
-      // Передвижение вправо
+      // Передвижение
       transform: translateX(
-              calc(var(--switch-container-width) - var(--switch-size))
+              calc(var(--switch-prepared-width) - var(--switch-size))
       );
     }
-
   }
 }
 
@@ -170,22 +163,15 @@ const preparedIcon = computed(() => {
 .switch {
   --switch-container-width: 40px;
   --switch-size: calc(var(--switch-container-width) / 2);
-
-  //--light-gray: #b4b4b4;
-  --gray: #cbd5e0;
-  --dark-gray: #a0aec0;
-  --teal: #4fd1c5;
-  --dark-teal: #319795;
-
-  background-color: var(--second-dark);
+  --switch-prepared-width: calc(var(--switch-container-width) - 1px);
 
   /* Вертикальное выравнивание для внутреннего круга */
   display: flex;
   align-items: center;
   position: relative;
-  height: var(--switch-size);
-  width: var(--switch-container-width);
-  flex-basis: var(--switch-container-width);
+  height: calc(var(--switch-size) + 1px);
+  width: var(--switch-prepared-width);
+  flex-basis: var(--switch-prepared-width);
 
   /* Контейнер для внутреннего круга */
   border-radius: var(--switch-size);
@@ -196,23 +182,19 @@ const preparedIcon = computed(() => {
   transition: background-color 0.25s ease-in-out;
 
   &__circle {
-    //content: "";
     position: absolute;
 
-    left: 1px;
-    height: calc(var(--switch-size) - 3px);
-    width: calc(var(--switch-size) - 3px);
-
-    border: 1px solid var(--main-text);
+    left: 2px;
+    height: calc(var(--switch-size) - 4px);
+    width: calc(var(--switch-size) - 4px);
+    outline: 0;
     border-radius: 9999px;
-    background-color: var(--main-dark);
 
     transition: transform 0.375s ease-in-out;
 
     &--icon {
       position: absolute;
       transition: 0.25s ease-in-out;
-      color: var(--main-text);
 
       &__wrapper {
         position: relative;
@@ -221,6 +203,33 @@ const preparedIcon = computed(() => {
         justify-content: center;
         width: 100%;
         height: 100%;
+      }
+    }
+  }
+}
+
+// COLOR__SCHEME
+
+/* LEFT-POSITION */
+.switch {
+  @include themed() {
+    background-color: t($background-secondary);
+  }
+
+  &:hover {
+    @include themed() {
+      outline: 1px solid t($border);
+    }
+  }
+
+  &__circle {
+    @include themed() {
+      background-color: t($background);
+    }
+
+    &--icon {
+      @include themed() {
+        color: t($text);
       }
     }
   }

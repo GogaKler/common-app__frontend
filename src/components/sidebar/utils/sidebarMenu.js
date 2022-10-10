@@ -9,6 +9,6 @@ export const sidebarMenu = [
     id: 2,
     title: 'Мессенджер',
     to: 'messenger',
-    icon: 'fa-solid fa-message'
+    icon: 'fa-regular fa-message'
   }
 ];

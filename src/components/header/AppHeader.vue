@@ -53,8 +53,12 @@ onMounted(() => {
 /*
  * theme switch
  * */
-const themeSwitch = ref(localStorage.getItem('theme') === 'dark');
+const themeSwitch = ref(false);
 watch(themeSwitch, () => emit('onChange:switch-theme', themeSwitch.value));
+
+onMounted(() => {
+  themeSwitch.value = localStorage.getItem('theme') === 'dark';
+});
 </script>
 
 <template>
@@ -77,7 +81,6 @@ watch(themeSwitch, () => emit('onChange:switch-theme', themeSwitch.value));
           off: 'fa-regular fa-lightbulb'
         }"
       />
-      <!--      <input v-model="themeSwitch" type="checkbox" class="theme-switch" />-->
     </div>
   </div>
 </template>
@@ -90,13 +93,17 @@ watch(themeSwitch, () => emit('onChange:switch-theme', themeSwitch.value));
   align-items: center;
   justify-content: space-between;
   padding: 5px;
-  background-color: rgba(24, 24, 24, 0.5);
+  transition: $transition-bg;
+
+  @include themed() {
+    background-color: t($background);
+    border-bottom: 1px solid t($border);
+  }
 
   &__logo {
     display: flex;
     align-items: center;
     min-width: 238px;
-    border-right: 1px solid black;
 
     &-icon {
       padding: 12px;
@@ -106,7 +113,9 @@ watch(themeSwitch, () => emit('onChange:switch-theme', themeSwitch.value));
       transition: 0.1s ease-out;
 
       &:hover {
-        background-color: rgba(240, 248, 255, 0.6);
+        @include themed() {
+          background-color: rgba(t($background-secondary), 0.5);
+        }
       }
     }
   }
