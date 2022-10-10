@@ -3,11 +3,6 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-/*
- * TODO: Не работают variables scss. Пофиксить в ближайшее время
- * */
-
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
   resolve: {
@@ -17,6 +12,7 @@ export default defineConfig({
       '@components': fileURLToPath(
         new URL('./src/components', import.meta.url)
       ),
+      '@views': fileURLToPath(new URL('./src/views', import.meta.url)),
       '@libs': fileURLToPath(new URL('./src/libs', import.meta.url)),
       '@styles': fileURLToPath(new URL('./src/styles', import.meta.url))
     }
@@ -25,7 +21,9 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @use '@/styles/main';
+          @import '@/styles/theme/theme.scss';
+          @import '@/styles/variables/variables.scss';
+          @import '@/styles/main';
         `
       }
     }

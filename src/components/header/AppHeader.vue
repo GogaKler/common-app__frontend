@@ -1,7 +1,12 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
+import VSwitch from '@components/UI/switch/VSwitch.vue';
 
-const emit = defineEmits(['click:bar', 'onUpdate:header-state']);
+const emit = defineEmits([
+  'click:bar',
+  'onUpdate:header-state',
+  'onChange:switch-theme'
+]);
 
 const header_REFLINK = ref(null);
 
@@ -31,7 +36,6 @@ const headerHeight = computed(() => defaultState.height);
 
 const resizeObserver = new ResizeObserver((entries) => {
   entries.forEach((entry) => {
-    console.log(entry);
     defaultState.width = entry.target.offsetWidth;
     defaultState.height = entry.target.offsetHeight;
   });
@@ -44,6 +48,16 @@ const resizeObserver = new ResizeObserver((entries) => {
 
 onMounted(() => {
   resizeObserver.observe(header_REFLINK.value);
+});
+
+/*
+ * theme switch
+ * */
+const themeSwitch = ref(false);
+watch(themeSwitch, () => emit('onChange:switch-theme', themeSwitch.value));
+
+onMounted(() => {
+  themeSwitch.value = localStorage.getItem('theme') === 'dark';
 });
 </script>
 
@@ -59,6 +73,15 @@ onMounted(() => {
       />
       <div class="header__logo-text">Vue-common</div>
     </div>
+    <div class="theme">
+      <v-switch
+        v-model:checked="themeSwitch"
+        :icon="{
+          on: 'fa-regular fa-moon',
+          off: 'fa-regular fa-lightbulb'
+        }"
+      />
+    </div>
   </div>
 </template>
 
@@ -67,14 +90,20 @@ onMounted(() => {
   position: fixed;
   width: 100vw;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 5px;
-  background-color: rgba(24, 24, 24, 0.5);
+  transition: $transition-bg;
+
+  @include themed() {
+    background-color: t($background);
+    border-bottom: 1px solid t($border);
+  }
 
   &__logo {
     display: flex;
     align-items: center;
     min-width: 238px;
-    border-right: 1px solid black;
 
     &-icon {
       padding: 12px;
@@ -84,7 +113,9 @@ onMounted(() => {
       transition: 0.1s ease-out;
 
       &:hover {
-        background-color: rgba(240, 248, 255, 0.6);
+        @include themed() {
+          background-color: rgba(t($background-secondary), 0.5);
+        }
       }
     }
   }

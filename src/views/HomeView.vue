@@ -1,5 +1,5 @@
 <script setup></script>
 
 <template>
-  <main>fdsfsdfdsf</main>
+  <main>Home</main>
 </template>

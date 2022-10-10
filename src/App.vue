@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/header/AppHeader.vue';
 import AppSidebar from '@components/sidebar/AppSidebar.vue';
@@ -22,16 +22,20 @@ const setHeaderSize = ({ width, height }) => {
  * SIDEBAR
  * */
 const sidebarState = reactive({
-  state: true,
+  condition: true,
   width: 0,
   height: 0
 });
 
-const isSidebarOpen = computed(() => sidebarState.state);
+const isSidebarOpen = computed(() => sidebarState.condition);
 const sidebarOpenCloseFlow = () => {
-  isSidebarOpen.value ?? true
-    ? (sidebarState.state = false)
-    : (sidebarState.state = true);
+  if (isSidebarOpen.value) {
+    sidebarState.condition = false;
+    localStorage.setItem('sidebarCondition', 'false');
+  } else {
+    sidebarState.condition = true;
+    localStorage.setItem('sidebarCondition', 'true');
+  }
 };
 
 const sidebarWidth = computed(() => sidebarState.width);
@@ -40,6 +44,54 @@ const setSidebarSize = ({ width, height }) => {
   sidebarState.width = width.value;
   sidebarState.height = height.value;
 };
+
+/*
+ * DARK MODE
+ * */
+const isDarkMode = ref(false);
+const htmlElement = ref(document.documentElement);
+
+watch(isDarkMode, () => {
+  if (isDarkMode.value) {
+    localStorage.setItem('theme', 'dark');
+    htmlElement.value.setAttribute('class', 'theme--dark');
+  } else {
+    localStorage.setItem('theme', 'light');
+    htmlElement.value.setAttribute('class', 'theme--light');
+  }
+});
+
+/*
+ * SET STATE ON MOUNT
+ * */
+
+const setOnMountTheme = (theme) => {
+  switch (theme) {
+    case 'dark':
+      htmlElement.value.setAttribute('class', 'theme--dark');
+      isDarkMode.value = true;
+      break;
+    case 'light':
+      htmlElement.value.setAttribute('class', 'theme--light');
+      isDarkMode.value = false;
+      break;
+    default:
+      htmlElement.value.setAttribute('class', 'theme--light');
+      isDarkMode.value = false;
+      break;
+  }
+};
+
+const setOnMountSidebarCondition = (condition) => {
+  condition === 'true'
+    ? (sidebarState.condition = true)
+    : (sidebarState.condition = false);
+};
+
+onMounted(() => {
+  setOnMountTheme(localStorage.getItem('theme'));
+  setOnMountSidebarCondition(localStorage.getItem('sidebarCondition'));
+});
 </script>
 
 <template>
@@ -47,6 +99,7 @@ const setSidebarSize = ({ width, height }) => {
     <AppHeader
       @click:bar="sidebarOpenCloseFlow"
       @onUpdate:header-state="setHeaderSize"
+      @onChange:switch-theme="isDarkMode = $event"
     />
     <div class="content__wrapper">
       <AppSidebar
@@ -55,17 +108,23 @@ const setSidebarSize = ({ width, height }) => {
         @onUpdate:sidebar-state="setSidebarSize"
       />
       <RouterView
-        :style="{
-          margin: `${headerHeight}px 0 0 ${sidebarWidth}px`,
-          zIndex: 1,
-          background: '#1e1e1e '
-        }"
+        class="app__main"
+        :style="{ margin: `${headerHeight}px 0 0 ${sidebarWidth}px` }"
       />
     </div>
   </div>
 </template>
 
 <style lang="scss">
+.app {
+  &__main {
+    transition: $transition-bg;
+    @include themed() {
+      background-color: t($background);
+    }
+  }
+}
+
 .content {
   &__wrapper {
     display: flex;

@@ -7,8 +7,8 @@ export const sidebarMenu = [
   },
   {
     id: 2,
-    title: 'Тест',
-    to: 'test',
-    icon: 'fa-solid fa-user-secret'
+    title: 'Мессенджер',
+    to: 'messenger',
+    icon: 'fa-regular fa-message'
   }
 ];
