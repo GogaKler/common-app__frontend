@@ -14,7 +14,11 @@ export default defineConfig({
       ),
       '@views': fileURLToPath(new URL('./src/views', import.meta.url)),
       '@libs': fileURLToPath(new URL('./src/libs', import.meta.url)),
-      '@styles': fileURLToPath(new URL('./src/styles', import.meta.url))
+      '@styles': fileURLToPath(new URL('./src/styles', import.meta.url)),
+      //FSD
+      '@app': fileURLToPath(new URL('./src/app', import.meta.url)),
+      '@shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
+      '@UI': fileURLToPath(new URL('./src/shared/UI', import.meta.url))
     }
   },
   css: {

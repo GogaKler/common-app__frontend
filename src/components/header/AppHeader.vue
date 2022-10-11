@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue';
-import VSwitch from '@components/UI/switch/VSwitch.vue';
+import VSwitch from '@UI/switch/VSwitch.vue';
 
 const emit = defineEmits([
   'click:bar',
@@ -74,13 +74,7 @@ onMounted(() => {
       <div class="header__logo-text">Vue-common</div>
     </div>
     <div class="theme">
-      <v-switch
-        v-model:checked="themeSwitch"
-        :icon="{
-          on: 'fa-regular fa-moon',
-          off: 'fa-regular fa-lightbulb'
-        }"
-      />
+      <v-switch v-model:checked="themeSwitch" />
     </div>
   </div>
 </template>

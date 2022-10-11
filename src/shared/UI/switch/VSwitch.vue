@@ -7,12 +7,12 @@ export default {
 
 <script setup>
 import { computed, reactive, toRefs } from 'vue';
+import { propsIconValidationSwitch } from '@UI/switch/validator';
 
 const props = defineProps({
   label: {
     type: String,
     default: ''
-    // required: true
   },
   checked: {
     type: Boolean,
@@ -26,39 +26,7 @@ const props = defineProps({
 
 const { icon, checked } = toRefs(props);
 
-const validateIcon = async (inputIcon) => {
-  const accessFields = ['on', 'off']; // Допустимые ключи в пропсе
-
-  const PREFIX = '[ PROPS: ICON ]'; // Префикс Ошибок
-
-  /*
-   * Входная валидицая на тип параметра
-   * */
-  const typeParam = inputIcon.constructor;
-
-  if (typeParam !== Object && typeParam !== String) {
-    throw new Error(
-      `${PREFIX} Ошибка входного параметра! icon должен быть Object || String.`
-    );
-  }
-
-  try {
-    if (typeParam === Object) {
-      Object.keys(inputIcon).forEach((item) => {
-        if (!accessFields.includes(item))
-          throw new Error(
-            `${PREFIX} Недопустимый ключ '${item}'. Используйте 'on', 'off'`
-          );
-      });
-    }
-
-    return true;
-  } catch (error) {
-    console.error(`${PREFIX} ${error}`);
-
-    return false;
-  }
-};
+const isIconPassed = propsIconValidationSwitch({ icon: icon.value });
 
 /*
  * WARNING ICON LOGIC
@@ -76,8 +44,9 @@ const setWarningIcon = (flag = false) => (warningIcon.active = flag);
  * OUTPUT ICON
  * */
 const preparedIcon = computed(() => {
-  if (!validateIcon(icon.value)) {
+  if (!isIconPassed) {
     setWarningIcon(true);
+
     return false;
   }
 
@@ -112,7 +81,7 @@ const preparedIcon = computed(() => {
             size="2xs"
           />
           <font-awesome-icon
-            v-else
+            v-if="!isIconPassed"
             :class="warningIcon.animate"
             :icon="warningIcon.icon"
             :color="warningIcon.color"
@@ -210,7 +179,6 @@ const preparedIcon = computed(() => {
 
 // COLOR__SCHEME
 
-/* LEFT-POSITION */
 .switch {
   @include themed() {
     background-color: t($background-secondary);
