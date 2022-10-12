@@ -1,0 +1,15 @@
+@use "src/app/styles/fonts";
+@use "src/app/styles/globals"; // Глобальные настройки
+
+body {
+  box-sizing: border-box;
+  font-family: SourceSansPro, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+
+  @include themed() {
+    transition: $transition-bg;
+    background-color: t($background);
+    color: t($text);
+  }
+}

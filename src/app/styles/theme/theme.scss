@@ -1,0 +1,79 @@
+$background: 'background';
+$background-secondary: 'background-secondary';
+$text: 'text';
+$text-secondary: 'text-secondary';
+$border: 'border';
+
+//UI
+$disabled: 'disabled';
+
+// https://www.figma.com/file/g9Yc15pGAwAosvXnZKjhej/Material-Theme-Builder-(Community)?node-id=1%3A546
+
+/*
+ * LIGHT
+ */
+$background--light: #FEFBFC;
+$background-2-light: #C6C6C8;
+
+$text--light: #1B1C1C;
+$text--2--light: #464748;
+
+$border--light: rgba(118, 119, 121, 0.25);
+
+$disabled--light: #F1F0F2;
+
+/*
+ * DARK
+ */
+$background--dark: #1B1C1C;
+$background--2--dark: #5D5E60;
+
+$text--dark: #E4E2E2;
+$text--2--dark: #C6C6C8;
+
+$border--dark: rgba(144, 144, 146, 0.25);
+
+$disabled--dark: #5D5E60;;
+
+/* ............... */
+
+$themes: (
+        light: (
+                background: $background--light,
+                background-secondary: $background-2-light,
+                text: $text--light,
+                text-secondary: $text--2--light,
+                border: $border--light,
+                disabled: $disabled--light
+        ),
+        dark: (
+                background: $background--dark,
+                background-secondary: $background--2--dark,
+                text: $text--dark,
+                text-secondary: $text--2--dark,
+                border: $border--dark,
+                disabled: $disabled--dark
+        ),
+);
+
+/* ............... */
+
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+/* ............... */
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
