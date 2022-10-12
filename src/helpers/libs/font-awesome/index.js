@@ -3,12 +3,13 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faBars,
   faHome,
+  faSpinner,
   faTriangleExclamation,
   faUserSecret
 } from '@fortawesome/free-solid-svg-icons';
 
 // SOLID
-library.add(faUserSecret, faHome, faBars, faTriangleExclamation);
+library.add(faUserSecret, faHome, faBars, faTriangleExclamation, faSpinner);
 
 import {
   faLightbulb,

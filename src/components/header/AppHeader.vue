@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue';
-import VSwitch from '@components/UI/switch/VSwitch.vue';
+import VSwitch from '@UI/switch/VSwitch.vue';
 
 const emit = defineEmits([
   'click:bar',

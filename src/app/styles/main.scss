@@ -1,5 +1,5 @@
-@use "fonts";
-@use "globals"; // Глобальные настройки
+@use "src/app/styles/fonts";
+@use "src/app/styles/globals"; // Глобальные настройки
 
 body {
   box-sizing: border-box;

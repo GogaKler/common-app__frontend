@@ -7,12 +7,12 @@ export default {
 
 <script setup>
 import { computed, reactive, toRefs } from 'vue';
+import { propsIconValidationSwitch } from '@UI/switch/validator';
 
 const props = defineProps({
   label: {
     type: String,
     default: ''
-    // required: true
   },
   checked: {
     type: Boolean,
@@ -21,47 +21,47 @@ const props = defineProps({
   },
   icon: {
     type: [String, Object]
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 
-const { icon, checked } = toRefs(props);
+const { icon, checked, loading, disabled } = toRefs(props);
 
-const validateIcon = async (inputIcon) => {
-  const accessFields = ['on', 'off']; // Допустимые ключи в пропсе
+const isIconPassed = propsIconValidationSwitch({ icon: icon.value });
+const isLoading = computed(() => loading.value);
+const isDisabled = computed(() => disabled.value);
 
-  const PREFIX = '[ PROPS: ICON ]'; // Префикс Ошибок
+const isSwitchDisabled = computed(() => isDisabled.value || isLoading.value);
 
-  /*
-   * Входная валидицая на тип параметра
-   * */
-  const typeParam = inputIcon.constructor;
-
-  if (typeParam !== Object && typeParam !== String) {
-    throw new Error(
-      `${PREFIX} Ошибка входного параметра! icon должен быть Object || String.`
-    );
+const iconParser = (processingIcon) => {
+  if (processingIcon.constructor === Object) {
+    return {
+      icon: !checked.value ? processingIcon.off : processingIcon.on
+    };
   }
 
-  try {
-    if (typeParam === Object) {
-      Object.keys(inputIcon).forEach((item) => {
-        if (!accessFields.includes(item))
-          throw new Error(
-            `${PREFIX} Недопустимый ключ '${item}'. Используйте 'on', 'off'`
-          );
-      });
-    }
-
-    return true;
-  } catch (error) {
-    console.error(`${PREFIX} ${error}`);
-
-    return false;
-  }
+  return { icon: processingIcon };
 };
 
 /*
- * WARNING ICON LOGIC
+ * WARNING ICON
+ * */
+const loadingIcon = reactive({
+  active: true,
+  icon: 'fa-solid fa-spinner',
+  animate: 'fa-spin-pulse fa-spin-reverse',
+  color: 'blue'
+});
+
+/*
+ * LOADING ICON
  * */
 const warningIcon = reactive({
   active: false,
@@ -70,26 +70,15 @@ const warningIcon = reactive({
   color: 'red'
 });
 
-const setWarningIcon = (flag = false) => (warningIcon.active = flag);
-
 /*
  * OUTPUT ICON
  * */
 const preparedIcon = computed(() => {
-  if (!validateIcon(icon.value)) {
-    setWarningIcon(true);
-    return false;
-  }
+  if (!isIconPassed) return warningIcon;
 
-  setWarningIcon(false);
+  if (isLoading.value) return loadingIcon;
 
-  if (icon.value.constructor === Object) {
-    if (!checked.value) return icon.value.off;
-
-    return icon.value.on;
-  }
-
-  return icon.value;
+  return iconParser(icon.value);
 });
 </script>
 
@@ -101,21 +90,19 @@ const preparedIcon = computed(() => {
       type="checkbox"
       :checked="checked"
       @change="$emit('update:checked', $event.target.checked)"
+      :disabled="isSwitchDisabled"
     />
-    <span class="switch" onmousedown="return false">
+    <span
+      :class="['switch', { disabled: isSwitchDisabled }]"
+      onmousedown="return false"
+    >
       <span class="switch__circle">
         <span v-if="icon" class="switch__circle--icon__wrapper">
           <font-awesome-icon
-            v-if="preparedIcon && !warningIcon.active"
-            class="switch__circle--icon"
-            :icon="preparedIcon"
-            size="2xs"
-          />
-          <font-awesome-icon
-            v-else
-            :class="warningIcon.animate"
-            :icon="warningIcon.icon"
-            :color="warningIcon.color"
+            v-if="preparedIcon.icon"
+            :class="['switch__circle--icon', preparedIcon.animate]"
+            :icon="preparedIcon.icon"
+            :color="preparedIcon.color"
             size="2xs"
           />
         </span>
@@ -125,7 +112,7 @@ const preparedIcon = computed(() => {
   </label>
 </template>
 
-<style lang="scss " scoped>
+<style lang="scss" scoped>
 .container {
   cursor: pointer;
   display: flex;
@@ -153,7 +140,7 @@ const preparedIcon = computed(() => {
     + .switch .switch__circle {
       // Передвижение
       transform: translateX(
-              calc(var(--switch-prepared-width) - var(--switch-size))
+        calc(var(--switch-prepared-width) - var(--switch-size))
       );
     }
   }
@@ -174,12 +161,20 @@ const preparedIcon = computed(() => {
   flex-basis: var(--switch-prepared-width);
 
   /* Контейнер для внутреннего круга */
+
+  /**
+  * TODO: Сделать пропс border, который будет включать css аттрибут border
+  */
+  //@include themed() {
+  //  border: 1px solid t($background-secondary);
+  //}
+
   border-radius: var(--switch-size);
 
   /* Если label длинный => switch не уменьшается */
   flex-shrink: 0;
 
-  transition: background-color 0.25s ease-in-out;
+  transition: background-color 0.25s ease-in-out, $transition-border;
 
   &__circle {
     position: absolute;
@@ -208,18 +203,16 @@ const preparedIcon = computed(() => {
   }
 }
 
-// COLOR__SCHEME
-
-/* LEFT-POSITION */
+// COLOR SCHEME
 .switch {
   @include themed() {
     background-color: t($background-secondary);
   }
 
   &:hover {
-    @include themed() {
-      outline: 1px solid t($border);
-    }
+    //@include themed() {
+    //  border-color: red;
+    //}
   }
 
   &__circle {
@@ -231,6 +224,24 @@ const preparedIcon = computed(() => {
       @include themed() {
         color: t($text);
       }
+    }
+  }
+}
+
+.switch.disabled {
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    transition: opacity 0.6s;
+    border-radius: var(--switch-size);
+    opacity: 0.6;
+
+    @include themed() {
+      background: t($disabled);
     }
   }
 }

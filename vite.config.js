@@ -12,9 +12,12 @@ export default defineConfig({
       '@components': fileURLToPath(
         new URL('./src/components', import.meta.url)
       ),
-      '@views': fileURLToPath(new URL('./src/views', import.meta.url)),
-      '@libs': fileURLToPath(new URL('./src/libs', import.meta.url)),
-      '@styles': fileURLToPath(new URL('./src/styles', import.meta.url))
+      '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
+      '@libs': fileURLToPath(new URL('./src/helpers/libs', import.meta.url)),
+      '@styles': fileURLToPath(new URL('./src/app/styles', import.meta.url)),
+      '@app': fileURLToPath(new URL('./src/app', import.meta.url)),
+      '@shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
+      '@UI': fileURLToPath(new URL('./src/shared/UI', import.meta.url))
     }
   },
   css: {
