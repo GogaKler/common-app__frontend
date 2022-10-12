@@ -74,7 +74,13 @@ onMounted(() => {
       <div class="header__logo-text">Vue-common</div>
     </div>
     <div class="theme">
-      <v-switch v-model:checked="themeSwitch" />
+      <v-switch
+        v-model:checked="themeSwitch"
+        :icon="{
+          on: 'fa-regular fa-moon',
+          off: 'fa-regular fa-lightbulb'
+        }"
+      />
     </div>
   </div>
 </template>
