@@ -7,28 +7,28 @@ import { mount } from '@vue/test-utils';
 import VSwitch from './VSwitch.vue';
 
 describe('VSwitch Test', () => {
-  it('should render', () => {
-    const wrapper = mount(VSwitch);
+    it('should render', () => {
+        const wrapper = mount(VSwitch);
 
-    expect(wrapper.find('input[type=checkbox]').exists()).toBeTruthy();
+        expect(wrapper.find('input[type=checkbox]').exists()).toBeTruthy();
 
-    expect(wrapper.find('span').exists()).toBeTruthy();
-  });
-
-  it('should change state', async () => {
-    const wrapper = mount({
-      data() {
-        return {
-          checked: false
-        };
-      },
-      template: '<v-switch v-model:checked="checked" />',
-      components: { 'v-switch': VSwitch }
+        expect(wrapper.find('span').exists()).toBeTruthy();
     });
 
-    const currencySwitch = wrapper.find('input[type=checkbox]');
+    it('should change state', async () => {
+        const wrapper = mount({
+            data() {
+                return {
+                    checked: false
+                };
+            },
+            template: '<v-switch v-model:checked="checked" />',
+            components: { 'v-switch': VSwitch }
+        });
 
-    await currencySwitch.setValue();
-    expect(wrapper.vm.checked).toEqual(true);
-  });
+        const currencySwitch = wrapper.find('input[type=checkbox]');
+
+        await currencySwitch.setValue();
+        expect(wrapper.vm.checked).toEqual(true);
+    });
 });
