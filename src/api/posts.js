@@ -1,9 +1,9 @@
 import API from '@axios';
 
-class _Users {
-    async getUsers() {
+class Posts {
+    async createPost({ data }) {
         try {
-            const response = await API.get('users');
+            const response = await API.post('posts', data);
 
             return response.data;
         } catch (e) {
@@ -11,5 +11,5 @@ class _Users {
         }
     }
 }
-const Users = new _Users();
-export default Users;
+
+export default Posts;

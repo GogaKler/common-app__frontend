@@ -1,5 +1,5 @@
 <script setup></script>
 
 <template>
-    <main>Home</main>
+    <div>HOME PAGE DUDE FATAFAKA</div>
 </template>
