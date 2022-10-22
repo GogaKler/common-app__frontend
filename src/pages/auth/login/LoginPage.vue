@@ -1,5 +1,7 @@
 <script setup></script>
 
 <template>
-    <div>LOGIN</div>
+    <div></div>
 </template>
+
+<style></style>

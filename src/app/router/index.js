@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import AuthGuard from '@app/router/guards/AuthGuard';
 
 // LAYOUTS
 const AppLayout = () => import('@pages/client/AppLayout.vue');
@@ -55,5 +56,7 @@ const router = createRouter({
         }
     ]
 });
+
+router.beforeEach(AuthGuard);
 
 export default router;
