@@ -136,6 +136,7 @@ const preparedIcon = computed(() => {
     &:checked {
         + .switch .switch__circle {
             // Передвижение
+            left: 1px;
             transform: translateX(calc(var(--switch-prepared-width) - var(--switch-size)));
         }
     }
@@ -151,7 +152,7 @@ const preparedIcon = computed(() => {
     display: flex;
     align-items: center;
     position: relative;
-    height: calc(var(--switch-size) + 1px);
+    height: calc(var(--switch-size) + 2px);
     width: var(--switch-prepared-width);
     flex-basis: var(--switch-prepared-width);
 
@@ -161,7 +162,7 @@ const preparedIcon = computed(() => {
   * TODO: Сделать пропс border, который будет включать css аттрибут border
   */
     //@include themed() {
-    //  border: 1px solid t($background-secondary);
+    //    border: 1px solid t($background-secondary);
     //}
 
     border-radius: var(--switch-size);
@@ -174,7 +175,8 @@ const preparedIcon = computed(() => {
     &__circle {
         position: absolute;
 
-        left: 2px;
+        left: 3px;
+        top: 3px;
         height: calc(var(--switch-size) - 4px);
         width: calc(var(--switch-size) - 4px);
         outline: 0;

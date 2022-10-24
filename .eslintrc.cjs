@@ -10,16 +10,19 @@ module.exports = {
         node: true
     },
     rules: {
+        "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+        "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
         'prettier/prettier': [
             'error',
             {
                 singleQuote: true,
                 semi: true,
                 trailingComma: 'none',
-                printWidth: 120,
-                tabWidth: 4
+                printWidth: 100,
+                tabWidth: 4,
+                useTabs: false
             }
-        ]
+        ],
     },
     parserOptions: {
         ecmaVersion: 'latest'

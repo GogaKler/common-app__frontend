@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import VSwitch from '@UI/switch/VSwitch.vue';
+import { useAppStore } from '@app/store/useAppStore';
 
 const emit = defineEmits(['click:bar', 'onUpdate:header-state', 'onChange:switch-theme']);
 
@@ -16,7 +17,8 @@ const defaultState = reactive({
  * Bar Condition
  * */
 const headerBarCondition = computed(() => defaultState.bar);
-const changeBarState = () => (defaultState.bar ? (defaultState.bar = false) : (defaultState.bar = true));
+const changeBarState = () =>
+    defaultState.bar ? (defaultState.bar = false) : (defaultState.bar = true);
 
 const onClickBar = () => {
     changeBarState();
@@ -46,13 +48,22 @@ onMounted(() => {
 });
 
 /*
- * theme switch
+ * DARK MODE
  * */
-const themeSwitch = ref(false);
-watch(themeSwitch, () => emit('onChange:switch-theme', themeSwitch.value));
+const appStore = useAppStore();
+
+const switchValue = ref(false);
 
 onMounted(() => {
-    themeSwitch.value = localStorage.getItem('theme') === 'dark';
+    switchValue.value = appStore.isDarkTheme;
+});
+
+watch(switchValue, () => {
+    if (switchValue.value) {
+        appStore.setTheme('dark');
+    } else {
+        appStore.setTheme('light');
+    }
 });
 </script>
 
@@ -70,7 +81,7 @@ onMounted(() => {
         </div>
         <div class="theme">
             <v-switch
-                v-model:checked="themeSwitch"
+                v-model:checked="switchValue"
                 :icon="{
                     on: 'fa-regular fa-moon',
                     off: 'fa-regular fa-lightbulb'

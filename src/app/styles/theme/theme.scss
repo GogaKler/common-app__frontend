@@ -1,3 +1,10 @@
+$primary: 'primary';
+$primary-text: 'primary-text';
+$primary--disabled: 'primary-disabled';
+
+$secondary: 'secondary';
+$secondary-text: 'secondary-text';
+
 $background: 'background';
 $background-secondary: 'background-secondary';
 $text: 'text';
@@ -9,29 +16,75 @@ $disabled: 'disabled';
 
 // https://www.figma.com/file/g9Yc15pGAwAosvXnZKjhej/Material-Theme-Builder-(Community)?node-id=1%3A546
 
+///*
+// * LIGHT
+// */
+//$primary--light: #4D6170;
+//$primary--text--light: #FFFFFF;
+//
+//$background--light: #FEFBFC;
+//$background-2-light: #C6C6C8;
+//
+//$text--light: #1B1C1C;
+//$text--2--light: #464748;
+//
+//$border--light: rgba(118, 119, 121, 0.25);
+//
+//$disabled--light: #F1F0F2;
+//
+///*
+// * DARK
+// */
+//$primary--dark: #B4C9DA;
+//$primary--text--dark: #1F3340;
+//
+//$background--dark: #1B1C1C;
+//$background--2--dark: #5D5E60;
+//
+//$text--dark: #E4E2E2;
+//$text--2--dark: #C6C6C8;
+//
+//$border--dark: rgba(144, 144, 146, 0.25);
+//
+//$disabled--dark: #5D5E60;
+
 /*
  * LIGHT
  */
-$background--light: #FEFBFC;
-$background-2-light: #C6C6C8;
+$primary--light: #0061A6;
+$primary--text--light: #FFFFFF;
+$primary--disabled--light: rgba(0, 97, 166, 0.5);
 
-$text--light: #1B1C1C;
-$text--2--light: #464748;
+$secondary--light: #525F72;
+$secondary--text--light: #FFFFFF;
 
-$border--light: rgba(118, 119, 121, 0.25);
+$background--light: #FDFCFF;;
+$text--light: #1A1C1E;
+
+$background--2--light: #d7dbe3;
+$text--2--light: #43474E;
+
+$border--light: rgba(115, 119, 127, 0.25);
 
 $disabled--light: #F1F0F2;
 
 /*
  * DARK
  */
-$background--dark: #1B1C1C;
-$background--2--dark: #5D5E60;
+$primary--dark: #A0C9FF;
+$primary--text--dark: #00325A;
+$primary--disabled--dark: rgba(160, 201, 255, 0.5);
 
-$text--dark: #E4E2E2;
-$text--2--dark: #C6C6C8;
+$secondary--dark: #B9C7DE;
+$secondary--text--dark: #243142;
 
-$border--dark: rgba(144, 144, 146, 0.25);
+$background--dark: #1A1C1E;;
+$text--dark: #E3E2E6;
+
+$background--2--dark: #43474E;
+$text--2--dark: #C3C6CF;
+
+$border--dark: rgba(141, 145, 153, 0.25);
 
 $disabled--dark: #5D5E60;;
 
@@ -39,14 +92,24 @@ $disabled--dark: #5D5E60;;
 
 $themes: (
         light: (
+                primary: $primary--light,
+                primary-text: $primary--text--light,
+                primary-disabled: $primary--disabled--light,
+                secondary: $secondary--light,
+                secondary-text: $secondary--text--light,
                 background: $background--light,
-                background-secondary: $background-2-light,
+                background-secondary: $background--2--light,
                 text: $text--light,
                 text-secondary: $text--2--light,
                 border: $border--light,
                 disabled: $disabled--light
         ),
         dark: (
+                primary: $primary--dark,
+                primary-text: $primary--text--dark,
+                primary-disabled: $primary--disabled--dark,
+                secondary: $secondary--dark,
+                secondary-text: $secondary--text--dark,
                 background: $background--dark,
                 background-secondary: $background--2--dark,
                 text: $text--dark,

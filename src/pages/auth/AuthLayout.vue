@@ -1,14 +1,27 @@
-<script setup></script>
+<script setup>
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+</script>
 
 <template>
-    <div class="auth-page">
-        <div class="auth-page__container">
-            <div class="auth-page__content">
-                <div style="width: 2000px">LOGO AND IMAGE COMING SOON</div>
-                <div class="auth-page__form">
-                    <div class="auth-page__form-wrapper">
-                        <div class="auth-page__form-content">
+    <div class="auth">
+        <div class="container">
+            <div class="auth__wrapper">
+                <div class="auth-logo" style="width: 1700px">LOGO AND IMAGE COMING SOON</div>
+                <div class="auth-form">
+                    <div class="auth-form__wrapper">
+                        <div class="auth-form__content">
+                            <div class="auth-form__content--header">
+                                <span class="auth-form__content--title">
+                                    {{ route.name === 'login' ? 'Войти в систему' : 'Регистрация' }}
+                                </span>
+                            </div>
                             <RouterView />
+                        </div>
+                        <div class="auth-form__sign-up" v-if="route.name === 'login'">
+                            <span>У вас нет аккаунта? &nbsp;</span>
+                            <RouterLink to="register">Зарегистрироваться</RouterLink>
                         </div>
                     </div>
                 </div>
@@ -18,48 +31,55 @@
 </template>
 
 <style lang="scss">
-.auth-page {
+.auth {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    height: 100vh;
     padding: 40px 0;
+    height: 100vh;
+    overflow: hidden;
 
-    &__container {
-        width: 100%;
-        max-width: 1420px;
-        margin-right: auto;
-        margin-left: auto;
-        padding-right: 15px;
-        padding-left: 15px;
-        flex-grow: 1;
-    }
-
-    &__content {
+    &__wrapper {
+        height: 100%;
         display: flex;
         justify-content: space-between;
     }
+
+    @include themed() {
+        background: t($background);
+    }
 }
 
-.auth-page {
-    &__form {
-        background: red;
-        position: relative; // для лого
-        width: 100%;
-        padding-right: 15px;
-        padding-left: 15px;
+.auth-form {
+    position: relative; // для лого
+    width: 100%;
+    padding: 0 15px;
 
-        &-wrapper {
-            position: relative;
-            display: block;
-            height: calc(100vh - 100px);
-            min-height: 790px;
+    &__wrapper {
+        padding: 80px 40px;
+        height: 100%;
+        border-radius: 20px;
+
+        @include themed() {
+            border: 1px solid t($border);
+            background: t($background-secondary);
+        }
+    }
+
+    &__content {
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+
+        @include themed() {
+            border-bottom: 1px solid t($border);
         }
 
-        &-content {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+        &--header {
+            margin-bottom: 40px;
+        }
+
+        &--title {
+            font-size: 35px;
+            font-weight: 600;
         }
     }
 }

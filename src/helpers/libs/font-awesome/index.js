@@ -1,9 +1,27 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 // SOLID
-import { faBars, faHome, faSpinner, faTriangleExclamation, faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBars,
+    faCircleExclamation,
+    faEllipsis,
+    faExclamation,
+    faHome,
+    faSpinner,
+    faTriangleExclamation,
+    faUserSecret
+} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faUserSecret, faHome, faBars, faTriangleExclamation, faSpinner);
+library.add(
+    faUserSecret,
+    faHome,
+    faBars,
+    faTriangleExclamation,
+    faSpinner,
+    faCircleExclamation,
+    faExclamation,
+    faEllipsis
+);
 
 // REGULAR
 import { faLightbulb, faMessage, faMoon, faSun } from '@fortawesome/free-regular-svg-icons';
