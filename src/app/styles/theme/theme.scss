@@ -13,40 +13,10 @@ $border: 'border';
 
 //UI
 $disabled: 'disabled';
+$divider: 'divider';
+$divider-light: 'divider-light';
 
 // https://www.figma.com/file/g9Yc15pGAwAosvXnZKjhej/Material-Theme-Builder-(Community)?node-id=1%3A546
-
-///*
-// * LIGHT
-// */
-//$primary--light: #4D6170;
-//$primary--text--light: #FFFFFF;
-//
-//$background--light: #FEFBFC;
-//$background-2-light: #C6C6C8;
-//
-//$text--light: #1B1C1C;
-//$text--2--light: #464748;
-//
-//$border--light: rgba(118, 119, 121, 0.25);
-//
-//$disabled--light: #F1F0F2;
-//
-///*
-// * DARK
-// */
-//$primary--dark: #B4C9DA;
-//$primary--text--dark: #1F3340;
-//
-//$background--dark: #1B1C1C;
-//$background--2--dark: #5D5E60;
-//
-//$text--dark: #E4E2E2;
-//$text--2--dark: #C6C6C8;
-//
-//$border--dark: rgba(144, 144, 146, 0.25);
-//
-//$disabled--dark: #5D5E60;
 
 /*
  * LIGHT
@@ -68,6 +38,8 @@ $border--light: rgba(115, 119, 127, 0.25);
 
 $disabled--light: #F1F0F2;
 
+$divider--light: rgba(122, 122, 122, 0.5);
+$divider--light--light: #777676FF;
 /*
  * DARK
  */
@@ -78,7 +50,7 @@ $primary--disabled--dark: rgba(160, 201, 255, 0.5);
 $secondary--dark: #B9C7DE;
 $secondary--text--dark: #243142;
 
-$background--dark: #1A1C1E;;
+$background--dark: #1A1C1E;
 $text--dark: #E3E2E6;
 
 $background--2--dark: #43474E;
@@ -87,6 +59,9 @@ $text--2--dark: #C3C6CF;
 $border--dark: rgba(141, 145, 153, 0.25);
 
 $disabled--dark: #5D5E60;;
+
+$divider--dark: rgba(166, 166, 166, 0.5);
+$divider--light--dark: #8f8f8f;
 
 /* ............... */
 
@@ -102,7 +77,9 @@ $themes: (
                 text: $text--light,
                 text-secondary: $text--2--light,
                 border: $border--light,
-                disabled: $disabled--light
+                disabled: $disabled--light,
+                divider: $divider--light,
+                divider-light: $divider--light--light
         ),
         dark: (
                 primary: $primary--dark,
@@ -115,7 +92,9 @@ $themes: (
                 text: $text--dark,
                 text-secondary: $text--2--dark,
                 border: $border--dark,
-                disabled: $disabled--dark
+                disabled: $disabled--dark,
+                divider: $divider--dark,
+                divider-light: $divider--light--dark
         ),
 );
 

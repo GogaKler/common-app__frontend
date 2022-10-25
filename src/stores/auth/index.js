@@ -25,6 +25,17 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
+        async register(payload) {
+            const { name, email, password, gender } = payload;
+            try {
+                await Auth.register({ name, email, password, gender });
+
+                await router.push('/login');
+            } catch (e) {
+                throw new Error(e);
+            }
+        },
+
         async me() {
             return await Auth.me();
         },

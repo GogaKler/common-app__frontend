@@ -136,7 +136,7 @@ const preparedIcon = computed(() => {
     &:checked {
         + .switch .switch__circle {
             // Передвижение
-            left: 1px;
+            left: 2px;
             transform: translateX(calc(var(--switch-prepared-width) - var(--switch-size)));
         }
     }
@@ -152,10 +152,12 @@ const preparedIcon = computed(() => {
     display: flex;
     align-items: center;
     position: relative;
-    height: calc(var(--switch-size) + 2px);
+    height: calc(var(--switch-size) + 1px);
     width: var(--switch-prepared-width);
-    flex-basis: var(--switch-prepared-width);
-
+    flex-basis: calc(var(--switch-prepared-width) + 3px);
+    @include themed() {
+        border: 1px solid t($divider);
+    }
     /* Контейнер для внутреннего круга */
 
     /**
@@ -172,13 +174,18 @@ const preparedIcon = computed(() => {
 
     transition: background-color 0.25s ease-in-out, $transition-border;
 
+    &:hover {
+        @include themed() {
+            border: 1px solid t($divider-light);
+        }
+    }
     &__circle {
         position: absolute;
 
-        left: 3px;
-        top: 3px;
-        height: calc(var(--switch-size) - 4px);
-        width: calc(var(--switch-size) - 4px);
+        left: 1px;
+        top: 1px;
+        height: calc(var(--switch-size) - 2px);
+        width: calc(var(--switch-size) - 2px);
         outline: 0;
         border-radius: 9999px;
 

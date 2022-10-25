@@ -1,6 +1,9 @@
 <script setup>
 import { object, string } from 'yup';
 import { useField, useForm, useIsFormValid } from 'vee-validate';
+import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
 
 const schema = object({
     name: string().required(),
@@ -35,7 +38,8 @@ const onSubmit = handleSubmit(async ({ name, email, password, gender }) => {
                 return 'female';
         }
     };
-    console.log(name, email, password, preparedGender());
+
+    await authStore.register({ name, email, password, gender: preparedGender() });
 });
 </script>
 
