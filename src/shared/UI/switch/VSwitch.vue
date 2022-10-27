@@ -83,7 +83,7 @@ const preparedIcon = computed(() => {
 </script>
 
 <template>
-    <label class="container">
+    <label class="switch-container">
         <input
             v-bind="$attrs"
             class="input"
@@ -105,15 +105,16 @@ const preparedIcon = computed(() => {
                 </span>
             </span>
         </span>
-        <span class="label">{{ label }}</span>
+        <span class="label" v-if="label">{{ label }}</span>
     </label>
 </template>
 
 <style lang="scss" scoped>
-.container {
+.switch-container {
     cursor: pointer;
     display: flex;
     align-items: center;
+    padding: 0 10px;
 }
 
 .label {

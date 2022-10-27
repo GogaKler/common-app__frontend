@@ -70,5 +70,3 @@ const onSubmit = handleSubmit(async ({ name, email, password, gender }) => {
         </v-button>
     </form>
 </template>
-
-<style lang="scss"></style>

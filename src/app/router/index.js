@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AuthGuard from '@app/router/guards/AuthGuard';
+import { useAuthStore } from '@/stores/auth';
 
 // LAYOUTS
 const AppLayout = () => import('@pages/client/AppLayout.vue');
@@ -14,6 +15,11 @@ const HomePage = () => import('@pages/client/home/HomePage.vue');
 const MessengerPage = () => import('@pages/client/messenger/MessengerPage.vue');
 
 // CHILDREN`S & COMPONENTS
+
+const requestUser = async () => {
+    const authUser = useAuthStore();
+    await authUser.me();
+};
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +47,9 @@ const router = createRouter({
             name: 'index',
             component: AppLayout,
             redirect: 'home',
+            beforeEnter: async () => {
+                await requestUser();
+            },
             children: [
                 {
                     path: '/home',

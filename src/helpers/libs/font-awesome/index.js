@@ -2,7 +2,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 
 // SOLID
 import {
+    faArrowRightFromBracket,
     faBars,
+    faChevronDown,
     faCircleExclamation,
     faEllipsis,
     faExclamation,
@@ -20,10 +22,18 @@ library.add(
     faSpinner,
     faCircleExclamation,
     faExclamation,
-    faEllipsis
+    faEllipsis,
+    faChevronDown,
+    faArrowRightFromBracket
 );
 
 // REGULAR
-import { faLightbulb, faMessage, faMoon, faSun } from '@fortawesome/free-regular-svg-icons';
+import {
+    faLightbulb,
+    faMessage,
+    faMoon,
+    faSquare,
+    faSun
+} from '@fortawesome/free-regular-svg-icons';
 
-library.add(faLightbulb, faMoon, faSun, faMessage);
+library.add(faLightbulb, faMoon, faSun, faMessage, faSquare);

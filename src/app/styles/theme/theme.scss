@@ -15,6 +15,7 @@ $border: 'border';
 $disabled: 'disabled';
 $divider: 'divider';
 $divider-light: 'divider-light';
+$box-shadow: 'box-shadow';
 
 // https://www.figma.com/file/g9Yc15pGAwAosvXnZKjhej/Material-Theme-Builder-(Community)?node-id=1%3A546
 
@@ -40,6 +41,8 @@ $disabled--light: #F1F0F2;
 
 $divider--light: rgba(122, 122, 122, 0.5);
 $divider--light--light: #777676FF;
+
+$box-shadow--light: rgba(183, 183, 183, 0.5);
 /*
  * DARK
  */
@@ -58,10 +61,12 @@ $text--2--dark: #C3C6CF;
 
 $border--dark: rgba(141, 145, 153, 0.25);
 
-$disabled--dark: #5D5E60;;
+$disabled--dark: #5D5E60;
 
 $divider--dark: rgba(166, 166, 166, 0.5);
 $divider--light--dark: #8f8f8f;
+
+$box-shadow--dark: rgba(68, 68, 68, 0.5);
 
 /* ............... */
 
@@ -79,7 +84,8 @@ $themes: (
                 border: $border--light,
                 disabled: $disabled--light,
                 divider: $divider--light,
-                divider-light: $divider--light--light
+                divider-light: $divider--light--light,
+                box-shadow: $box-shadow--light
         ),
         dark: (
                 primary: $primary--dark,
@@ -94,7 +100,8 @@ $themes: (
                 border: $border--dark,
                 disabled: $disabled--dark,
                 divider: $divider--dark,
-                divider-light: $divider--light--dark
+                divider-light: $divider--light--dark,
+                box-shadow: $box-shadow--dark
         ),
 );
 

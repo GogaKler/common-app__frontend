@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia';
-import API from '@axios';
 import Auth from '@api/auth';
 import Cookie from 'js-cookie';
 import router from '@app/router';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        isAuthUser: false
+        user: null
     }),
     getters: {
-        get_isAuthUser: (state) => state.isAuthUser
+        isAuth: () => !!Cookie.get('user_token'),
+        get_user: (state) => state.user
     },
     actions: {
         async login({ username, password }) {
@@ -17,7 +17,6 @@ export const useAuthStore = defineStore('auth', {
                 const res = await Auth.login({ username, password });
 
                 Cookie.set('user_token', res.token);
-                API.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
 
                 await router.push('/');
             } catch (e) {
@@ -37,13 +36,18 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async me() {
-            return await Auth.me();
+            try {
+                const res = await Auth.me();
+                this.user = res;
+
+                return res;
+            } catch (e) {
+                throw new Error(e);
+            }
         },
 
         async logout() {
             Cookie.remove('user_token');
-
-            API.defaults.headers.common['Authorization'] = '';
 
             await router.push('/login');
         }

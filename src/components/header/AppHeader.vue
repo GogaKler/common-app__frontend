@@ -1,7 +1,8 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue';
-import VSwitch from '@UI/switch/VSwitch.vue';
 import { useAppStore } from '@app/store/useAppStore';
+
+import { useAuthStore } from '@/stores/auth';
 
 const emit = defineEmits(['click:bar', 'onUpdate:header-state', 'onChange:switch-theme']);
 
@@ -65,40 +66,73 @@ watch(switchValue, () => {
         appStore.setTheme('light');
     }
 });
+
+const authStore = useAuthStore();
+
+const user = authStore.get_user;
+
+const isUserMenuOpen = ref(false);
+const headerRotateIcon = computed(() => (isUserMenuOpen.value ? 180 : null));
+
+const headerLogout = async () => {
+    await authStore.logout();
+};
 </script>
 
 <template>
     <div ref="header_REFLINK" class="header">
-        <div class="header__logo" onmousedown="return false">
-            <font-awesome-icon
-                ref="sidebar"
-                icon="fa-solid fa-bars"
-                size="lg"
-                class="header__logo-icon"
-                @click="onClickBar"
-            />
-            <div class="header__logo-text">Vue-common</div>
+        <div class="header__left">
+            <div class="header__logo" onmousedown="return false">
+                <font-awesome-icon
+                    ref="sidebar"
+                    icon="fa-solid fa-bars"
+                    size="lg"
+                    class="header__logo-icon"
+                    @click="onClickBar"
+                />
+                <div class="header__logo-text" @click="() => authStore.me()">Vue-common</div>
+            </div>
         </div>
-        <div class="theme">
-            <v-switch
-                v-model:checked="switchValue"
-                :icon="{
-                    on: 'fa-regular fa-moon',
-                    off: 'fa-regular fa-lightbulb'
-                }"
-            />
+        <div class="header__right">
+            <div class="theme">
+                <v-switch
+                    v-model:checked="switchValue"
+                    :icon="{
+                        on: 'fa-regular fa-moon',
+                        off: 'fa-regular fa-lightbulb'
+                    }"
+                />
+            </div>
+            <div class="user-info">
+                <div class="user" @click="isUserMenuOpen = !isUserMenuOpen">
+                    <span class="user__name mr-2"> {{ user.name }}</span>
+                    <div class="user__logo">
+                        <span>{{ user.name[0] + user.name[1] }}</span>
+                    </div>
+                    <font-awesome-icon
+                        class="user__toggle"
+                        icon="fa-solid fa-chevron-down"
+                        size="sm"
+                        :rotation="headerRotateIcon"
+                    />
+                </div>
+            </div>
+            <div class="logout" @click="headerLogout">
+                <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
+            </div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+// LEFT
 .header {
     position: fixed;
     width: 100vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
+    padding: 10px 60px 10px 5px;
     transition: $transition-bg;
 
     @include themed() {
@@ -124,6 +158,66 @@ watch(switchValue, () => {
                 }
             }
         }
+    }
+}
+
+.header {
+    &__right {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.theme {
+    margin-right: 25px;
+}
+
+.user-info {
+    position: relative;
+    margin-right: 25px;
+}
+
+.logout {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 6px;
+    &:hover {
+        @include themed() {
+            background-color: rgba(t($background-secondary), 0.5);
+        }
+    }
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+
+    &__name {
+        font-weight: 600;
+    }
+
+    &__logo {
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        text-align: center;
+        margin-right: 5px;
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        height: 35px;
+        width: 35px;
+        @include themed() {
+            background: t($background-secondary);
+            border: 1px solid t($border);
+        }
+    }
+
+    &__toggle {
+        margin-top: 3px;
+        transition: $transition-fast;
     }
 }
 </style>
