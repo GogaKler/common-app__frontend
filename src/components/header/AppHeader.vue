@@ -3,6 +3,7 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
 
 import { useAuthStore } from '@/stores/auth';
+import VUser from '@UI/user/VUser.vue';
 
 const emit = defineEmits(['click:bar', 'onUpdate:header-state', 'onChange:switch-theme']);
 
@@ -13,18 +14,6 @@ const defaultState = reactive({
     width: 0,
     height: 0
 });
-
-/*
- * Bar Condition
- * */
-const headerBarCondition = computed(() => defaultState.bar);
-const changeBarState = () =>
-    defaultState.bar ? (defaultState.bar = false) : (defaultState.bar = true);
-
-const onClickBar = () => {
-    changeBarState();
-    emit('click:bar', headerBarCondition.value);
-};
 
 /*
  * Header Size
@@ -47,6 +36,18 @@ const resizeObserver = new ResizeObserver((entries) => {
 onMounted(() => {
     resizeObserver.observe(header_REFLINK.value);
 });
+
+/*
+ * Bar Condition
+ * */
+const headerBarCondition = computed(() => defaultState.bar);
+const changeBarState = () =>
+    defaultState.bar ? (defaultState.bar = false) : (defaultState.bar = true);
+
+const onClickBar = () => {
+    changeBarState();
+    emit('click:bar', headerBarCondition.value);
+};
 
 /*
  * DARK MODE
@@ -81,20 +82,20 @@ const headerLogout = async () => {
 
 <template>
     <div ref="header_REFLINK" class="header">
-        <div class="header__left">
-            <div class="header__logo" onmousedown="return false">
+        <div class="header-left">
+            <div class="header-left__logo" onmousedown="return false">
                 <font-awesome-icon
                     ref="sidebar"
                     icon="fa-solid fa-bars"
                     size="lg"
-                    class="header__logo-icon"
+                    class="header-left__logo-icon"
                     @click="onClickBar"
                 />
-                <div class="header__logo-text" @click="() => authStore.me()">Vue-common</div>
+                <div class="header-left__logo-text" @click="() => authStore.me()">Vue-common</div>
             </div>
         </div>
-        <div class="header__right">
-            <div class="theme">
+        <div class="header-right">
+            <div class="header-right__theme">
                 <v-switch
                     v-model:checked="switchValue"
                     :icon="{
@@ -103,29 +104,46 @@ const headerLogout = async () => {
                     }"
                 />
             </div>
-            <div class="user-info">
-                <div class="user" @click="isUserMenuOpen = !isUserMenuOpen">
-                    <span class="user__name mr-2"> {{ user.name }}</span>
-                    <div class="user__logo">
-                        <span>{{ user.name[0] + user.name[1] }}</span>
-                    </div>
+            <div class="header-right__user">
+                <v-user :name="user.name" @click="isUserMenuOpen = !isUserMenuOpen">
                     <font-awesome-icon
-                        class="user__toggle"
+                        class="header-right__user--toggle"
                         icon="fa-solid fa-chevron-down"
                         size="sm"
                         :rotation="headerRotateIcon"
                     />
-                </div>
-            </div>
-            <div class="logout" @click="headerLogout">
-                <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
+                </v-user>
+
+                <Transition name="dropdown">
+                    <div class="dropdown" v-if="isUserMenuOpen">
+                        <ul class="dropdown-list">
+                            <li class="dropdown__item">
+                                <router-link
+                                    :to="{ name: 'messenger' }"
+                                    class="dropdown__item--link"
+                                >
+                                    Мессенджер
+                                </router-link>
+                            </li>
+                        </ul>
+                        <div class="dropdown-exit">
+                            <div class="dropdown-exit__item" @click="headerLogout">
+                                <font-awesome-icon
+                                    class="mr-2"
+                                    icon="fa-solid fa-arrow-right-from-bracket"
+                                    size="xs"
+                                />
+                                <span>Выйти</span>
+                            </div>
+                        </div>
+                    </div>
+                </Transition>
             </div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-// LEFT
 .header {
     position: fixed;
     width: 100vw;
@@ -139,7 +157,9 @@ const headerLogout = async () => {
         background-color: t($background);
         border-bottom: 1px solid t($border);
     }
-
+}
+// LEFT
+.header-left {
     &__logo {
         display: flex;
         align-items: center;
@@ -161,63 +181,110 @@ const headerLogout = async () => {
     }
 }
 
-.header {
-    &__right {
-        display: flex;
-        align-items: center;
-    }
-}
-
-.theme {
-    margin-right: 25px;
-}
-
-.user-info {
-    position: relative;
-    margin-right: 25px;
-}
-
-.logout {
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 6px;
-    &:hover {
-        @include themed() {
-            background-color: rgba(t($background-secondary), 0.5);
-        }
-    }
-}
-
-.user {
+// RIGHT
+.header-right {
     display: flex;
     align-items: center;
-    cursor: pointer;
-    position: relative;
 
-    &__name {
-        font-weight: 600;
+    &__theme {
+        margin-right: 25px;
     }
 
-    &__logo {
-        justify-content: center;
-        align-items: center;
-        border-radius: 100%;
-        text-align: center;
-        margin-right: 5px;
-        font-size: 15px;
-        font-weight: 600;
-        display: flex;
-        height: 35px;
-        width: 35px;
-        @include themed() {
-            background: t($background-secondary);
-            border: 1px solid t($border);
+    &__user {
+        position: relative;
+
+        &--toggle {
+            margin-top: 3px;
+            transition: $transition-fast;
         }
     }
 
-    &__toggle {
-        margin-top: 3px;
-        transition: $transition-fast;
+    .logout {
+        cursor: pointer;
+    }
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+    opacity: 0;
+}
+
+.dropdown {
+    position: absolute;
+    top: 50px;
+    right: 5px;
+    border-radius: 8px;
+
+    @include themed() {
+        background: t($background);
+        box-shadow: 0 0 55px 10px t($box-shadow);
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 9px solid transparent;
+        left: 50%;
+        bottom: 100%;
+        margin-left: 23px;
+
+        @include themed() {
+            border-bottom-color: t($background);
+        }
+    }
+
+    // FIRST BLOCK
+    &-list {
+        padding: 15px 0;
+
+        @include themed() {
+            border-bottom: 1px solid t($border);
+        }
+    }
+
+    &__item {
+        margin-bottom: 18px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &--link {
+            display: flex;
+            align-items: center;
+            padding: 4px 20px;
+            transition: $transition-fast;
+
+            &:hover {
+                @include themed() {
+                    background: rgba(t($background-secondary), 0.5);
+                }
+            }
+        }
+    }
+
+    // SECOND BLOCK
+    &-exit {
+        margin: 12px 15px;
+
+        &__item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                @include themed() {
+                    color: t($primary);
+                }
+            }
+        }
     }
 }
 </style>
