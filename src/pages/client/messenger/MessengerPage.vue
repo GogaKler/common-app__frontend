@@ -2,17 +2,7 @@
 
 <template>
     <main>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
-        <div style="font-size: 30px">Messenger</div>
+        <v-button primary>Кнопка</v-button>
     </main>
 </template>
 

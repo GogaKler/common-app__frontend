@@ -1,9 +1,10 @@
 <script setup>
+import { onBeforeMount } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
-import { onMounted } from 'vue';
 
 const appStore = useAppStore();
-onMounted(async () => {
+
+onBeforeMount(async () => {
     await appStore.initialTheme();
 });
 </script>

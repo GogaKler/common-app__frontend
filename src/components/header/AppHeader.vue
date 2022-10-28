@@ -54,11 +54,7 @@ const onClickBar = () => {
  * */
 const appStore = useAppStore();
 
-const switchValue = ref(false);
-
-onMounted(() => {
-    switchValue.value = appStore.isDarkTheme;
-});
+const switchValue = ref(appStore.switchThemeValue);
 
 watch(switchValue, () => {
     if (switchValue.value) {
@@ -73,6 +69,10 @@ const authStore = useAuthStore();
 const user = authStore.get_user;
 
 const isUserMenuOpen = ref(false);
+const closeUserMenu = () => {
+    isUserMenuOpen.value = false;
+};
+
 const headerRotateIcon = computed(() => (isUserMenuOpen.value ? 180 : null));
 
 const headerLogout = async () => {
@@ -91,7 +91,7 @@ const headerLogout = async () => {
                     class="header-left__logo-icon"
                     @click="onClickBar"
                 />
-                <div class="header-left__logo-text" @click="() => authStore.me()">Vue-common</div>
+                <div class="header-left__logo-text">Vue-common</div>
             </div>
         </div>
         <div class="header-right">
@@ -104,8 +104,8 @@ const headerLogout = async () => {
                     }"
                 />
             </div>
-            <div class="header-right__user">
-                <v-user :name="user.name" @click="isUserMenuOpen = !isUserMenuOpen">
+            <div v-click-outside="closeUserMenu" class="header-right__user">
+                <v-user :name="user.name" show-name @click="isUserMenuOpen = !isUserMenuOpen">
                     <font-awesome-icon
                         class="header-right__user--toggle"
                         icon="fa-solid fa-chevron-down"
@@ -115,7 +115,7 @@ const headerLogout = async () => {
                 </v-user>
 
                 <Transition name="dropdown">
-                    <div class="dropdown" v-if="isUserMenuOpen">
+                    <div v-if="isUserMenuOpen" class="dropdown">
                         <ul class="dropdown-list">
                             <li class="dropdown__item">
                                 <router-link

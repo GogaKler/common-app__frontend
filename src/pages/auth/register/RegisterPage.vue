@@ -44,7 +44,7 @@ const onSubmit = handleSubmit(async ({ name, email, password, gender }) => {
 </script>
 
 <template>
-    <form @submit="onSubmit" :validation-schema="schema">
+    <form :validation-schema="schema" @submit="onSubmit">
         <v-input
             v-model="name"
             type="name"
@@ -65,7 +65,14 @@ const onSubmit = handleSubmit(async ({ name, email, password, gender }) => {
             <option>Женский</option>
         </select>
 
-        <v-button type="submit" full-width :loading="isSubmitting" :disabled="!isValid">
+        <v-button
+            type="submit"
+            primary
+            full-width
+            radius="20"
+            :disabled="!isValid"
+            :loading="isSubmitting"
+        >
             Зарегистрироваться
         </v-button>
     </form>

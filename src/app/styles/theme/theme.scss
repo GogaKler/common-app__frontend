@@ -1,9 +1,10 @@
 $primary: 'primary';
 $primary-text: 'primary-text';
-$primary--disabled: 'primary-disabled';
+$primary-disabled: 'primary-disabled';
 
 $secondary: 'secondary';
 $secondary-text: 'secondary-text';
+$secondary-disabled: 'secondary-disabled';
 
 $background: 'background';
 $background-secondary: 'background-secondary';
@@ -28,6 +29,7 @@ $primary--disabled--light: rgba(0, 97, 166, 0.5);
 
 $secondary--light: #525F72;
 $secondary--text--light: #FFFFFF;
+$secondary--disabled--light: rgba(82, 95, 114, 0.5);
 
 $background--light: #FDFCFF;;
 $text--light: #1A1C1E;
@@ -52,6 +54,7 @@ $primary--disabled--dark: rgba(160, 201, 255, 0.5);
 
 $secondary--dark: #B9C7DE;
 $secondary--text--dark: #243142;
+$secondary--disabled--dark: rgba(185, 199, 222, 0.5);
 
 $background--dark: #1A1C1E;
 $text--dark: #E3E2E6;
@@ -77,6 +80,7 @@ $themes: (
                 primary-disabled: $primary--disabled--light,
                 secondary: $secondary--light,
                 secondary-text: $secondary--text--light,
+                secondary-disabled: $secondary--disabled--light,
                 background: $background--light,
                 background-secondary: $background--2--light,
                 text: $text--light,
@@ -93,6 +97,7 @@ $themes: (
                 primary-disabled: $primary--disabled--dark,
                 secondary: $secondary--dark,
                 secondary-text: $secondary--text--dark,
+                secondary-disabled: $secondary--disabled--dark,
                 background: $background--dark,
                 background-secondary: $background--2--dark,
                 text: $text--dark,

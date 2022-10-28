@@ -49,7 +49,14 @@ const onSubmit = handleSubmit(async ({ username, password }) => {
             :errors="errors.password"
         />
 
-        <v-button type="submit" full-width :loading="isSubmitting" :disabled="!isValid">
+        <v-button
+            type="submit"
+            full-width
+            :loading="isSubmitting"
+            :disabled="!isValid"
+            radius="20"
+            primary
+        >
             Войти
         </v-button>
     </form>
