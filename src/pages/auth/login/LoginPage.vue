@@ -1,13 +1,15 @@
 <script setup>
-import { object, string } from 'yup';
+import * as Yup from 'yup';
 import { useField, useForm, useIsFormValid } from 'vee-validate';
 import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore();
 
-const schema = object({
-    username: string().required(),
-    password: string().required().min(6)
+const schema = Yup.object({
+    username: Yup.string().required('Логин обязателен'),
+    password: Yup.string()
+        .required('Пароль обязателен')
+        .min(6, 'Пароль должен быть не меньше 6 символов')
 });
 
 const { errors, handleSubmit, isSubmitting } = useForm({

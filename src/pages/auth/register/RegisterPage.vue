@@ -1,15 +1,18 @@
 <script setup>
-import { object, string } from 'yup';
 import { useField, useForm, useIsFormValid } from 'vee-validate';
 import { useAuthStore } from '@/stores/auth';
+import * as Yup from 'yup';
+import { reactive, watch } from 'vue';
+import VSelect from '@UI/select/VSelect.vue';
 
-const authStore = useAuthStore();
-
-const schema = object({
-    name: string().required(),
-    email: string().required().email(),
-    password: string().required().min(6),
-    gender: string().required()
+const schema = Yup.object({
+    name: Yup.string().required('Логин для входа обязателен.'),
+    email: Yup.string().required('E-mail обязателен').email('Неккоректный E-mail.'),
+    password: Yup.string().required().min(6, 'Минимальная длина 6 символов.'),
+    confirmPassword: Yup.string()
+        .required('Подтверждение пароля обязательно.')
+        .oneOf([Yup.ref('password'), null], 'Пароли не совпадают.'),
+    gender: Yup.string().required('Укажите свой пол.')
 });
 
 const { errors, handleSubmit, isSubmitting } = useForm({
@@ -18,6 +21,7 @@ const { errors, handleSubmit, isSubmitting } = useForm({
         name: '',
         email: '',
         password: '',
+        confirmPassword: '',
         gender: ''
     }
 });
@@ -27,20 +31,29 @@ const isValid = useIsFormValid();
 const { value: name } = useField('name');
 const { value: email } = useField('email');
 const { value: password } = useField('password');
+const { value: confirmPassword } = useField('confirmPassword');
 const { value: gender } = useField('gender');
 
-const onSubmit = handleSubmit(async ({ name, email, password, gender }) => {
-    const preparedGender = () => {
-        switch (gender) {
-            case 'Мужской':
-                return 'male';
-            case 'Женский':
-                return 'female';
-        }
-    };
+const authStore = useAuthStore();
 
-    await authStore.register({ name, email, password, gender: preparedGender() });
+const onSubmit = handleSubmit(async (payload) => {
+    await authStore.register(payload);
 });
+
+watch(password, () => {
+    if (!password.value.length) confirmPassword.value = '';
+});
+
+const genderOptions = reactive([
+    {
+        title: 'Мужчина',
+        value: 'male'
+    },
+    {
+        title: 'Женщина',
+        value: 'female'
+    }
+]);
 </script>
 
 <template>
@@ -60,10 +73,17 @@ const onSubmit = handleSubmit(async ({ name, email, password, gender }) => {
             label="Пароль"
             :errors="errors.password"
         />
-        <select v-model="gender">
-            <option>Мужской</option>
-            <option>Женский</option>
-        </select>
+
+        <v-input
+            v-model="confirmPassword"
+            type="password"
+            name="password"
+            label="Подтвердите пароль"
+            :disabled="!password.length"
+            :errors="errors.confirmPassword"
+        />
+
+        <v-select v-model="gender" label="Пол" :options="genderOptions" :errors="errors.gender" />
 
         <v-button
             type="submit"

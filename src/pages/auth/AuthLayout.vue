@@ -8,7 +8,18 @@ const route = useRoute();
     <div class="auth">
         <div class="container">
             <div class="auth__wrapper">
-                <div class="auth-logo" style="width: 1700px">LOGO AND IMAGE COMING SOON</div>
+                <div class="auth-logo pt-10" style="width: 1700px">
+                    <div class="auth-logo__logo">
+                        <div class="mr-7">
+                            <font-awesome-icon
+                                class="rotate-45"
+                                icon="fa-regular fa-square"
+                                size="4x"
+                            />
+                        </div>
+                        <span> Home Builder _ </span>
+                    </div>
+                </div>
                 <div class="auth-form">
                     <div class="auth-form__wrapper">
                         <div class="auth-form__content">
@@ -19,9 +30,18 @@ const route = useRoute();
                             </div>
                             <RouterView />
                         </div>
-                        <div v-if="route.name === 'login'" class="auth-form__sign-up">
-                            <span>У вас нет аккаунта? &nbsp;</span>
-                            <RouterLink to="register">Зарегистрироваться</RouterLink>
+                        <div class="auth-form__sign">
+                            <span>
+                                {{ route.name === 'login' ? 'Нет аккаунта?' : 'Есть аккаунт?' }}
+                                &nbsp;
+                            </span>
+                            <RouterLink :to="route.name === 'login' ? 'register' : 'login'">
+                                {{
+                                    route.name === 'login'
+                                        ? 'Зарегистрироваться'
+                                        : 'Войти в ситсему'
+                                }}
+                            </RouterLink>
                         </div>
                     </div>
                 </div>
@@ -49,13 +69,24 @@ const route = useRoute();
     }
 }
 
+.auth-logo {
+    &__logo {
+        display: flex;
+        align-items: center;
+
+        & span {
+            font-size: 30px;
+        }
+    }
+}
+
 .auth-form {
     position: relative; // для лого
     width: 100%;
     padding: 0 15px;
 
     &__wrapper {
-        padding: 80px 40px;
+        padding: 120px 40px;
         height: 100%;
         border-radius: 20px;
 
@@ -80,6 +111,17 @@ const route = useRoute();
         &--title {
             font-size: 35px;
             font-weight: 600;
+        }
+    }
+
+    &__sign {
+        & a {
+            text-decoration: underline;
+            &:hover {
+                @include themed() {
+                    color: t($primary);
+                }
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 
 // SOLID
 import {
+    faArrowLeft,
     faArrowRightFromBracket,
     faBars,
     faChevronDown,
@@ -24,7 +25,8 @@ library.add(
     faExclamation,
     faEllipsis,
     faChevronDown,
-    faArrowRightFromBracket
+    faArrowRightFromBracket,
+    faArrowLeft
 );
 
 // REGULAR
@@ -33,7 +35,8 @@ import {
     faMessage,
     faMoon,
     faSquare,
-    faSun
+    faSun,
+    faUser
 } from '@fortawesome/free-regular-svg-icons';
 
-library.add(faLightbulb, faMoon, faSun, faMessage, faSquare);
+library.add(faLightbulb, faMoon, faSun, faMessage, faSquare, faUser);

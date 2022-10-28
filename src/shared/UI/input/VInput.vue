@@ -14,6 +14,10 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    disabled: {
+        type: Boolean,
+        default: false
+    },
     max: {
         type: Number,
         default: 100
@@ -52,7 +56,7 @@ onMounted(() => {
 
 <template>
     <div class="VInput">
-        <div class="VInput__content" @click="focusOnInput">
+        <div :class="['VInput__content', { disabled }]" @click="focusOnInput">
             <div class="input__wrapper">
                 <input
                     v-bind="$attrs"
@@ -60,6 +64,7 @@ onMounted(() => {
                     class="input"
                     :maxlength="max"
                     :value="modelValue"
+                    :disabled="disabled"
                     @input="updateValue"
                     @focus="toggleInputState(true)"
                     @blur="toggleInputState(false)"
@@ -87,7 +92,6 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    //align-items: start;
 
     &__content {
         padding: 0 10px;
@@ -96,6 +100,10 @@ onMounted(() => {
 
         @include themed() {
             border: 1px solid rgba(t($text), 0.4);
+        }
+
+        &.disabled {
+            opacity: 0.5;
         }
     }
 }
