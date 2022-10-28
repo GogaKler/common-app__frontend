@@ -20,7 +20,8 @@ export const propsIconValidationSwitch = ({ icon }) => {
     try {
         if (typeParam === Object) {
             Object.keys(icon).forEach((item) => {
-                if (!accessFields.includes(item)) error(`Недопустимый ключ '${item}'. Используйте 'on', 'off'`);
+                if (!accessFields.includes(item))
+                    error(`Недопустимый ключ '${item}'. Используйте 'on', 'off'`);
             });
         }
 

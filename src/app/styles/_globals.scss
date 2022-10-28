@@ -5,3 +5,13 @@
 .icon {
   padding: 0 10px 0 0;
 }
+
+.container {
+  width: 100%;
+  max-width: 1420px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  flex-grow: 1;
+}

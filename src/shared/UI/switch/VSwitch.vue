@@ -16,7 +16,6 @@ const props = defineProps({
     },
     checked: {
         type: Boolean,
-        default: false,
         required: true
     },
     icon: {
@@ -83,14 +82,14 @@ const preparedIcon = computed(() => {
 </script>
 
 <template>
-    <label class="container">
+    <label class="switch-container">
         <input
             v-bind="$attrs"
             class="input"
             type="checkbox"
             :checked="checked"
-            @change="$emit('update:checked', $event.target.checked)"
             :disabled="isSwitchDisabled"
+            @change="$emit('update:checked', $event.target.checked)"
         />
         <span :class="['switch', { disabled: isSwitchDisabled }]" onmousedown="return false">
             <span class="switch__circle">
@@ -105,15 +104,16 @@ const preparedIcon = computed(() => {
                 </span>
             </span>
         </span>
-        <span class="label">{{ label }}</span>
+        <span v-if="label" class="label">{{ label }}</span>
     </label>
 </template>
 
 <style lang="scss" scoped>
-.container {
+.switch-container {
     cursor: pointer;
     display: flex;
     align-items: center;
+    padding: 0 10px;
 }
 
 .label {
@@ -136,6 +136,7 @@ const preparedIcon = computed(() => {
     &:checked {
         + .switch .switch__circle {
             // Передвижение
+            left: 2px;
             transform: translateX(calc(var(--switch-prepared-width) - var(--switch-size)));
         }
     }
@@ -153,15 +154,17 @@ const preparedIcon = computed(() => {
     position: relative;
     height: calc(var(--switch-size) + 1px);
     width: var(--switch-prepared-width);
-    flex-basis: var(--switch-prepared-width);
-
+    flex-basis: calc(var(--switch-prepared-width) + 3px);
+    @include themed() {
+        border: 1px solid t($divider);
+    }
     /* Контейнер для внутреннего круга */
 
     /**
   * TODO: Сделать пропс border, который будет включать css аттрибут border
   */
     //@include themed() {
-    //  border: 1px solid t($background-secondary);
+    //    border: 1px solid t($background-secondary);
     //}
 
     border-radius: var(--switch-size);
@@ -171,12 +174,18 @@ const preparedIcon = computed(() => {
 
     transition: background-color 0.25s ease-in-out, $transition-border;
 
+    &:hover {
+        @include themed() {
+            border: 1px solid t($divider-light);
+        }
+    }
     &__circle {
         position: absolute;
 
-        left: 2px;
-        height: calc(var(--switch-size) - 4px);
-        width: calc(var(--switch-size) - 4px);
+        left: 1px;
+        top: 1px;
+        height: calc(var(--switch-size) - 2px);
+        width: calc(var(--switch-size) - 2px);
         outline: 0;
         border-radius: 9999px;
 
