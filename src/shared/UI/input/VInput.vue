@@ -56,8 +56,8 @@ onMounted(() => {
             <div class="input__wrapper">
                 <input
                     v-bind="$attrs"
-                    class="input"
                     ref="VInput"
+                    class="input"
                     :maxlength="max"
                     :value="modelValue"
                     @input="updateValue"
@@ -72,7 +72,7 @@ onMounted(() => {
                 </label>
             </div>
         </div>
-        <div class="VInput__errors" v-if="errors">
+        <div v-if="errors" class="VInput__errors">
             <div class="VInput__errors--item">
                 <font-awesome-icon icon="fa-solid fa-circle-exclamation" color="#ed0082" />
                 <span class="VInput__errors--text">{{ errors }}</span>

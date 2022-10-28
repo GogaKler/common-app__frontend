@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <Transition name="dropdown-menu">
-        <div class="menu" v-if="dialog">
+        <div v-if="dialog" class="menu">
             <ul class="menu__header">
                 <slot name="menu-header" />
             </ul>

@@ -88,8 +88,8 @@ const preparedIcon = computed(() => {
             class="input"
             type="checkbox"
             :checked="checked"
-            @change="$emit('update:checked', $event.target.checked)"
             :disabled="isSwitchDisabled"
+            @change="$emit('update:checked', $event.target.checked)"
         />
         <span :class="['switch', { disabled: isSwitchDisabled }]" onmousedown="return false">
             <span class="switch__circle">
@@ -104,7 +104,7 @@ const preparedIcon = computed(() => {
                 </span>
             </span>
         </span>
-        <span class="label" v-if="label">{{ label }}</span>
+        <span v-if="label" class="label">{{ label }}</span>
     </label>
 </template>
 

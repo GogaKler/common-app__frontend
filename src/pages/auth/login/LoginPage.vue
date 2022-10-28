@@ -33,7 +33,7 @@ const onSubmit = handleSubmit(async ({ username, password }) => {
 </script>
 
 <template>
-    <form @submit="onSubmit" :validation-schema="schema">
+    <form :validation-schema="schema" @submit="onSubmit">
         <v-input
             v-model="username"
             name="username"

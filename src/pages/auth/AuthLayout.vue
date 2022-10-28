@@ -19,7 +19,7 @@ const route = useRoute();
                             </div>
                             <RouterView />
                         </div>
-                        <div class="auth-form__sign-up" v-if="route.name === 'login'">
+                        <div v-if="route.name === 'login'" class="auth-form__sign-up">
                             <span>У вас нет аккаунта? &nbsp;</span>
                             <RouterLink to="register">Зарегистрироваться</RouterLink>
                         </div>
