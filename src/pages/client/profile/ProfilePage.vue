@@ -1,8 +1,7 @@
 <script setup>
 import { useUsersStore } from '@/stores/users';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
 import VUser from '@UI/user/VUser.vue';
 
 const route = useRoute();
@@ -22,10 +21,6 @@ const fetchData = async () => {
     }
 };
 
-watch(
-    () => route.params.id,
-    () => fetchData()
-);
 onMounted(() => {
     fetchData();
 });

@@ -7,10 +7,7 @@ export const useAppStore = defineStore('app', {
         htmlElement: document.documentElement
     }),
     getters: {
-        isDarkTheme: (state) => {
-            console.log(state.userTheme, 'getter');
-            return state.userTheme === 'dark';
-        }
+        isDarkTheme: (state) => state.userTheme === 'dark'
     },
     actions: {
         initialTheme() {

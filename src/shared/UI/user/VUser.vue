@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { computed, toRefs } from 'vue';
+
+const props = defineProps({
     name: {
         type: String,
         default: ''
@@ -23,13 +25,19 @@ defineProps({
             ['1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x'].indexOf(value) > -1
     }
 });
+
+const { name } = toRefs(props);
+
+const userWithoutLogo = computed(
+    () => `${name.value[0]?.toUpperCase()}${name.value[1]?.toUpperCase()}`
+);
 </script>
 
 <template>
     <div class="user">
         <span v-if="showName" class="user__name mr-2">{{ name }}</span>
         <div :class="['user__logo', `user__logo--${size}`]">
-            <span>{{ name[0]?.toUpperCase() + name[1]?.toUpperCase() }}</span>
+            <span>{{ userWithoutLogo }}</span>
         </div>
         <slot></slot>
     </div>
@@ -56,7 +64,6 @@ defineProps({
         display: flex;
         height: 25px;
         width: 25px;
-        pointer-events: none;
 
         @include themed() {
             background: t($background-secondary);

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
 
 import { useAuthStore } from '@/stores/auth';
@@ -162,6 +162,7 @@ const headerLogout = async () => {
     justify-content: space-between;
     padding: 10px 60px 10px 5px;
     transition: $transition-bg;
+    z-index: 5;
 
     @include themed() {
         background-color: t($background);
