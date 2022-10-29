@@ -111,6 +111,7 @@ const headerLogout = async () => {
             <div v-click-outside="closeUserMenu" class="header-right__user">
                 <v-user
                     :name="user.name"
+                    class="cursor-pointer"
                     size="2x"
                     show-name
                     @click="isUserMenuOpen = !isUserMenuOpen"

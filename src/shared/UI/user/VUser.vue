@@ -39,7 +39,6 @@ defineProps({
 .user {
     display: flex;
     align-items: center;
-    cursor: pointer;
     position: relative;
 
     &__name {
@@ -57,6 +56,7 @@ defineProps({
         display: flex;
         height: 25px;
         width: 25px;
+        pointer-events: none;
 
         @include themed() {
             background: t($background-secondary);
