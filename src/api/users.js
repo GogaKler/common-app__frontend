@@ -10,6 +10,16 @@ class _Users {
             throw new Error(e);
         }
     }
+
+    async getUserById({ id }) {
+        try {
+            const response = await API.get(`users/${id}`);
+
+            return response.data;
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
 }
 const Users = new _Users();
 export default Users;

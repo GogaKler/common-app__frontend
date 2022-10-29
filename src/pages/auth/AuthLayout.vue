@@ -1,7 +1,14 @@
 <script setup>
 import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 const route = useRoute();
+
+const textState = computed(() => ({
+    contentTitle: route.name === 'login' ? 'Войти в систему' : 'Регистрация',
+    signText: route.name === 'login' ? 'Нет аккаунта?' : 'Есть аккаунт?',
+    linkText: route.name === 'login' ? 'Зарегистрироваться' : 'Войти в ситсему'
+}));
 </script>
 
 <template>
@@ -25,22 +32,18 @@ const route = useRoute();
                         <div class="auth-form__content">
                             <div class="auth-form__content--header">
                                 <span class="auth-form__content--title">
-                                    {{ route.name === 'login' ? 'Войти в систему' : 'Регистрация' }}
+                                    {{ textState.contentTitle }}
                                 </span>
                             </div>
                             <RouterView />
                         </div>
                         <div class="auth-form__sign">
                             <span>
-                                {{ route.name === 'login' ? 'Нет аккаунта?' : 'Есть аккаунт?' }}
+                                {{ textState.signText }}
                                 &nbsp;
                             </span>
                             <RouterLink :to="route.name === 'login' ? 'register' : 'login'">
-                                {{
-                                    route.name === 'login'
-                                        ? 'Зарегистрироваться'
-                                        : 'Войти в ситсему'
-                                }}
+                                {{ textState.linkText }}
                             </RouterLink>
                         </div>
                     </div>

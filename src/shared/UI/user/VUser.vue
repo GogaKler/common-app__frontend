@@ -15,6 +15,12 @@ defineProps({
     showName: {
         type: Boolean,
         default: false
+    },
+    size: {
+        type: String,
+        default: '2x',
+        validator: (value) =>
+            ['1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x'].indexOf(value) > -1
     }
 });
 </script>
@@ -22,8 +28,8 @@ defineProps({
 <template>
     <div class="user">
         <span v-if="showName" class="user__name mr-2">{{ name }}</span>
-        <div class="user__logo">
-            <span>{{ name[0] + name[1] }}</span>
+        <div :class="['user__logo', `user__logo--${size}`]">
+            <span>{{ name[0]?.toUpperCase() + name[1]?.toUpperCase() }}</span>
         </div>
         <slot></slot>
     </div>
@@ -49,12 +55,51 @@ defineProps({
         font-size: 15px;
         font-weight: 600;
         display: flex;
-        height: 35px;
-        width: 35px;
+        height: 25px;
+        width: 25px;
 
         @include themed() {
             background: t($background-secondary);
             border: 1px solid t($border);
+        }
+
+        // sizes
+
+        &--1x {
+            font-size: 10px;
+            height: 25px;
+            width: 25px;
+        }
+
+        &--2x {
+            font-size: 14px;
+            height: 35px;
+            width: 35px;
+        }
+
+        &--3x {
+            font-size: 20px;
+            height: 45px;
+            width: 45px;
+        }
+
+        &--4x {
+            font-size: 25px;
+            height: 55px;
+            width: 55px;
+        }
+
+        &--5x {
+            font-size: 30px;
+            height: 70px;
+            width: 70px;
+        }
+
+        &--10x {
+            font-weight: 400;
+            font-size: 60px;
+            height: 150px;
+            width: 150px;
         }
     }
 }

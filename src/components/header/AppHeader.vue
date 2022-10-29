@@ -66,7 +66,7 @@ watch(switchValue, () => {
 
 const authStore = useAuthStore();
 
-const user = authStore.get_user;
+const user = computed(() => authStore.user);
 
 const isUserMenuOpen = ref(false);
 const closeUserMenu = () => {
@@ -105,7 +105,12 @@ const headerLogout = async () => {
                 />
             </div>
             <div v-click-outside="closeUserMenu" class="header-right__user">
-                <v-user :name="user.name" show-name @click="isUserMenuOpen = !isUserMenuOpen">
+                <v-user
+                    :name="user.name"
+                    size="2x"
+                    show-name
+                    @click="isUserMenuOpen = !isUserMenuOpen"
+                >
                     <font-awesome-icon
                         class="header-right__user--toggle"
                         icon="fa-solid fa-chevron-down"
@@ -119,10 +124,10 @@ const headerLogout = async () => {
                         <ul class="dropdown-list">
                             <li class="dropdown__item">
                                 <router-link
-                                    :to="{ name: 'messenger' }"
+                                    :to="{ name: 'profile', params: { id: authStore.userId } }"
                                     class="dropdown__item--link"
                                 >
-                                    Мессенджер
+                                    Мой профиль
                                 </router-link>
                             </li>
                         </ul>
@@ -216,6 +221,7 @@ const headerLogout = async () => {
 
 .dropdown {
     position: absolute;
+    min-width: 140px;
     top: 50px;
     right: 5px;
     border-radius: 8px;

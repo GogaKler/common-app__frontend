@@ -67,10 +67,12 @@ onMounted(() => {
                 :sidebar-condition="isSidebarOpen"
                 @onUpdate:sidebar-state="setSidebarSize"
             />
-            <RouterView
+            <div
                 class="app__main"
-                :style="{ margin: `${headerHeight}px 0 0 ${sidebarWidth}px` }"
-            />
+                :style="{ margin: `${headerHeight}px 0 0 ${sidebarWidth}px`, width: '100%' }"
+            >
+                <RouterView />
+            </div>
         </div>
     </div>
 </template>

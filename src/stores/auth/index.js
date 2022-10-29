@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', {
     }),
     getters: {
         isAuth: () => !!Cookie.get('user_token'),
-        get_user: (state) => state.user
+        userId: (state) => state.user.id
     },
     actions: {
         async login({ username, password }) {

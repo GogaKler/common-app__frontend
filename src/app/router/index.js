@@ -13,6 +13,7 @@ const LoginPage = () => import('@pages/auth/login/LoginPage.vue');
 // PAGES / MAIN
 const HomePage = () => import('@pages/client/home/HomePage.vue');
 const MessengerPage = () => import('@pages/client/messenger/MessengerPage.vue');
+const ProfilePage = () => import('@pages/client/profile/ProfilePage.vue');
 
 // CHILDREN`S & COMPONENTS
 
@@ -55,6 +56,11 @@ const router = createRouter({
                     path: '/home',
                     name: 'home',
                     component: HomePage
+                },
+                {
+                    path: '/profile/:id',
+                    name: 'profile',
+                    component: ProfilePage
                 },
                 {
                     path: '/messenger',
