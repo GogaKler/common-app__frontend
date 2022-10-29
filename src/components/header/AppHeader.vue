@@ -54,16 +54,20 @@ const onClickBar = () => {
  * */
 const appStore = useAppStore();
 
-const switchValue = ref(appStore.switchThemeValue);
-
-watch(switchValue, () => {
-    if (switchValue.value) {
-        appStore.setTheme('dark');
-    } else {
-        appStore.setTheme('light');
+const switchValue = computed({
+    get() {
+        return appStore.switchThemeValue;
+    },
+    set(value) {
+        if (value) {
+            appStore.setTheme('dark');
+        } else {
+            appStore.setTheme('light');
+        }
     }
 });
 
+// user logic
 const authStore = useAuthStore();
 
 const user = computed(() => authStore.user);
