@@ -49,7 +49,7 @@ onMounted(() => {
                     :to="{ name: item.to }"
                 >
                     <font-awesome-icon
-                        size="sm"
+                        size="lg"
                         :icon="item.icon"
                         :class="['sidebar__list-icon', { active: sidebarCondition }]"
                     />
@@ -67,18 +67,25 @@ onMounted(() => {
     &__wrapper {
         z-index: 2;
         position: fixed;
-        height: 100vh;
         min-width: 60px;
         padding: 5px 0;
         transition: $transition-bg, $transition-minWidth;
+
         @include themed() {
             border-right: 1px solid t($border);
             background-color: t($background);
         }
 
         &.active {
-            min-width: 238px !important;
+            min-width: 200px;
         }
+    }
+
+    &__content {
+        height: calc(100% - 100px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     &__header {
@@ -94,20 +101,30 @@ onMounted(() => {
     }
 
     &__list {
-        margin: 20px 10px 0 0;
+        margin-right: 10px;
 
         &-item {
             display: flex;
             align-items: center;
 
-            height: 27px;
+            height: 32px;
 
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             margin-left: 8px;
             padding-left: 12px;
 
             border-radius: 15px;
             transition: 0.2s ease-out, $transition-bg;
+
+            &:not(.router-link-active):hover {
+                @include themed() {
+                    background-color: rgba(t($background-secondary), 0.5);
+                }
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
 
             &.active {
                 margin-left: 0;
@@ -121,12 +138,6 @@ onMounted(() => {
                     background-color: t($background-secondary);
                 }
             }
-
-            &:not(.router-link-active):hover {
-                @include themed() {
-                    background-color: rgba(t($background-secondary), 0.5);
-                }
-            }
         }
 
         &-icon {
@@ -136,6 +147,7 @@ onMounted(() => {
         }
 
         &-text {
+            font-size: 17px;
             opacity: 0;
             cursor: default;
             pointer-events: none;

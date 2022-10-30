@@ -4,8 +4,10 @@ import { useAppStore } from '@app/store/useAppStore';
 
 import { useAuthStore } from '@/stores/auth';
 import VUser from '@UI/user/VUser.vue';
+import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['click:bar', 'onUpdate:header-state', 'onChange:switch-theme']);
+const router = useRouter();
 
 const header_REFLINK = ref(null);
 
@@ -79,6 +81,16 @@ const closeUserMenu = () => {
 
 const headerRotateIcon = computed(() => (isUserMenuOpen.value ? 180 : null));
 
+const goToProfile = () => {
+    router.push({
+        name: 'profile',
+        params: {
+            id: authStore.userId
+        }
+    });
+    isUserMenuOpen.value = false;
+};
+
 const headerLogout = async () => {
     await authStore.logout();
 };
@@ -113,7 +125,6 @@ const headerLogout = async () => {
                     :name="user.name"
                     class="cursor-pointer"
                     size="2x"
-                    show-name
                     @click="isUserMenuOpen = !isUserMenuOpen"
                 >
                     <font-awesome-icon
@@ -126,17 +137,25 @@ const headerLogout = async () => {
 
                 <Transition name="dropdown">
                     <div v-if="isUserMenuOpen" class="dropdown">
+                        <div class="dropdown-user block">
+                            <v-user :name="user.name" show-name @onClick:name="goToProfile" />
+                        </div>
                         <ul class="dropdown-list">
                             <li class="dropdown__item">
+                                <router-link :to="{ name: 'home' }" class="dropdown__item--link">
+                                    Главная
+                                </router-link>
+                            </li>
+                            <li class="dropdown__item">
                                 <router-link
-                                    :to="{ name: 'profile', params: { id: authStore.userId } }"
+                                    :to="{ name: 'settings' }"
                                     class="dropdown__item--link"
                                 >
-                                    Мой профиль
+                                    Настройки
                                 </router-link>
                             </li>
                         </ul>
-                        <div class="dropdown-exit">
+                        <div class="dropdown-exit block">
                             <div class="dropdown-exit__item" @click="headerLogout">
                                 <font-awesome-icon
                                     class="mr-2"
@@ -257,12 +276,13 @@ const headerLogout = async () => {
         padding: 15px 0;
 
         @include themed() {
+            border-top: 1px solid t($border);
             border-bottom: 1px solid t($border);
         }
     }
 
     &__item {
-        margin-bottom: 18px;
+        margin-bottom: 10px;
 
         &:last-child {
             margin-bottom: 0;
@@ -283,9 +303,10 @@ const headerLogout = async () => {
     }
 
     // SECOND BLOCK
-    &-exit {
+    .block {
         margin: 12px 15px;
-
+    }
+    &-exit {
         &__item {
             display: flex;
             align-items: center;

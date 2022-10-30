@@ -27,7 +27,9 @@ const props = defineProps({
 });
 
 const { name } = toRefs(props);
+const emit = defineEmits(['onClick:name']);
 
+const clickOnName = () => emit('onClick:name');
 const userWithoutLogo = computed(
     () => `${name.value[0]?.toUpperCase()}${name.value[1]?.toUpperCase()}`
 );
@@ -35,10 +37,12 @@ const userWithoutLogo = computed(
 
 <template>
     <div class="user">
-        <span v-if="showName" class="user__name mr-2">{{ name }}</span>
         <div :class="['user__logo', `user__logo--${size}`]">
             <span>{{ userWithoutLogo }}</span>
         </div>
+        <span v-if="showName" class="user__name mr-2 cursor-pointer" @click="clickOnName">
+            {{ name }}
+        </span>
         <slot></slot>
     </div>
 </template>
@@ -54,16 +58,14 @@ const userWithoutLogo = computed(
     }
 
     &__logo {
+        display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 100%;
         text-align: center;
-        margin-right: 5px;
+        margin-right: 10px;
         font-size: 15px;
         font-weight: 600;
-        display: flex;
-        height: 25px;
-        width: 25px;
+        border-radius: 100%;
 
         @include themed() {
             background: t($background-secondary);
@@ -104,9 +106,9 @@ const userWithoutLogo = computed(
 
         &--10x {
             font-weight: 400;
-            font-size: 60px;
-            height: 150px;
-            width: 150px;
+            font-size: 80px;
+            height: 220px;
+            width: 220px;
         }
     }
 }

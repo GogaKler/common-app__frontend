@@ -63,7 +63,7 @@ onMounted(() => {
         <AppHeader @click:bar="sidebarOpenCloseFlow" @onUpdate:header-state="setHeaderSize" />
         <div class="content__wrapper">
             <AppSidebar
-                :style="{ marginTop: `${headerHeight}px` }"
+                :style="{ height: `calc(100vh + ${headerHeight}px)` }"
                 :sidebar-condition="isSidebarOpen"
                 @onUpdate:sidebar-state="setSidebarSize"
             />
@@ -71,13 +71,15 @@ onMounted(() => {
                 class="app__main"
                 :style="{ margin: `${headerHeight}px 0 0 ${sidebarWidth}px`, width: '100%' }"
             >
-                <RouterView />
+                <div class="container">
+                    <RouterView />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app {
     &__main {
         transition: $transition-bg;
