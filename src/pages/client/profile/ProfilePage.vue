@@ -3,12 +3,12 @@ import { useUsersStore } from '@/stores/users';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import VUser from '@UI/user/VUser.vue';
-import { useAuthStore } from '@/stores/auth';
+// import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 
 const usersStore = useUsersStore();
-const authStore = useAuthStore();
+// const authStore = useAuthStore();
 const isLoading = ref(false);
 
 const fetchData = async () => {
@@ -34,7 +34,7 @@ onMounted(() => {
 });
 
 const user = computed(() => usersStore.userById);
-const isMe = computed(() => user.value.id === authStore.userId);
+// const isMe = computed(() => user.value.id === authStore.userId);
 </script>
 
 <template>

@@ -142,11 +142,6 @@ const headerLogout = async () => {
                         </div>
                         <ul class="dropdown-list">
                             <li class="dropdown__item">
-                                <router-link :to="{ name: 'home' }" class="dropdown__item--link">
-                                    Главная
-                                </router-link>
-                            </li>
-                            <li class="dropdown__item">
                                 <router-link
                                     :to="{ name: 'settings' }"
                                     class="dropdown__item--link"

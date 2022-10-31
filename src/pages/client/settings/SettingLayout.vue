@@ -6,11 +6,6 @@ const links = reactive([
         id: 1,
         title: 'Аккаунт',
         to: 'settings'
-    },
-    {
-        id: 2,
-        title: 'Домой',
-        to: 'home'
     }
 ]);
 </script>
