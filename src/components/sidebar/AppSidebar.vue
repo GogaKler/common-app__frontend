@@ -1,6 +1,7 @@
 <script setup>
 import { sidebarMenu } from '@components/sidebar/utils/sidebarMenu';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import VTooltip from '@UI/tooltip/VTooltip.vue';
 
 defineProps({
     sidebarCondition: {
@@ -9,54 +10,32 @@ defineProps({
     }
 });
 
-const emit = defineEmits(['onUpdate:sidebar-state']);
+const emit = defineEmits(['onUpdate:sidebar-width']);
 
 const sidebar_REFLINK = ref(null);
 
-const defaultState = reactive({
-    width: 0,
-    height: 0
-});
+const sidebarWidth = computed(() => sidebar_REFLINK.value);
 
-const sidebarWidth = computed(() => defaultState.width);
-const sidebarHeight = computed(() => defaultState.height);
-
-const resizeObserver = new ResizeObserver((entries) => {
-    entries.forEach((entry) => {
-        defaultState.width = entry.target.offsetWidth;
-        defaultState.height = entry.target.offsetHeight;
-    });
-
-    emit('onUpdate:sidebar-state', {
-        width: sidebarWidth,
-        height: sidebarHeight
-    });
-});
-
-onMounted(() => {
-    resizeObserver.observe(sidebar_REFLINK.value);
+watch(sidebarWidth, () => {
+    emit('onUpdate:sidebar-width', sidebarWidth.value.offsetWidth);
 });
 </script>
 
 <template>
-    <div ref="sidebar_REFLINK" :class="['sidebar__wrapper', { active: sidebarCondition }]">
+    <div ref="sidebar_REFLINK" class="sidebar__wrapper">
         <div class="sidebar__content">
             <ul class="sidebar__list">
-                <router-link
+                <v-tooltip
                     v-for="(item, index) in sidebarMenu"
                     :key="index"
-                    :class="['sidebar__list-item', { active: sidebarCondition }]"
-                    :to="{ name: item.to }"
+                    class="sidebar__list-item--wrapper"
+                    :label="item.title"
+                    position="right"
                 >
-                    <font-awesome-icon
-                        size="lg"
-                        :icon="item.icon"
-                        :class="['sidebar__list-icon', { active: sidebarCondition }]"
-                    />
-                    <div :class="['sidebar__list-text', { active: sidebarCondition }]">
-                        {{ item.title }}
-                    </div>
-                </router-link>
+                    <router-link class="sidebar__list-item" :to="{ name: item.to }">
+                        <font-awesome-icon size="lg" :icon="item.icon" class="sidebar__list-icon" />
+                    </router-link>
+                </v-tooltip>
             </ul>
         </div>
     </div>
@@ -82,7 +61,7 @@ onMounted(() => {
     }
 
     &__content {
-        height: calc(100% - 100px);
+        height: calc(100% - 50px);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -101,29 +80,32 @@ onMounted(() => {
     }
 
     &__list {
-        margin-right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         &-item {
+            &--wrapper {
+                margin-bottom: 20px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
             display: flex;
             align-items: center;
+            justify-content: center;
 
-            height: 32px;
+            height: 40px;
+            width: 40px;
 
-            margin-bottom: 20px;
-            margin-left: 8px;
-            padding-left: 12px;
-
-            border-radius: 15px;
+            border-radius: 50%;
             transition: 0.2s ease-out, $transition-bg;
 
             &:not(.router-link-active):hover {
                 @include themed() {
                     background-color: rgba(t($background-secondary), 0.5);
                 }
-            }
-
-            &:last-child {
-                margin-bottom: 0;
             }
 
             &.active {
