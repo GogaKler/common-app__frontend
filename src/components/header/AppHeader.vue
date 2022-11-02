@@ -315,4 +315,22 @@ const headerLogout = async () => {
         }
     }
 }
+
+.header {
+    @include for-size('md') {
+        padding: 10px;
+    }
+
+    &-left__logo {
+        @include for-size('md') {
+            min-width: 0;
+        }
+
+        &-text {
+            @include for-size('md') {
+                display: none;
+            }
+        }
+    }
+}
 </style>

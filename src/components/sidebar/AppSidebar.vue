@@ -1,6 +1,6 @@
 <script setup>
 import { sidebarMenu } from '@components/sidebar/utils/sidebarMenu';
-import { computed, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import VTooltip from '@UI/tooltip/VTooltip.vue';
 
 defineProps({
@@ -10,14 +10,21 @@ defineProps({
     }
 });
 
-const emit = defineEmits(['onUpdate:sidebar-width']);
+const emit = defineEmits(['onUpdate:sidebarValues']);
 
 const sidebar_REFLINK = ref(null);
 
-const sidebarWidth = computed(() => sidebar_REFLINK.value);
+const resizeObserver = new ResizeObserver((entries) =>
+    entries.forEach((entry) => {
+        emit('onUpdate:sidebarValues', {
+            width: entry.target.offsetWidth,
+            height: entry.target.offsetHeight
+        });
+    })
+);
 
-watch(sidebarWidth, () => {
-    emit('onUpdate:sidebar-width', sidebarWidth.value.offsetWidth);
+onMounted(() => {
+    resizeObserver.observe(sidebar_REFLINK.value);
 });
 </script>
 
