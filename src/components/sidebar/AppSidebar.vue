@@ -22,49 +22,41 @@ watch(sidebarWidth, () => {
 </script>
 
 <template>
-    <div ref="sidebar_REFLINK" class="sidebar__wrapper">
-        <div class="sidebar__content">
-            <ul class="sidebar__list">
-                <v-tooltip
-                    v-for="(item, index) in sidebarMenu"
-                    :key="index"
-                    class="sidebar__list-item--wrapper"
-                    :label="item.title"
-                    position="right"
-                >
-                    <router-link class="sidebar__list-item" :to="{ name: item.to }">
-                        <font-awesome-icon size="lg" :icon="item.icon" class="sidebar__list-icon" />
-                    </router-link>
-                </v-tooltip>
-            </ul>
-        </div>
+    <div ref="sidebar_REFLINK" class="sidebar">
+        <ul class="sidebar__list">
+            <v-tooltip
+                v-for="(item, index) in sidebarMenu"
+                :key="index"
+                class="sidebar__list-item--wrapper"
+                :label="item.title"
+                position="right"
+            >
+                <router-link class="sidebar__list-item" :to="{ name: item.to }">
+                    <font-awesome-icon size="lg" :icon="item.icon" class="sidebar__list-icon" />
+                </router-link>
+            </v-tooltip>
+        </ul>
     </div>
 </template>
 
 <style lang="scss" scoped>
 .sidebar {
-    &__wrapper {
-        z-index: 2;
-        position: fixed;
-        min-width: 60px;
-        padding: 5px 0;
-        transition: $transition-bg, $transition-minWidth;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+    width: 60px;
+    padding: 5px 0;
+    transition: $transition-bg, $transition-minWidth;
 
-        @include themed() {
-            border-right: 1px solid t($border);
-            background-color: t($background);
-        }
-
-        &.active {
-            min-width: 200px;
-        }
+    @include themed() {
+        border-right: 1px solid t($border);
+        background-color: t($background);
     }
 
-    &__content {
-        height: calc(100% - 50px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    &.active {
+        min-width: 200px;
     }
 
     &__header {
@@ -87,11 +79,13 @@ watch(sidebarWidth, () => {
         &-item {
             &--wrapper {
                 margin-bottom: 20px;
+                padding: 0 10px;
 
                 &:last-child {
                     margin-bottom: 0;
                 }
             }
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -141,6 +135,36 @@ watch(sidebarWidth, () => {
                 cursor: pointer;
                 pointer-events: all;
                 transition: $transition-bg;
+            }
+        }
+    }
+}
+
+// media
+
+.sidebar {
+    @include for-size('md') {
+        width: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 0;
+
+        @include themed() {
+            border: 0;
+            border-top: 1px solid t($border);
+        }
+    }
+
+    &__list {
+        @include for-size('md') {
+            justify-content: center;
+            flex-direction: row;
+        }
+
+        &-item--wrapper {
+            @include for-size('md') {
+                margin-bottom: 0;
             }
         }
     }

@@ -1,9 +1,11 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@components/header/AppHeader.vue';
 import AppSidebar from '@components/sidebar/AppSidebar.vue';
+import { useAppStore } from '@app/store/useAppStore';
 
+const appStore = useAppStore();
 /*
  * Header
  * */
@@ -19,22 +21,32 @@ const setHeaderSize = ({ width, height }) => {
 /*
  * SIDEBAR
  * */
-const sidebarWidth = ref(60);
-const setSidebarSize = (event) => (sidebarWidth.value = event);
+const sidebarWidth = ref();
+
+const dynamicStyles = computed(() => {
+    const styles = {
+        sidebar: {},
+        main: {}
+    };
+
+    if (!appStore.isMobile) {
+        styles.sidebar.minHeight = `calc(100vh - ${headerState.height}px)`;
+        styles.main.marginLeft = `${sidebarWidth.value}px`;
+    }
+
+    return styles;
+});
 </script>
 
 <template>
     <div class="app__wrapper">
         <AppHeader @onUpdate:header-state="setHeaderSize" />
-        <div class="content__wrapper">
+        <div class="content__wrapper" :style="{ paddingTop: `${headerState.height}px` }">
             <AppSidebar
-                :style="{ height: `calc(100vh + ${headerState.height}px)` }"
-                @onUpdate:sidebar-width="setSidebarSize"
+                :style="dynamicStyles.sidebar"
+                @onUpdate:sidebar-width="sidebarWidth = $event"
             />
-            <div
-                class="app__main"
-                :style="{ margin: `${headerState.height}px 0 0 ${sidebarWidth}px`, width: '100%' }"
-            >
+            <div class="app__main" :style="dynamicStyles.main">
                 <div class="container">
                     <RouterView />
                 </div>
@@ -56,6 +68,10 @@ const setSidebarSize = (event) => (sidebarWidth.value = event);
 .content {
     &__wrapper {
         display: flex;
+
+        @include for-size('md') {
+            flex-direction: column;
+        }
     }
 }
 </style>
