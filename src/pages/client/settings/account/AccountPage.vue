@@ -1,10 +1,24 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth';
 import VUser from '@UI/user/VUser.vue';
+import { computed } from 'vue';
 
 const authStore = useAuthStore();
 
 const user = authStore.user;
+
+const userFields = computed(() => [
+    {
+        id: 1,
+        title: 'Логин',
+        value: user.name
+    },
+    {
+        id: 2,
+        title: 'Статус',
+        value: user.status ?? 'Отсутствует'
+    }
+]);
 </script>
 
 <template>
@@ -12,15 +26,13 @@ const user = authStore.user;
         <div class="container-small">
             <div class="account__content">
                 <div class="account-list">
-                    <div class="account-list__item">
-                        <div class="account-list__item--name">Логин</div>
-                        <div class="account-list__item--value">{{ user.name }}</div>
-                    </div>
-                    <div class="account-list__item">
-                        <div class="account-list__item--name">Статус</div>
-                        <div class="account-list__item--value">
-                            {{ user.status ?? 'Отсутствует' }}
-                        </div>
+                    <div
+                        v-for="(field, index) in userFields"
+                        :key="index"
+                        class="account-list__item"
+                    >
+                        <div class="account-list__item--name">{{ field.title }}</div>
+                        <div class="account-list__item--value">{{ field.value }}</div>
                     </div>
                 </div>
                 <div class="account-logo">
@@ -60,6 +72,12 @@ const user = authStore.user;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 20px;
+        padding-bottom: 10px;
+
+        @include themed() {
+            border-bottom: 1px solid t($border);
+        }
+
         &--name {
             //font-style: italic;
         }
