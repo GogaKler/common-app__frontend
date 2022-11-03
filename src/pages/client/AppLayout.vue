@@ -13,7 +13,7 @@ const headerState = reactive({
     width: 0,
     height: 54
 });
-const setHeaderSize = ({ width, height }) => {
+const setHeaderValues = ({ width, height }) => {
     headerState.width = width;
     headerState.height = height;
 };
@@ -35,7 +35,7 @@ const dynamicStyles = computed(() => {
     const styles = {
         sidebar: {},
         main: {
-            marginBottom: `${sidebarValues.height - 1}px`
+            marginBottom: `${sidebarValues.height}px`
         }
     };
 
@@ -51,7 +51,7 @@ const dynamicStyles = computed(() => {
 
 <template>
     <div class="app__wrapper">
-        <AppHeader @onUpdate:header-state="setHeaderSize" />
+        <AppHeader @onUpdate:headerValues="setHeaderValues" />
         <div class="content__wrapper" :style="{ paddingTop: `${headerState.height}px` }">
             <AppSidebar :style="dynamicStyles.sidebar" @onUpdate:sidebarValues="setSidebarValues" />
             <div class="app__main" :style="dynamicStyles.main">

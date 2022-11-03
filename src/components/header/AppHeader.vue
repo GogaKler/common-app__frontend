@@ -1,54 +1,32 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
-
 import { useAuthStore } from '@/stores/auth';
-import VUser from '@UI/user/VUser.vue';
 import { useRouter } from 'vue-router';
-
-const emit = defineEmits(['click:bar', 'onUpdate:header-state', 'onChange:switch-theme']);
+import { useResizeObserver } from '@shared/utils/useResizeObserver';
+import VUser from '@UI/user/VUser.vue';
 const router = useRouter();
-
+const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
 const header_REFLINK = ref(null);
 
-const defaultState = reactive({
-    bar: false,
-    width: 0,
-    height: 0
+const headerState = reactive({
+    bar: false
 });
 
-/*
- * Header Size
- * */
-const headerWidth = computed(() => defaultState.width);
-const headerHeight = computed(() => defaultState.height);
-
-const resizeObserver = new ResizeObserver((entries) => {
-    entries.forEach((entry) => {
-        defaultState.width = entry.target.offsetWidth;
-        defaultState.height = entry.target.offsetHeight;
+useResizeObserver(header_REFLINK, ({ width, height, entry }) => {
+    console.log(entry);
+    emit('onUpdate:headerValues', {
+        width,
+        height
     });
-
-    emit('onUpdate:header-state', {
-        width: headerWidth,
-        height: headerHeight
-    });
-});
-
-onMounted(() => {
-    resizeObserver.observe(header_REFLINK.value);
 });
 
 /*
  * Bar Condition
  * */
-const headerBarCondition = computed(() => defaultState.bar);
-const changeBarState = () =>
-    defaultState.bar ? (defaultState.bar = false) : (defaultState.bar = true);
-
 const onClickBar = () => {
-    changeBarState();
-    emit('click:bar', headerBarCondition.value);
+    headerState.bar = !headerState.bar;
+    emit('click:bar', headerState.bar.value);
 };
 
 /*
@@ -69,7 +47,9 @@ const switchValue = computed({
     }
 });
 
-// user logic
+/*
+ * USER LOGIC
+ * */
 const authStore = useAuthStore();
 
 const user = computed(() => authStore.user);

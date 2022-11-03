@@ -1,7 +1,8 @@
 <script setup>
 import { sidebarMenu } from '@components/sidebar/utils/sidebarMenu';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import VTooltip from '@UI/tooltip/VTooltip.vue';
+import { useResizeObserver } from '@shared/utils/useResizeObserver';
 
 defineProps({
     sidebarCondition: {
@@ -14,17 +15,11 @@ const emit = defineEmits(['onUpdate:sidebarValues']);
 
 const sidebar_REFLINK = ref(null);
 
-const resizeObserver = new ResizeObserver((entries) =>
-    entries.forEach((entry) => {
-        emit('onUpdate:sidebarValues', {
-            width: entry.target.offsetWidth,
-            height: entry.target.offsetHeight
-        });
-    })
-);
-
-onMounted(() => {
-    resizeObserver.observe(sidebar_REFLINK.value);
+useResizeObserver(sidebar_REFLINK, ({ width, height }) => {
+    emit('onUpdate:sidebarValues', {
+        width,
+        height
+    });
 });
 </script>
 
