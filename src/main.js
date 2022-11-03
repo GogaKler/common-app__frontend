@@ -4,7 +4,7 @@ import App from '@app/App.vue';
 import router from '@/app/router';
 
 // ICONS
-import '@libs/font-awesome-icons';
+import '@shared/libs/font-awesome-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // COMPONENTS
@@ -13,7 +13,7 @@ import VInput from '@UI/input/VInput.vue';
 import VButton from '@UI/button/VButton.vue';
 
 // DIRECTIVES
-import { clickOutside } from '@app/directives/click-outside';
+import { clickOutside } from '@shared/directives/click-outside';
 
 const app = createApp(App);
 

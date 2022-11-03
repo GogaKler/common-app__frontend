@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import Auth from '@api/auth';
+import Auth from '@shared/api/auth';
 import Cookie from 'js-cookie';
 import router from '@app/router';
 

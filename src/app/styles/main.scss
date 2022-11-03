@@ -1,5 +1,8 @@
-@use "src/app/styles/fonts";
-@use "src/app/styles/globals"; // Глобальные настройки
+@import "@styles/variables/variables"; // Глобальные переменные
+@import "@styles/mixins/index"; // Миксины
+@import "@styles/theme/index"; // Настройка темы
+@import "@styles/fonts"; // Шрифты
+@import "@styles/globals"; // Глобальные настройки
 
 body {
   box-sizing: border-box;
