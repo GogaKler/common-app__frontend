@@ -50,6 +50,10 @@ export const useAuthStore = defineStore('auth', {
             Cookie.remove('user_token');
 
             await router.push('/login');
+        },
+
+        isMe({ id }) {
+            return this.userId === id;
         }
     }
 });

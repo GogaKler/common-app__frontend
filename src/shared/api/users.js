@@ -20,6 +20,18 @@ class _Users {
             throw new Error(e);
         }
     }
+
+    async changeUserStatus({ status }) {
+        try {
+            const response = await API.post(`users/status`, {
+                status
+            });
+
+            return response.data;
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
 }
 const Users = new _Users();
 export default Users;

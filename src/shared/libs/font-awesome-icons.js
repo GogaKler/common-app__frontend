@@ -12,7 +12,8 @@ import {
     faHome,
     faSpinner,
     faTriangleExclamation,
-    faUserSecret
+    faUserSecret,
+    faXmark
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -26,7 +27,8 @@ library.add(
     faEllipsis,
     faChevronDown,
     faArrowRightFromBracket,
-    faArrowLeft
+    faArrowLeft,
+    faXmark
 );
 
 // REGULAR

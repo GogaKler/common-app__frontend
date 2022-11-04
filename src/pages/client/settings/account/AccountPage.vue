@@ -15,6 +15,16 @@ const userFields = computed(() => [
     },
     {
         id: 2,
+        title: 'E-mail',
+        value: user.email
+    },
+    {
+        id: 3,
+        title: 'Пол',
+        value: user.gender
+    },
+    {
+        id: 3,
         title: 'Статус',
         value: user.status ?? 'Отсутствует'
     }

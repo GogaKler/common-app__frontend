@@ -10,6 +10,10 @@ export const useUsersStore = defineStore('users', {
     actions: {
         async requestUserByID(id) {
             this.userById = await Users.getUserById({ id });
+        },
+
+        async changeUserStatus(status) {
+            return await Users.changeUserStatus({ status });
         }
     }
 });
