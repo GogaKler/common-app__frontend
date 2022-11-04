@@ -35,7 +35,8 @@ const dynamicStyles = computed(() => {
     const styles = {
         sidebar: {},
         main: {
-            marginBottom: `${sidebarValues.height}px`
+            marginBottom: `${sidebarValues.height}px`,
+            width: '100%'
         }
     };
 

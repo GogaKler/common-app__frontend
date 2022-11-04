@@ -2,7 +2,7 @@
 import { sidebarMenu } from '@components/sidebar/utils/sidebarMenu';
 import { ref } from 'vue';
 import VTooltip from '@UI/tooltip/VTooltip.vue';
-import { useResizeObserver } from '@shared/utils/useResizeObserver';
+import { useResizeObserver } from '@use/useResizeObserver';
 
 defineProps({
     sidebarCondition: {

@@ -1,8 +1,8 @@
 @import "@styles/variables/variables"; // Глобальные переменные
-@import "@styles/mixins/index"; // Миксины
 @import "@styles/theme/index"; // Настройка темы
 @import "@styles/fonts"; // Шрифты
 @import "@styles/globals"; // Глобальные настройки
+@import "@styles/mixins/index"; // Миксины
 
 body {
   box-sizing: border-box;

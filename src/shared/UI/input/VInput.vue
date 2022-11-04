@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, toRefs } from 'vue';
+import { ref, toRefs } from 'vue';
 
 const props = defineProps({
     modelValue: {
@@ -43,15 +43,12 @@ const focusOnInput = () => {
 };
 
 const toggleInputState = (event) => {
+    if (event && modelValue.value.length && !VInputFocused.value) VInputFocused.value = true;
     // Если input не пустой - не меняем состояние
     if (!event && modelValue.value.length) return;
 
     VInputFocused.value = event;
 };
-
-onMounted(() => {
-    if (modelValue.value.length > 1) toggleInputState(true);
-});
 </script>
 
 <template>
@@ -87,6 +84,14 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    -webkit-transition-delay: 9999s;
+    transition-delay: 9999s;
+}
+
 .VInput {
     width: 100%;
     display: flex;

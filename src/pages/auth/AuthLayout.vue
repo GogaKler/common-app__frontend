@@ -7,7 +7,8 @@ const route = useRoute();
 const textState = computed(() => ({
     contentTitle: route.name === 'login' ? 'Войти в систему' : 'Регистрация',
     signText: route.name === 'login' ? 'Нет аккаунта?' : 'Есть аккаунт?',
-    linkText: route.name === 'login' ? 'Зарегистрироваться' : 'Войти в ситсему'
+    linkText: route.name === 'login' ? 'Зарегистрироваться' : 'Войти в ситсему',
+    redirectPath: route.name === 'login' ? 'register' : 'login'
 }));
 </script>
 
@@ -42,7 +43,7 @@ const textState = computed(() => ({
                                 {{ textState.signText }}
                                 &nbsp;
                             </span>
-                            <RouterLink :to="route.name === 'login' ? 'register' : 'login'">
+                            <RouterLink :to="textState.redirectPath">
                                 {{ textState.linkText }}
                             </RouterLink>
                         </div>

@@ -29,9 +29,9 @@ const getBreakpoint = (w) => {
 };
 
 const setBreakpoint = () => {
-    breakpoints.w = window.innerWidth;
-    breakpoints.h = window.innerHeight;
-    breakpoints.is = getBreakpoint(window.innerWidth);
+    breakpoints.w = document.documentElement.clientWidth;
+    breakpoints.h = document.documentElement.clientHeight;
+    breakpoints.is = getBreakpoint(document.documentElement.clientWidth);
 };
 
 export const useBreakpoint = () => {

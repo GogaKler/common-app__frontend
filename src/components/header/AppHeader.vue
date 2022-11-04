@@ -3,7 +3,7 @@ import { computed, reactive, ref } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
-import { useResizeObserver } from '@shared/utils/useResizeObserver';
+import { useResizeObserver } from '@use/useResizeObserver';
 import VUser from '@UI/user/VUser.vue';
 const router = useRouter();
 const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
@@ -13,8 +13,7 @@ const headerState = reactive({
     bar: false
 });
 
-useResizeObserver(header_REFLINK, ({ width, height, entry }) => {
-    console.log(entry);
+useResizeObserver(header_REFLINK, ({ width, height }) => {
     emit('onUpdate:headerValues', {
         width,
         height

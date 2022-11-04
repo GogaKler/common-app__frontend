@@ -11,7 +11,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url)),
-            // api & axios
+            // api & axios config
             '@api': fileURLToPath(new URL('./src/shared/api', import.meta.url)),
             '@axios': fileURLToPath(new URL('./src/app/config/api', import.meta.url)),
             // Main structure
