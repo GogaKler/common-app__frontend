@@ -47,15 +47,15 @@ const focusOnInput = () => {
 };
 
 const toggleInputState = (event) => {
-    if (event && modelValue.value.length && !VInputFocused.value) VInputFocused.value = true;
+    if (event && modelValue.value?.length && !VInputFocused.value) VInputFocused.value = true;
     // Если input не пустой - не меняем состояние
-    if (!event && modelValue.value.length) return;
+    if (!event && modelValue.value?.length) return;
 
     VInputFocused.value = event;
 };
 
 watchPostEffect(() => {
-    if (modelValue.value.length) toggleInputState(true);
+    if (modelValue.value?.length) toggleInputState(true);
     if (focused) focusOnInput();
 });
 </script>

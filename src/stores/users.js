@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import Users from '@shared/api/users';
 import { useAuthStore } from '@/stores/auth';
-
+import { urlToFile } from '@shared/helpers';
+const authStore = useAuthStore();
 export const useUsersStore = defineStore('users', {
     state: () => ({
         users: [],
@@ -18,10 +19,20 @@ export const useUsersStore = defineStore('users', {
         },
 
         async changeUserStatus(status) {
-            const authStore = useAuthStore();
             const res = await Users.changeUserStatus({ status });
 
             if (authStore.userId === res.id) authStore.user.status = res.status;
+
+            return res;
+        },
+
+        async uploadUserAvatar(avatar) {
+            const name = Math.random();
+            const preparedAvatar = await urlToFile(avatar, String(name));
+
+            const res = await Users.uploadUserAvatar({ avatar: preparedAvatar });
+
+            authStore.user.avatar = res;
 
             return res;
         }

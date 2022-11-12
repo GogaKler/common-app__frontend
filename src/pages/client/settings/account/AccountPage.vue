@@ -1,10 +1,14 @@
 <script setup>
 import VUser from '@UI/user/VUser.vue';
+import VUpload from 'vue-image-crop-upload';
 import { shallowRef, ref } from 'vue';
 import { accountFields } from '@pages/client/settings/account/utils/accountFields';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import VButton from '@UI/button/VButton.vue';
+import { useUsersStore } from '@/stores/users';
 const authStore = useAuthStore();
+const userStore = useUsersStore();
 const { user } = storeToRefs(authStore);
 
 const currentModalComponent = shallowRef(null);
@@ -17,6 +21,13 @@ const openModal = (id) => {
 
     currentModalComponent.value = field.modal.value;
     showModalToggle();
+};
+
+const showUpload = ref(false);
+const toggleUpload = () => (showUpload.value = !showUpload.value);
+
+const cropSuccess = async (imgUrl) => {
+    await userStore.uploadUserAvatar(imgUrl);
 };
 </script>
 
@@ -39,6 +50,16 @@ const openModal = (id) => {
                 <div class="account-logo">
                     <div class="mb-3">Изображение в профиле</div>
                     <v-user :name="user.name" :logo="user.avatar" size="10x" />
+                    <v-upload
+                        v-model="showUpload"
+                        field="img"
+                        :width="200"
+                        :height="200"
+                        lang-type="ru"
+                        img-format="jpg"
+                        @crop-success="cropSuccess"
+                    />
+                    <v-button @click="toggleUpload">Загрузить фото</v-button>
                 </div>
             </div>
         </div>

@@ -32,6 +32,26 @@ class _Users {
             throw new Error(e);
         }
     }
+
+    async uploadUserAvatar({ avatar }) {
+        try {
+            const response = await API.post(
+                `users/avatar`,
+                {
+                    avatar
+                },
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+
+            return response.data;
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
 }
 const Users = new _Users();
 export default Users;
