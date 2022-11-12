@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs } from 'vue';
+import { ref, toRefs, watchPostEffect } from 'vue';
 
 const props = defineProps({
     modelValue: {
@@ -22,21 +22,25 @@ const props = defineProps({
         type: Number,
         default: 100
     },
+    focused: {
+        type: Boolean,
+        default: false
+    },
     errors: {
         type: String,
         default: ''
     }
 });
-const { modelValue, max } = toRefs(props);
+const { modelValue, focused, max } = toRefs(props);
 
 const emit = defineEmits(['update:modelValue']);
+
+const VInput = ref();
+const VInputFocused = ref(false);
 
 const updateValue = (event) => {
     emit('update:modelValue', event.target.value);
 };
-
-const VInput = ref();
-const VInputFocused = ref(false);
 
 const focusOnInput = () => {
     VInput.value.focus();
@@ -49,6 +53,11 @@ const toggleInputState = (event) => {
 
     VInputFocused.value = event;
 };
+
+watchPostEffect(() => {
+    if (modelValue.value.length) toggleInputState(true);
+    if (focused) focusOnInput();
+});
 </script>
 
 <template>
