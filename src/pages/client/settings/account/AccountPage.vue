@@ -38,7 +38,7 @@ const openModal = (id) => {
                 </div>
                 <div class="account-logo">
                     <div class="mb-3">Изображение в профиле</div>
-                    <v-user :name="user.name" size="10x" />
+                    <v-user :name="user.name" :logo="user.avatar" size="10x" />
                 </div>
             </div>
         </div>

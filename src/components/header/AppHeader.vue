@@ -104,6 +104,7 @@ const isShowLogoutModal = ref(false);
             <div v-click-outside="closeUserMenu" class="header-right__user">
                 <v-user
                     :name="user.name"
+                    :logo="user.avatar"
                     class="cursor-pointer"
                     size="2x"
                     @click="isUserMenuOpen = !isUserMenuOpen"
@@ -119,7 +120,12 @@ const isShowLogoutModal = ref(false);
                 <Transition name="dropdown">
                     <div v-if="isUserMenuOpen" class="dropdown">
                         <div class="dropdown-user block">
-                            <v-user :name="user.name" show-name @onClick:name="goToProfile" />
+                            <v-user
+                                :name="user.name"
+                                :logo="user.avatar"
+                                show-name
+                                @onClick:name="goToProfile"
+                            />
                         </div>
                         <ul class="dropdown-list">
                             <li class="dropdown__item">

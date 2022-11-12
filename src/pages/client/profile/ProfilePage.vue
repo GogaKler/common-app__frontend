@@ -31,10 +31,7 @@ const user = computed(() => usersStore.userById);
         <div class="container">
             <div class="profile__title">{{ user.name }}</div>
             <div class="profile__user">
-                <v-user :name="user.name" size="10x" />
-                <div class="profile__user--item">{{ user.name }}</div>
-                <div class="profile__user--item">{{ user.email }}</div>
-                <div class="profile__user--item">{{ user.gender }}</div>
+                <v-user :name="user.name" :logo="user.avatar" size="10x" />
             </div>
         </div>
     </div>

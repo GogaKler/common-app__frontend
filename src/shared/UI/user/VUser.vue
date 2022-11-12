@@ -37,8 +37,9 @@ const userWithoutLogo = computed(
 
 <template>
     <div class="user">
-        <div :class="['user__logo', `user__logo--${size}`]">
-            <span>{{ userWithoutLogo }}</span>
+        <div :class="['user__logo', `user__logo--${size}`, { avatar: logo }]">
+            <img v-if="logo" :src="logo" :alt="name" />
+            <span v-else>{{ userWithoutLogo }}</span>
         </div>
         <span v-if="showName" class="user__name mr-2 cursor-pointer" @click="clickOnName">
             {{ name }}
@@ -72,6 +73,16 @@ const userWithoutLogo = computed(
             border: 1px solid t($border);
         }
 
+        &.avatar {
+            border: none;
+        }
+
+        & img {
+            display: block;
+            max-width: 100%;
+            height: 100%;
+            border-radius: 100%;
+        }
         // sizes
 
         &--1x {
