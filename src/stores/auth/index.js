@@ -24,8 +24,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async register(payload) {
-            const { name, email, password, gender } = payload;
+        async register({ name, email, password, gender }) {
             try {
                 await Auth.register({ name, email, password, gender });
 
