@@ -1,6 +1,6 @@
 <script setup>
 import { useUsersStore } from '@/stores/users';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watchPostEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import VUser from '@UI/user/VUser.vue';
 // import { useAuthStore } from '@/stores/auth';
@@ -11,7 +11,7 @@ const usersStore = useUsersStore();
 // const authStore = useAuthStore();
 const isLoading = ref(false);
 
-const fetchData = async () => {
+watchPostEffect(async () => {
     isLoading.value = true;
     try {
         await usersStore.requestUserByID(route.params.id);
@@ -20,17 +20,6 @@ const fetchData = async () => {
     } finally {
         isLoading.value = false;
     }
-};
-watch(
-    () => route.params.id,
-    () => fetchData(),
-    {
-        flush: 'post'
-    }
-);
-
-onMounted(() => {
-    fetchData();
 });
 
 const user = computed(() => usersStore.userById);
