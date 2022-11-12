@@ -23,7 +23,7 @@ class _Users {
 
     async changeUserStatus({ status }) {
         try {
-            const response = await API.post(`users/status`, {
+            const response = await API.put(`users/status`, {
                 status
             });
 
