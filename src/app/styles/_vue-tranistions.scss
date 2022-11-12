@@ -1,0 +1,8 @@
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+.modal-fade-enter-from .modal,
+.modal-fade-leave-to .modal {
+  transform: scale(1.1);
+}

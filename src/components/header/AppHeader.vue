@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import { useResizeObserver } from '@use/useResizeObserver';
 import VUser from '@UI/user/VUser.vue';
+import VModal from '@UI/modal/VModal.vue';
 const router = useRouter();
 const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
 const header_REFLINK = ref(null);
@@ -73,6 +74,7 @@ const goToProfile = () => {
 const headerLogout = async () => {
     await authStore.logout();
 };
+const isShowLogoutModal = ref(false);
 </script>
 
 <template>
@@ -130,7 +132,7 @@ const headerLogout = async () => {
                             </li>
                         </ul>
                         <div class="dropdown-exit block">
-                            <div class="dropdown-exit__item" @click="headerLogout">
+                            <div class="dropdown-exit__item" @click="isShowLogoutModal = true">
                                 <font-awesome-icon
                                     class="mr-2"
                                     icon="fa-solid fa-arrow-right-from-bracket"
@@ -141,6 +143,15 @@ const headerLogout = async () => {
                         </div>
                     </div>
                 </Transition>
+                <v-modal
+                    v-model="isShowLogoutModal"
+                    confirmed
+                    @onCancel="isShowLogoutModal = false"
+                    @onAccept="headerLogout"
+                >
+                    <template #header>Подтверждение выхода</template>
+                    <template #body>Вы уверены, что хотите выйти?</template>
+                </v-modal>
             </div>
         </div>
     </div>

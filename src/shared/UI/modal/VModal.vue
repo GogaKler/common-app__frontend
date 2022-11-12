@@ -1,5 +1,5 @@
 <script setup>
-import { toRefs, watch } from 'vue';
+import { onUnmounted, toRefs, watch } from 'vue';
 import VButton from '@UI/button/VButton.vue';
 
 const props = defineProps({
@@ -21,7 +21,7 @@ const props = defineProps({
     }
 });
 const { modelValue, noClickOutside } = toRefs(props);
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'onCancel', 'onAccept']);
 const updateModelValue = (flag) => emit('update:modelValue', flag);
 
 const closeModalOnClickOutside = () => {
@@ -38,55 +38,48 @@ watch(modelValue, () => {
         document.body.style.overflowY = '';
     }
 });
+
+// Костыль для изменения стилей body
+onUnmounted(() => {
+    document.body.style.overflowY = '';
+});
 </script>
 
 <template>
-    <Transition name="modalA" :duration="200">
-        <div v-if="modelValue" :class="['modal-overlay', { 'hide-overlay': hideOverlay }]">
-            <div v-click-outside="closeModalOnClickOutside" class="modal">
-                <div class="modal__header options">
-                    <div class="modal__header--text">
-                        <slot name="header" />
+    <Teleport to="body">
+        <Transition name="modal-fade" :duration="200">
+            <div v-if="modelValue" :class="['modal-overlay', { 'hide-overlay': hideOverlay }]">
+                <div v-click-outside="closeModalOnClickOutside" class="modal">
+                    <div class="modal__header options">
+                        <div class="modal__header--text">
+                            <slot name="header" />
+                        </div>
+                        <div class="modal__header--close" @click="closeModal">
+                            <font-awesome-icon
+                                class="modal-icon"
+                                icon="fa-solid fa-xmark"
+                                size="xs"
+                            />
+                        </div>
                     </div>
-                    <div class="modal__header--close" @click="closeModal">
-                        <font-awesome-icon class="modal-icon" icon="fa-solid fa-xmark" size="xs" />
+                    <div class="modal__body options">
+                        <slot name="body" />
                     </div>
-                </div>
-                <div class="modal__body options">
-                    <slot name="body" />
-                </div>
-                <div v-if="confirmed" class="modal__footer">
-                    <v-button class="modal__footer--button" primary @click="$emit('cancel')">
-                        Отменить
-                    </v-button>
-                    <v-button class="modal__footer--button" primary @click="$emit('accept')">
-                        Применить
-                    </v-button>
+                    <div v-if="confirmed" class="modal__footer">
+                        <v-button class="modal__footer--button" primary @click="$emit('onCancel')">
+                            Отменить
+                        </v-button>
+                        <v-button class="modal__footer--button" primary @click="$emit('onAccept')">
+                            Применить
+                        </v-button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </Transition>
+        </Transition>
+    </Teleport>
 </template>
 
 <style lang="scss" scoped>
-.modalA-enter-active,
-.modalA-leave-active {
-    transition: all 0.1s ease-in-out;
-}
-.modalA-enter-from,
-.modalA-leave-to {
-    opacity: 0;
-}
-.modalA-enter-active .modal,
-.modalA-leave-active .modal {
-    transition: all 0.2s ease-in-out;
-}
-.modalA-enter-from .modal,
-.modalA-leave-to .modal {
-    transform: translateY(60px);
-    opacity: 0;
-}
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -96,9 +89,10 @@ watch(modelValue, () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, 0.5);
     color: #1a1c1e;
     z-index: 9999;
+    transition: opacity 0.3s ease;
 
     &.hide-overlay {
         background-color: transparent;
@@ -111,7 +105,8 @@ watch(modelValue, () => {
     min-width: 500px;
     border-radius: 15px;
     padding: 15px 20px;
-    box-shadow: 4px 5px 36px 0 rgba(34, 60, 80, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
 
     &__header {
         display: flex;
