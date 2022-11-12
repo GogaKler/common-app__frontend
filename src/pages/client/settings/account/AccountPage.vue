@@ -1,34 +1,23 @@
 <script setup>
-import { useAuthStore } from '@/stores/auth';
 import VUser from '@UI/user/VUser.vue';
-import { computed } from 'vue';
-
+import { shallowRef, ref } from 'vue';
+import { accountFields } from '@pages/client/settings/account/utils/accountFields';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
 const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
-const user = authStore.user;
+const currentModalComponent = shallowRef(null);
 
-const userFields = computed(() => [
-    {
-        id: 1,
-        title: 'Логин',
-        value: user.name
-    },
-    {
-        id: 2,
-        title: 'E-mail',
-        value: user.email
-    },
-    {
-        id: 3,
-        title: 'Пол',
-        value: user.gender
-    },
-    {
-        id: 3,
-        title: 'Статус',
-        value: user.status ?? 'Отсутствует'
-    }
-]);
+const showModal = ref(false);
+const showModalToggle = () => (showModal.value = !showModal.value);
+
+const openModal = (id) => {
+    const field = accountFields.value.find((item) => item.id === id);
+
+    currentModalComponent.value = field.modal.value;
+    showModalToggle();
+};
 </script>
 
 <template>
@@ -36,13 +25,15 @@ const userFields = computed(() => [
         <div class="container-small">
             <div class="account__content">
                 <div class="account-list">
-                    <div
-                        v-for="(field, index) in userFields"
-                        :key="index"
-                        class="account-list__item"
-                    >
+                    <div v-for="field in accountFields" :key="field" class="account-list__item">
                         <div class="account-list__item--name">{{ field.title }}</div>
-                        <div class="account-list__item--value">{{ field.value }}</div>
+                        <div
+                            class="account-list__item--value"
+                            :style="{ cursor: field.modal ? 'pointer' : 'default' }"
+                            @click="openModal(field.id)"
+                        >
+                            {{ field.value }}
+                        </div>
                     </div>
                 </div>
                 <div class="account-logo">
@@ -51,6 +42,8 @@ const userFields = computed(() => [
                 </div>
             </div>
         </div>
+
+        <component :is="currentModalComponent" :show="showModal" @closeModal="showModalToggle" />
     </div>
 </template>
 

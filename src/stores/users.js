@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import Users from '@shared/api/users';
+import { useAuthStore } from '@/stores/auth';
 
 export const useUsersStore = defineStore('users', {
     state: () => ({
@@ -13,7 +14,12 @@ export const useUsersStore = defineStore('users', {
         },
 
         async changeUserStatus(status) {
-            return await Users.changeUserStatus({ status });
+            const authStore = useAuthStore();
+            const res = await Users.changeUserStatus({ status });
+
+            if (authStore.userId === res.id) authStore.user.status = res.status;
+
+            return res;
         }
     }
 });
