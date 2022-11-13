@@ -10,6 +10,7 @@ import {
     faEllipsis,
     faExclamation,
     faHome,
+    faPencil,
     faSpinner,
     faTriangleExclamation,
     faUserSecret,
@@ -28,7 +29,8 @@ library.add(
     faChevronDown,
     faArrowRightFromBracket,
     faArrowLeft,
-    faXmark
+    faXmark,
+    faPencil
 );
 
 // REGULAR

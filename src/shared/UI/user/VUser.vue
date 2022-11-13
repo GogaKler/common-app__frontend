@@ -40,6 +40,9 @@ const userWithoutLogo = computed(
         <div :class="['user__logo', `user__logo--${size}`, { avatar: logo }]">
             <img v-if="logo" :src="logo" :alt="name" />
             <span v-else>{{ userWithoutLogo }}</span>
+            <div class="user__inner-content">
+                <slot name="inner"></slot>
+            </div>
         </div>
         <span v-if="showName" class="user__name mr-2 cursor-pointer" @click="clickOnName">
             {{ name }}
@@ -59,6 +62,7 @@ const userWithoutLogo = computed(
     }
 
     &__logo {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -115,6 +119,13 @@ const userWithoutLogo = computed(
             width: 70px;
         }
 
+        &--9x {
+            font-weight: 400;
+            font-size: 80px;
+            height: 200px;
+            width: 200px;
+        }
+
         &--10x {
             font-weight: 400;
             font-size: 80px;
@@ -122,5 +133,13 @@ const userWithoutLogo = computed(
             width: 220px;
         }
     }
+}
+
+.user__inner-content {
+    position: absolute;
+    bottom: 15px;
+    left: -10px;
+    font-size: 16px;
+    font-weight: 400;
 }
 </style>

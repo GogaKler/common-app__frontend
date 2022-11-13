@@ -48,23 +48,36 @@ const cropSuccess = async (imgUrl) => {
                     </div>
                 </div>
                 <div class="account-logo">
-                    <div class="mb-3">Изображение в профиле</div>
-                    <v-user :name="user.name" :logo="user.avatar" size="10x" />
-                    <v-upload
-                        v-model="showUpload"
-                        field="img"
-                        :width="200"
-                        :height="200"
-                        lang-type="ru"
-                        img-format="jpg"
-                        @crop-success="cropSuccess"
-                    />
-                    <v-button @click="toggleUpload">Загрузить фото</v-button>
+                    <div class="mb-3 whitespace-nowrap">Изображение в профиле</div>
+                    <v-user :name="user.name" :logo="user.avatar" size="9x">
+                        <template #inner>
+                            <v-button theme="outlined" size="sm" @click="toggleUpload">
+                                <font-awesome-icon
+                                    icon="fa-solid fa-pencil"
+                                    size="sm"
+                                    class="mr-1.5"
+                                />
+                                Изменить
+                            </v-button>
+                        </template>
+                    </v-user>
                 </div>
             </div>
         </div>
 
         <component :is="currentModalComponent" :show="showModal" @closeModal="showModalToggle" />
+
+        <Teleport to="body">
+            <v-upload
+                v-model="showUpload"
+                field="img"
+                :width="200"
+                :height="200"
+                lang-type="ru"
+                img-format="jpg"
+                @crop-success="cropSuccess"
+            />
+        </Teleport>
     </div>
 </template>
 
@@ -80,7 +93,6 @@ const cropSuccess = async (imgUrl) => {
 }
 .account {
     margin-bottom: 20px;
-
     &__content {
         display: flex;
         justify-content: space-between;
