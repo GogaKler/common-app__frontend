@@ -1,9 +1,11 @@
 <script setup>
-import { computed, onMounted, reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@components/header/AppHeader.vue';
 import AppSidebar from '@components/sidebar/AppSidebar.vue';
+import { useAppStore } from '@app/store/useAppStore';
 
+const appStore = useAppStore();
 /*
  * Header
  * */
@@ -11,9 +13,7 @@ const headerState = reactive({
     width: 0,
     height: 54
 });
-// const headerWidth = computed(() => headerState.width);
-const headerHeight = computed(() => headerState.height);
-const setHeaderSize = ({ width, height }) => {
+const setHeaderValues = ({ width, height }) => {
     headerState.width = width;
     headerState.height = height;
 };
@@ -21,61 +21,50 @@ const setHeaderSize = ({ width, height }) => {
 /*
  * SIDEBAR
  * */
-const sidebarState = reactive({
-    condition: true,
+const sidebarValues = reactive({
     width: 0,
     height: 0
 });
 
-const isSidebarOpen = computed(() => sidebarState.condition);
-const sidebarOpenCloseFlow = () => {
-    if (isSidebarOpen.value) {
-        sidebarState.condition = false;
-        localStorage.setItem('sidebarCondition', 'false');
-    } else {
-        sidebarState.condition = true;
-        localStorage.setItem('sidebarCondition', 'true');
+const setSidebarValues = ({ width, height }) => {
+    sidebarValues.width = width;
+    sidebarValues.height = height;
+};
+
+const dynamicStyles = computed(() => {
+    const styles = {
+        sidebar: {},
+        main: {
+            marginBottom: `${sidebarValues.height}px`,
+            width: '100%'
+        }
+    };
+
+    if (!appStore.isMobile) {
+        styles.sidebar.minHeight = `calc(100vh - ${headerState.height}px)`;
+        styles.main.marginLeft = `${sidebarValues.width}px`;
+        styles.main.marginBottom = '';
     }
-};
 
-const sidebarWidth = computed(() => sidebarState.width);
-// const sidebarHeight = computed(() => sidebarState.height);
-const setSidebarSize = ({ width, height }) => {
-    sidebarState.width = width.value;
-    sidebarState.height = height.value;
-};
-
-/*
- * SET STATE ON MOUNT
- * */
-
-const setOnMountSidebarCondition = (condition) => {
-    condition === 'true' ? (sidebarState.condition = true) : (sidebarState.condition = false);
-};
-
-onMounted(() => {
-    setOnMountSidebarCondition(localStorage.getItem('sidebarCondition'));
+    return styles;
 });
 </script>
 
 <template>
     <div class="app__wrapper">
-        <AppHeader @click:bar="sidebarOpenCloseFlow" @onUpdate:header-state="setHeaderSize" />
-        <div class="content__wrapper">
-            <AppSidebar
-                :style="{ marginTop: `${headerHeight}px` }"
-                :sidebar-condition="isSidebarOpen"
-                @onUpdate:sidebar-state="setSidebarSize"
-            />
-            <RouterView
-                class="app__main"
-                :style="{ margin: `${headerHeight}px 0 0 ${sidebarWidth}px` }"
-            />
+        <AppHeader @onUpdate:headerValues="setHeaderValues" />
+        <div class="content__wrapper" :style="{ paddingTop: `${headerState.height}px` }">
+            <AppSidebar :style="dynamicStyles.sidebar" @onUpdate:sidebarValues="setSidebarValues" />
+            <div class="app__main" :style="dynamicStyles.main">
+                <div class="container">
+                    <RouterView />
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app {
     &__main {
         transition: $transition-bg;
@@ -88,6 +77,10 @@ onMounted(() => {
 .content {
     &__wrapper {
         display: flex;
+
+        @include for-size('md') {
+            flex-direction: column;
+        }
     }
 }
 </style>

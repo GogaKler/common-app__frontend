@@ -1,52 +1,32 @@
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
-
 import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+import { useResizeObserver } from '@use/useResizeObserver';
 import VUser from '@UI/user/VUser.vue';
-
-const emit = defineEmits(['click:bar', 'onUpdate:header-state', 'onChange:switch-theme']);
-
+import VModal from '@UI/modal/VModal.vue';
+const router = useRouter();
+const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
 const header_REFLINK = ref(null);
 
-const defaultState = reactive({
-    bar: false,
-    width: 0,
-    height: 0
+const headerState = reactive({
+    bar: false
 });
 
-/*
- * Header Size
- * */
-const headerWidth = computed(() => defaultState.width);
-const headerHeight = computed(() => defaultState.height);
-
-const resizeObserver = new ResizeObserver((entries) => {
-    entries.forEach((entry) => {
-        defaultState.width = entry.target.offsetWidth;
-        defaultState.height = entry.target.offsetHeight;
+useResizeObserver(header_REFLINK, ({ width, height }) => {
+    emit('onUpdate:headerValues', {
+        width,
+        height
     });
-
-    emit('onUpdate:header-state', {
-        width: headerWidth,
-        height: headerHeight
-    });
-});
-
-onMounted(() => {
-    resizeObserver.observe(header_REFLINK.value);
 });
 
 /*
  * Bar Condition
  * */
-const headerBarCondition = computed(() => defaultState.bar);
-const changeBarState = () =>
-    defaultState.bar ? (defaultState.bar = false) : (defaultState.bar = true);
-
 const onClickBar = () => {
-    changeBarState();
-    emit('click:bar', headerBarCondition.value);
+    headerState.bar = !headerState.bar;
+    emit('click:bar', headerState.bar.value);
 };
 
 /*
@@ -54,19 +34,25 @@ const onClickBar = () => {
  * */
 const appStore = useAppStore();
 
-const switchValue = ref(appStore.switchThemeValue);
-
-watch(switchValue, () => {
-    if (switchValue.value) {
-        appStore.setTheme('dark');
-    } else {
-        appStore.setTheme('light');
+const switchValue = computed({
+    get() {
+        return appStore.switchThemeValue;
+    },
+    set(value) {
+        if (value) {
+            appStore.setTheme('dark');
+        } else {
+            appStore.setTheme('light');
+        }
     }
 });
 
+/*
+ * USER LOGIC
+ * */
 const authStore = useAuthStore();
 
-const user = authStore.get_user;
+const user = computed(() => authStore.user);
 
 const isUserMenuOpen = ref(false);
 const closeUserMenu = () => {
@@ -75,9 +61,20 @@ const closeUserMenu = () => {
 
 const headerRotateIcon = computed(() => (isUserMenuOpen.value ? 180 : null));
 
+const goToProfile = () => {
+    router.push({
+        name: 'profile',
+        params: {
+            id: authStore.userId
+        }
+    });
+    isUserMenuOpen.value = false;
+};
+
 const headerLogout = async () => {
     await authStore.logout();
 };
+const isShowLogoutModal = ref(false);
 </script>
 
 <template>
@@ -105,7 +102,13 @@ const headerLogout = async () => {
                 />
             </div>
             <div v-click-outside="closeUserMenu" class="header-right__user">
-                <v-user :name="user.name" show-name @click="isUserMenuOpen = !isUserMenuOpen">
+                <v-user
+                    :name="user.name"
+                    :logo="user.avatar"
+                    class="cursor-pointer"
+                    size="2x"
+                    @click="isUserMenuOpen = !isUserMenuOpen"
+                >
                     <font-awesome-icon
                         class="header-right__user--toggle"
                         icon="fa-solid fa-chevron-down"
@@ -116,18 +119,26 @@ const headerLogout = async () => {
 
                 <Transition name="dropdown">
                     <div v-if="isUserMenuOpen" class="dropdown">
+                        <div class="dropdown-user block">
+                            <v-user
+                                :name="user.name"
+                                :logo="user.avatar"
+                                show-name
+                                @onClick:name="goToProfile"
+                            />
+                        </div>
                         <ul class="dropdown-list">
                             <li class="dropdown__item">
                                 <router-link
-                                    :to="{ name: 'messenger' }"
+                                    :to="{ name: 'settings' }"
                                     class="dropdown__item--link"
                                 >
-                                    Мессенджер
+                                    Настройки
                                 </router-link>
                             </li>
                         </ul>
-                        <div class="dropdown-exit">
-                            <div class="dropdown-exit__item" @click="headerLogout">
+                        <div class="dropdown-exit block">
+                            <div class="dropdown-exit__item" @click="isShowLogoutModal = true">
                                 <font-awesome-icon
                                     class="mr-2"
                                     icon="fa-solid fa-arrow-right-from-bracket"
@@ -138,6 +149,15 @@ const headerLogout = async () => {
                         </div>
                     </div>
                 </Transition>
+                <v-modal
+                    v-model="isShowLogoutModal"
+                    confirmed
+                    @onCancel="isShowLogoutModal = false"
+                    @onAccept="headerLogout"
+                >
+                    <template #header>Подтверждение выхода</template>
+                    <template #body>Вы уверены, что хотите выйти?</template>
+                </v-modal>
             </div>
         </div>
     </div>
@@ -152,6 +172,7 @@ const headerLogout = async () => {
     justify-content: space-between;
     padding: 10px 60px 10px 5px;
     transition: $transition-bg;
+    z-index: 5;
 
     @include themed() {
         background-color: t($background);
@@ -216,6 +237,7 @@ const headerLogout = async () => {
 
 .dropdown {
     position: absolute;
+    min-width: 140px;
     top: 50px;
     right: 5px;
     border-radius: 8px;
@@ -245,12 +267,13 @@ const headerLogout = async () => {
         padding: 15px 0;
 
         @include themed() {
+            border-top: 1px solid t($border);
             border-bottom: 1px solid t($border);
         }
     }
 
     &__item {
-        margin-bottom: 18px;
+        margin-bottom: 10px;
 
         &:last-child {
             margin-bottom: 0;
@@ -271,9 +294,10 @@ const headerLogout = async () => {
     }
 
     // SECOND BLOCK
-    &-exit {
+    .block {
         margin: 12px 15px;
-
+    }
+    &-exit {
         &__item {
             display: flex;
             align-items: center;
@@ -283,6 +307,24 @@ const headerLogout = async () => {
                 @include themed() {
                     color: t($primary);
                 }
+            }
+        }
+    }
+}
+
+.header {
+    @include for-size('md') {
+        padding: 10px;
+    }
+
+    &-left__logo {
+        @include for-size('md') {
+            min-width: 0;
+        }
+
+        &-text {
+            @include for-size('md') {
+                display: none;
             }
         }
     }

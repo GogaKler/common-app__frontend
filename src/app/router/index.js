@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth';
 // LAYOUTS
 const AppLayout = () => import('@pages/client/AppLayout.vue');
 const AuthLayout = () => import('@pages/auth/AuthLayout.vue');
+const SettingsLayout = () => import('@pages/client/settings/SettingLayout.vue');
 
 // PAGES / AUTH
 const RegisterPage = () => import('@pages/auth/register/RegisterPage.vue');
@@ -13,6 +14,8 @@ const LoginPage = () => import('@pages/auth/login/LoginPage.vue');
 // PAGES / MAIN
 const HomePage = () => import('@pages/client/home/HomePage.vue');
 const MessengerPage = () => import('@pages/client/messenger/MessengerPage.vue');
+const ProfilePage = () => import('@pages/client/profile/ProfilePage.vue');
+const AccountPage = () => import('@pages/client/settings/account/AccountPage.vue');
 
 // CHILDREN`S & COMPONENTS
 
@@ -28,7 +31,7 @@ const router = createRouter({
             path: '/auth',
             name: 'auth',
             component: AuthLayout,
-            redirect: 'login',
+            redirect: { name: 'login' },
             children: [
                 {
                     path: '/login',
@@ -46,7 +49,7 @@ const router = createRouter({
             path: '/',
             name: 'index',
             component: AppLayout,
-            redirect: 'home',
+            redirect: { name: 'home' },
             beforeEnter: async () => {
                 await requestUser();
             },
@@ -57,9 +60,27 @@ const router = createRouter({
                     component: HomePage
                 },
                 {
+                    path: '/profile/:id',
+                    name: 'profile',
+                    component: ProfilePage
+                },
+                {
                     path: '/messenger',
                     name: 'messenger',
                     component: MessengerPage
+                },
+                {
+                    path: '/settings',
+                    name: 'settings',
+                    component: SettingsLayout,
+                    redirect: { name: 'account' },
+                    children: [
+                        {
+                            path: '/settings/account',
+                            name: 'account',
+                            component: AccountPage
+                        }
+                    ]
                 }
             ]
         }

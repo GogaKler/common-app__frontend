@@ -10,9 +10,11 @@ import {
     faEllipsis,
     faExclamation,
     faHome,
+    faPencil,
     faSpinner,
     faTriangleExclamation,
-    faUserSecret
+    faUserSecret,
+    faXmark
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -26,7 +28,9 @@ library.add(
     faEllipsis,
     faChevronDown,
     faArrowRightFromBracket,
-    faArrowLeft
+    faArrowLeft,
+    faXmark,
+    faPencil
 );
 
 // REGULAR

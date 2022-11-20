@@ -1,6 +1,8 @@
 <script setup>
 import { sidebarMenu } from '@components/sidebar/utils/sidebarMenu';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { ref } from 'vue';
+import VTooltip from '@UI/tooltip/VTooltip.vue';
+import { useResizeObserver } from '@use/useResizeObserver';
 
 defineProps({
     sidebarCondition: {
@@ -9,76 +11,54 @@ defineProps({
     }
 });
 
-const emit = defineEmits(['onUpdate:sidebar-state']);
+const emit = defineEmits(['onUpdate:sidebarValues']);
 
 const sidebar_REFLINK = ref(null);
 
-const defaultState = reactive({
-    width: 0,
-    height: 0
-});
-
-const sidebarWidth = computed(() => defaultState.width);
-const sidebarHeight = computed(() => defaultState.height);
-
-const resizeObserver = new ResizeObserver((entries) => {
-    entries.forEach((entry) => {
-        defaultState.width = entry.target.offsetWidth;
-        defaultState.height = entry.target.offsetHeight;
+useResizeObserver(sidebar_REFLINK, ({ width, height }) => {
+    emit('onUpdate:sidebarValues', {
+        width,
+        height
     });
-
-    emit('onUpdate:sidebar-state', {
-        width: sidebarWidth,
-        height: sidebarHeight
-    });
-});
-
-onMounted(() => {
-    resizeObserver.observe(sidebar_REFLINK.value);
 });
 </script>
 
 <template>
-    <div ref="sidebar_REFLINK" :class="['sidebar__wrapper', { active: sidebarCondition }]">
-        <div class="sidebar__content">
-            <ul class="sidebar__list">
-                <router-link
-                    v-for="(item, index) in sidebarMenu"
-                    :key="index"
-                    :class="['sidebar__list-item', { active: sidebarCondition }]"
-                    :to="{ name: item.to }"
-                >
-                    <font-awesome-icon
-                        size="sm"
-                        :icon="item.icon"
-                        :class="['sidebar__list-icon', { active: sidebarCondition }]"
-                    />
-                    <div :class="['sidebar__list-text', { active: sidebarCondition }]">
-                        {{ item.title }}
-                    </div>
+    <div ref="sidebar_REFLINK" class="sidebar">
+        <ul class="sidebar__list">
+            <v-tooltip
+                v-for="(item, index) in sidebarMenu"
+                :key="index"
+                class="sidebar__list-item--wrapper"
+                :label="item.title"
+                position="right"
+            >
+                <router-link class="sidebar__list-item" :to="{ name: item.to }">
+                    <font-awesome-icon size="lg" :icon="item.icon" class="sidebar__list-icon" />
                 </router-link>
-            </ul>
-        </div>
+            </v-tooltip>
+        </ul>
     </div>
 </template>
 
 <style lang="scss" scoped>
 .sidebar {
-    &__wrapper {
-        z-index: 2;
-        position: fixed;
-        height: 100vh;
-        min-width: 60px;
-        padding: 5px 0;
-        transition: $transition-bg, $transition-minWidth;
-        @include themed() {
-            border-right: 1px solid t($border);
-            background-color: t($background);
-        }
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+    width: 60px;
+    padding: 5px 0;
+    transition: $transition-bg, $transition-minWidth;
 
-        &.active {
-            min-width: 238px !important;
-        }
+    @include themed() {
+        border-right: 1px solid t($border);
+        background-color: t($background);
+    }
+
+    &.active {
+        min-width: 200px;
     }
 
     &__header {
@@ -94,20 +74,35 @@ onMounted(() => {
     }
 
     &__list {
-        margin: 20px 10px 0 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         &-item {
+            &--wrapper {
+                margin-bottom: 20px;
+                padding: 0 10px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
             display: flex;
             align-items: center;
+            justify-content: center;
 
-            height: 27px;
+            height: 40px;
+            width: 40px;
 
-            margin-bottom: 10px;
-            margin-left: 8px;
-            padding-left: 12px;
-
-            border-radius: 15px;
+            border-radius: 50%;
             transition: 0.2s ease-out, $transition-bg;
+
+            &:not(.router-link-active):hover {
+                @include themed() {
+                    background-color: rgba(t($background-secondary), 0.5);
+                }
+            }
 
             &.active {
                 margin-left: 0;
@@ -121,12 +116,6 @@ onMounted(() => {
                     background-color: t($background-secondary);
                 }
             }
-
-            &:not(.router-link-active):hover {
-                @include themed() {
-                    background-color: rgba(t($background-secondary), 0.5);
-                }
-            }
         }
 
         &-icon {
@@ -136,6 +125,7 @@ onMounted(() => {
         }
 
         &-text {
+            font-size: 17px;
             opacity: 0;
             cursor: default;
             pointer-events: none;
@@ -147,6 +137,36 @@ onMounted(() => {
                 cursor: pointer;
                 pointer-events: all;
                 transition: $transition-bg;
+            }
+        }
+    }
+}
+
+// media
+
+.sidebar {
+    @include for-size('md') {
+        width: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 0;
+
+        @include themed() {
+            border: 0;
+            border-top: 1px solid t($border);
+        }
+    }
+
+    &__list {
+        @include for-size('md') {
+            justify-content: center;
+            flex-direction: row;
+        }
+
+        &-item--wrapper {
+            @include for-size('md') {
+                margin-bottom: 0;
             }
         }
     }

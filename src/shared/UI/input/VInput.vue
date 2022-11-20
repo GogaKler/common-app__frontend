@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, toRefs } from 'vue';
+import { ref, toRefs, watchPostEffect } from 'vue';
 
 const props = defineProps({
     modelValue: {
@@ -22,35 +22,41 @@ const props = defineProps({
         type: Number,
         default: 100
     },
+    focused: {
+        type: Boolean,
+        default: false
+    },
     errors: {
         type: String,
         default: ''
     }
 });
-const { modelValue, max } = toRefs(props);
+const { modelValue, focused, max } = toRefs(props);
 
 const emit = defineEmits(['update:modelValue']);
+
+const VInput = ref();
+const VInputFocused = ref(false);
 
 const updateValue = (event) => {
     emit('update:modelValue', event.target.value);
 };
-
-const VInput = ref();
-const VInputFocused = ref(false);
 
 const focusOnInput = () => {
     VInput.value.focus();
 };
 
 const toggleInputState = (event) => {
+    if (event && modelValue.value?.length && !VInputFocused.value) VInputFocused.value = true;
     // Если input не пустой - не меняем состояние
-    if (!event && modelValue.value.length) return;
+    if (!event && modelValue.value?.length) return;
 
     VInputFocused.value = event;
 };
 
-onMounted(() => {
-    if (modelValue.value.length > 1) toggleInputState(true);
+watchPostEffect(() => {
+    if (modelValue.value?.length) toggleInputState(true);
+    if (focused) focusOnInput();
 });
 </script>
 
@@ -87,6 +93,14 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    -webkit-transition-delay: 9999s;
+    transition-delay: 9999s;
+}
+
 .VInput {
     width: 100%;
     display: flex;

@@ -3,12 +3,17 @@ import { createPinia } from 'pinia';
 import App from '@app/App.vue';
 import router from '@/app/router';
 
-import '@libs/font-awesome'; // Конфигурация иконок
+// ICONS
+import '@shared/libs/font-awesome-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+// COMPONENTS
 import VSwitch from '@UI/switch/VSwitch.vue';
 import VInput from '@UI/input/VInput.vue';
 import VButton from '@UI/button/VButton.vue';
-import { clickOutside } from '@app/directives/click-outside';
+
+// DIRECTIVES
+import { clickOutside } from '@shared/directives/click-outside';
 
 const app = createApp(App);
 

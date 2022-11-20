@@ -1,9 +1,7 @@
 <script setup></script>
 
 <template>
-    <main>
-        <v-button primary>Кнопка</v-button>
-    </main>
+    <main>Мессенджер</main>
 </template>
 
 <style lang="scss" scoped></style>

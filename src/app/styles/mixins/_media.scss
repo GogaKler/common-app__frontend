@@ -1,0 +1,18 @@
+$media: (
+        xs: 360px,
+        sm: 640px,
+        md: 768px,
+        lg: 1024px,
+        xl: 1280px,
+        xxl: 1536px,
+);
+
+@mixin for-size($point) {
+  @each $breakpoints, $size in $media {
+    @if $point==$breakpoints {
+      @media only screen and (max-width: $size) {
+        @content;
+      }
+    }
+  }
+}

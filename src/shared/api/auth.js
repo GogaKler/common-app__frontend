@@ -31,6 +31,14 @@ class _Auth {
         return res.data;
     }
 
+    async logout() {
+        return API.post('auth/logout');
+    }
+
+    async refresh() {
+        return API.get('auth/refresh');
+    }
+
     async me() {
         const response = await API.get('auth/me');
 

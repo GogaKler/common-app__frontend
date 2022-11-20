@@ -1,16 +1,17 @@
 import { defineStore } from 'pinia';
+import { useBreakpoint } from '@shared/utils/useBreakpoint';
 
 export const useAppStore = defineStore('app', {
     state: () => ({
         userTheme: 'light',
         switchThemeValue: false,
-        htmlElement: document.documentElement
+        htmlElement: document.documentElement,
+        breakpoints: useBreakpoint(),
+        mobileBreakpoints: ['sm', 'xs', 'md']
     }),
     getters: {
-        isDarkTheme: (state) => {
-            console.log(state.userTheme, 'getter');
-            return state.userTheme === 'dark';
-        }
+        isDarkTheme: (state) => state.userTheme === 'dark',
+        isMobile: (state) => state.mobileBreakpoints.includes(state.breakpoints.is)
     },
     actions: {
         initialTheme() {

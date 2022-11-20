@@ -36,7 +36,6 @@ const { icon, checked, loading, disabled } = toRefs(props);
 const isIconPassed = propsIconValidationSwitch({ icon: icon.value });
 const isLoading = computed(() => loading.value);
 const isDisabled = computed(() => disabled.value);
-
 const isSwitchDisabled = computed(() => isDisabled.value || isLoading.value);
 
 const iconParser = (processingIcon) => {
