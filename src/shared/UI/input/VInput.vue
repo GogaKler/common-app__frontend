@@ -56,7 +56,7 @@ const toggleInputState = (event) => {
 
 watchPostEffect(() => {
     if (modelValue.value?.length) toggleInputState(true);
-    if (focused) focusOnInput();
+    if (focused.value) focusOnInput();
 });
 </script>
 

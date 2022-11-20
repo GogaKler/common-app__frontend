@@ -65,7 +65,9 @@ const genderOptions = reactive([
             label="Ваш логин для входа"
             :errors="errors.name"
         />
+
         <v-input v-model="email" type="email" name="email" label="E-mail" :errors="errors.email" />
+
         <v-input
             v-model="password"
             type="password"
