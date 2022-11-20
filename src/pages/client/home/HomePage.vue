@@ -68,7 +68,7 @@ const clickToButton = () =>
                         ]"
                     >
                         <div v-if="m.user_id !== authStore.userId">
-                            <v-user :logo="m.avatar" />
+                            <v-user :logo="m.avatar" :name="m.name" />
                         </div>
                         <div>
                             <div
@@ -79,7 +79,7 @@ const clickToButton = () =>
                             <div class="message__content">{{ m.message }}</div>
                         </div>
                         <div v-if="m.user_id === authStore.userId">
-                            <v-user :logo="m.avatar" />
+                            <v-user :logo="m.avatar" :name="m.name" />
                         </div>
                     </li>
                 </ul>

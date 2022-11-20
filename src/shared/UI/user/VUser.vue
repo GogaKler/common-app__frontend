@@ -4,7 +4,8 @@ import { computed, toRefs } from 'vue';
 const props = defineProps({
     name: {
         type: String,
-        default: ''
+        default: '',
+        required: true
     },
     logo: {
         type: String,
