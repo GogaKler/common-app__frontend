@@ -3,24 +3,24 @@ import Auth from '@api/auth';
 import Cookie from 'js-cookie';
 import router from '@app/router';
 
+const ERROR_PREFIX = 'AUTH_STORE';
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null
     }),
     getters: {
-        isAuth: () => !!Cookie.get('user_token'),
+        isAuth: () => !!Cookie.get('Authentication'),
         userId: (state) => state.user.id
     },
     actions: {
         async login({ username, password }) {
             try {
-                const res = await Auth.login({ username, password });
-
-                Cookie.set('user_token', res.token);
+                await Auth.login({ username, password });
 
                 await router.push('/');
             } catch (e) {
-                throw new Error(e);
+                throw new Error(`${ERROR_PREFIX}: ${e}`);
             }
         },
 
@@ -30,7 +30,25 @@ export const useAuthStore = defineStore('auth', {
 
                 await router.push('/login');
             } catch (e) {
-                throw new Error(e);
+                throw new Error(`${ERROR_PREFIX}: ${e}`);
+            }
+        },
+
+        async logout() {
+            try {
+                await Auth.logout();
+
+                await router.push('/login');
+            } catch (e) {
+                throw new Error(`${ERROR_PREFIX}: ${e}`);
+            }
+        },
+
+        async refresh() {
+            try {
+                await Auth.refresh();
+            } catch (e) {
+                throw new Error(`${ERROR_PREFIX}: ${e}`);
             }
         },
 
@@ -41,14 +59,8 @@ export const useAuthStore = defineStore('auth', {
 
                 return res;
             } catch (e) {
-                throw new Error(e);
+                throw new Error(`${ERROR_PREFIX}: ${e}`);
             }
-        },
-
-        async logout() {
-            Cookie.remove('user_token');
-
-            await router.push('/login');
         },
 
         isMe({ id }) {

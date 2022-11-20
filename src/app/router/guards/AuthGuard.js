@@ -7,7 +7,7 @@ const isAuthPage = (page) => {
 };
 
 export default async (to, from, next) => {
-    const IS_USER_AUTH = Cookie.get('user_token') ?? null;
+    const IS_USER_AUTH = Cookie.get('Authentication') ?? null;
 
     if (!isAuthPage(to.name) && !IS_USER_AUTH) {
         next({ name: 'login' });

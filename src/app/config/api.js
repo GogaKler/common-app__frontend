@@ -1,51 +1,64 @@
 import axios from 'axios';
-import Cookie from 'js-cookie';
 import router from '@app/router';
+import Cookie from 'js-cookie';
 
 const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
-        'Content-Type': 'application/json'
-    }
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials': true
+    },
+    withCredentials: true,
+    validateStatus: (status) => status >= 200 && status < 300
 });
 
-const authHeader = () => {
-    const token = Cookie.get('user_token');
-
-    if (token) return `Bearer ${token}`;
-
-    return '';
-};
-
-const requestInterceptor = (config) => {
-    config.headers.Authorization = authHeader();
-
-    return config;
-};
-
 const errorInterceptor = async (error) => {
-    if (!error.response) {
+    const { response, message, config } = error;
+    const originalConfig = error.config;
+
+    if (!response) {
         console.error('**Network/Server error');
-        console.log(error.response);
+
         return Promise.reject(error);
     }
 
-    switch (error.response.status) {
-        case 401:
-            console.error(error.response.status, error.message);
+    if (response.status !== 401) {
+        console.error(message);
 
-            Cookie.remove('user_token');
-
-            await router.push('/login');
-            break;
-
-        default:
-            console.error(error.response.status, error.message);
+        return Promise.reject(error);
     }
+
+    if (response.status === 401 && !originalConfig._retry) {
+        originalConfig._retry = true;
+
+        try {
+            console.error(response.status, message);
+
+            await axios.get('auth/refresh', {
+                baseURL: import.meta.env.VITE_BACKEND_URL,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true
+                },
+                withCredentials: true
+            });
+
+            originalConfig.headers = { ...originalConfig.headers };
+
+            return await instance.request(config);
+        } catch (e) {
+            console.error(e);
+
+            Cookie.remove('Authentication');
+            Cookie.remove('Refresh');
+
+            return await router.push({ name: 'login' });
+        }
+    }
+
     return Promise.reject(error);
 };
 
-instance.interceptors.request.use(requestInterceptor);
-instance.interceptors.response.use((response) => response, errorInterceptor);
+instance.interceptors.response.use((res) => res, errorInterceptor);
 
 export default instance;
