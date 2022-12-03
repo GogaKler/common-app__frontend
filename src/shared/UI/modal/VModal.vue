@@ -1,5 +1,5 @@
 <script setup>
-import { onUnmounted, toRefs, watch } from 'vue';
+import { computed, onUnmounted, toRefs, watch } from 'vue';
 import VButton from '@UI/button/VButton.vue';
 
 const props = defineProps({
@@ -18,9 +18,16 @@ const props = defineProps({
     confirmed: {
         type: Boolean,
         default: false
+    },
+    buttonTheme: {
+        type: Object,
+        default: () => ({
+            accept: 'primary',
+            cancel: 'danger'
+        })
     }
 });
-const { modelValue, noClickOutside } = toRefs(props);
+const { modelValue, noClickOutside, buttonTheme } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'onCancel', 'onAccept']);
 const updateModelValue = (flag) => emit('update:modelValue', flag);
 
@@ -43,6 +50,9 @@ watch(modelValue, () => {
 onUnmounted(() => {
     document.body.style.overflowY = '';
 });
+
+const acceptThemeButton = computed(() => buttonTheme.value.accept);
+const cancelThemeButton = computed(() => buttonTheme.value.cancel);
 </script>
 
 <template>
@@ -66,10 +76,18 @@ onUnmounted(() => {
                         <slot name="body" />
                     </div>
                     <div v-if="confirmed" class="modal__footer">
-                        <v-button class="modal__footer--button" primary @click="$emit('onCancel')">
+                        <v-button
+                            class="modal__footer--button"
+                            :theme="cancelThemeButton"
+                            @click="$emit('onCancel')"
+                        >
                             Отменить
                         </v-button>
-                        <v-button class="modal__footer--button" primary @click="$emit('onAccept')">
+                        <v-button
+                            class="modal__footer--button"
+                            :theme="acceptThemeButton"
+                            @click="$emit('onAccept')"
+                        >
                             Применить
                         </v-button>
                     </div>

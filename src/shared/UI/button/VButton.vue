@@ -25,19 +25,24 @@ const props = defineProps({
     },
     theme: {
         type: String,
-        default: 'primary',
+        default: 'default',
         validator: (value) =>
-            ['primary', 'secondary', 'outlined', 'depressed', 'danger'].indexOf(value) > -1
+            ['default', 'primary', 'secondary', 'depressed', 'danger'].indexOf(value) > -1
+    },
+    outlined: {
+        type: Boolean,
+        default: false
     }
 });
-const { fullWidth, disabled, loading, radius, size, theme } = toRefs(props);
+const { fullWidth, disabled, loading, radius, size, theme, outlined } = toRefs(props);
 
 const classes = computed(() => [
     {
         button: true,
         disabled: disabled.value,
         loading: loading.value,
-        'button--full-width': fullWidth.value
+        outlined: outlined.value,
+        'full-width': fullWidth.value
     },
     `button--${size.value}`,
     `button--${theme.value}`
@@ -144,18 +149,24 @@ $btn-transition-duration: 0.28s !default;
     }
 }
 
-.button {
-    &--full-width {
-        width: 100%;
-    }
-}
-
 // COLOR SCHEME
 @mixin colors($theme) {
     &--#{$theme} {
-        @if ($theme == 'primary') {
+        @if ($theme == 'default') {
+            @include themed() {
+                border: 1px solid t($divider);
+                background: t($background-secondary);
+            }
+
+            &:not(.loading, .disabled):hover {
+                @include themed() {
+                    background: t($background);
+                }
+            }
+        } @else if($theme == 'primary') {
             @include themed() {
                 background: rgba(t($primary), 0.4);
+                border-color: t($primary);
             }
 
             &:not(.loading, .disabled):hover {
@@ -176,6 +187,12 @@ $btn-transition-duration: 0.28s !default;
                 @include themed() {
                     background: t($primary);
                     color: t($primary-text);
+                }
+            }
+
+            &.outlined {
+                @include themed() {
+                    border: 1px solid t($primary);
                 }
             }
         } @else if($theme == 'secondary') {
@@ -203,24 +220,32 @@ $btn-transition-duration: 0.28s !default;
                     color: t($secondary-text);
                 }
             }
-        } @else if($theme == 'outlined') {
+
+            &.outlined {
+                @include themed() {
+                    border: 1px solid t($secondary);
+                }
+            }
+        } @else if($theme == 'danger') {
             @include themed() {
-                border: 1px solid t($divider);
-                background: t($background);
+                background: transparent;
+                border: 1px solid indianred;
+                color: indianred;
             }
 
             &:not(.loading, .disabled):hover {
                 @include themed() {
-                    background: rgba(t($background-secondary), 0.5);
+                    background: rgba(indianred, 0.1);
                 }
             }
         }
     }
 }
+
 .button {
+    @include colors('default');
     @include colors('primary');
     @include colors('secondary');
-    @include colors('outlined');
     @include colors('danger');
     @include colors('depressed');
     &.disabled {
@@ -228,6 +253,19 @@ $btn-transition-duration: 0.28s !default;
     }
     &.loading {
         opacity: 0.7;
+    }
+    &.full-width {
+        width: 100%;
+    }
+    &.outlined {
+        @include themed() {
+            background: transparent;
+
+            &:not(.loading, .disabled):hover {
+                background: rgba(t($background-secondary), 0.2);
+                color: t($text);
+            }
+        }
     }
 }
 </style>

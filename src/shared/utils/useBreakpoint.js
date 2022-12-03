@@ -1,4 +1,4 @@
-import { onMounted, reactive } from 'vue';
+import { onMounted, onUnmounted, reactive } from 'vue';
 
 const screens = {
     xs: 360,
@@ -38,6 +38,12 @@ export const useBreakpoint = () => {
     onMounted(() => {
         setBreakpoint();
         window.addEventListener('resize', () => {
+            setBreakpoint();
+        });
+    });
+
+    onUnmounted(() => {
+        window.removeEventListener('resize', () => {
             setBreakpoint();
         });
     });

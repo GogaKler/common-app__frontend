@@ -51,7 +51,7 @@ const cropSuccess = async (imgUrl) => {
                     <div class="mb-3 whitespace-nowrap">Изображение в профиле</div>
                     <v-user :name="user.name" :logo="user.avatar" size="9x">
                         <template #inner>
-                            <v-button theme="outlined" size="sm" @click="toggleUpload">
+                            <v-button size="sm" @click="toggleUpload">
                                 <font-awesome-icon
                                     icon="fa-solid fa-pencil"
                                     size="sm"
@@ -69,6 +69,7 @@ const cropSuccess = async (imgUrl) => {
 
         <Teleport to="body">
             <v-upload
+                v-if="showUpload"
                 v-model="showUpload"
                 field="img"
                 :width="200"

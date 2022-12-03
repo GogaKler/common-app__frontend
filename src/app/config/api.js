@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from '@app/router';
 import Cookie from 'js-cookie';
 
-const instance = axios.create({
+const axiosConfig = {
     baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
         'Content-Type': 'application/json',
@@ -10,7 +10,9 @@ const instance = axios.create({
     },
     withCredentials: true,
     validateStatus: (status) => status >= 200 && status < 300
-});
+};
+
+const instance = axios.create({ ...axiosConfig });
 
 const errorInterceptor = async (error) => {
     const { response, message, config } = error;
@@ -34,14 +36,7 @@ const errorInterceptor = async (error) => {
         try {
             console.error(response.status, message);
 
-            await axios.get('auth/refresh', {
-                baseURL: import.meta.env.VITE_BACKEND_URL,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Credentials': true
-                },
-                withCredentials: true
-            });
+            await axios.get('auth/refresh', { ...axiosConfig });
 
             originalConfig.headers = { ...originalConfig.headers };
 
