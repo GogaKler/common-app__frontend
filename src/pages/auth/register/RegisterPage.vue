@@ -89,11 +89,11 @@ const genderOptions = reactive([
 
         <v-button
             type="submit"
-            primary
             full-width
             radius="20"
-            :disabled="!isValid"
+            theme="primary"
             :loading="isSubmitting"
+            :disabled="!isValid"
         >
             Зарегистрироваться
         </v-button>

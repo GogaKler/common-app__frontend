@@ -92,7 +92,7 @@ const textState = computed(() => ({
     padding: 0 15px;
 
     &__wrapper {
-        padding: 120px 40px;
+        padding: 80px 40px;
         height: 100%;
         border-radius: 20px;
 
