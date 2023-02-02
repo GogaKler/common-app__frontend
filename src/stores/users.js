@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import Users from '@shared/api/users';
 import { useAuthStore } from '@/stores/auth';
-import { urlToFile } from '@shared/helpers';
+import { urlToFile } from '@shared/helpers/methods';
 const authStore = useAuthStore();
 export const useUsersStore = defineStore('users', {
     state: () => ({

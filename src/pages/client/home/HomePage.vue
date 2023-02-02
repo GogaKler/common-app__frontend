@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useUsersStore } from '@/stores/users';
-import VUser from '@UI/user/VUser.vue';
+import { UserAvatar } from '@/entities/User';
 import router from '@app/router';
-import { useSocket } from '@use/useSocket';
+import { useSocket } from '@use';
 import VInput from '@UI/input/VInput.vue';
 import VButton from '@UI/button/VButton.vue';
 import { useAuthStore } from '@/stores/auth';
@@ -51,7 +51,7 @@ const clickToButton = () =>
         <div class="home__wrapper">
             <h1>Пользователи</h1>
             <div v-for="user in usersStore.users" :key="user.id" class="user mt-4 mb-4">
-                <v-user
+                <UserAvatar
                     :name="user.name"
                     :logo="user.avatar"
                     show-name
@@ -68,7 +68,7 @@ const clickToButton = () =>
                         ]"
                     >
                         <div v-if="m.user_id !== authStore.userId">
-                            <v-user :logo="m.avatar" />
+                            <UserAvatar :logo="m.avatar" />
                         </div>
                         <div>
                             <div
@@ -79,7 +79,7 @@ const clickToButton = () =>
                             <div class="message__content">{{ m.message }}</div>
                         </div>
                         <div v-if="m.user_id === authStore.userId">
-                            <v-user :logo="m.avatar" />
+                            <UserAvatar :logo="m.avatar" />
                         </div>
                     </li>
                 </ul>

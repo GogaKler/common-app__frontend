@@ -1,38 +1,57 @@
 import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-export default defineConfig({
-    plugins: [vue()],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-            // api & axios config
-            '@api': fileURLToPath(new URL('./src/shared/api', import.meta.url)),
-            '@axios': fileURLToPath(new URL('./src/app/config/api', import.meta.url)),
-            // Main structure
-            '@app': fileURLToPath(new URL('./src/app', import.meta.url)),
-            '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
-            '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
-            '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
-            '@styles': fileURLToPath(new URL('./src/app/styles', import.meta.url)),
-            '@shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
-            // Libraries
-            '@libs': fileURLToPath(new URL('./src/shared/libs', import.meta.url)),
-            // UI
-            '@UI': fileURLToPath(new URL('./src/shared/UI', import.meta.url)),
-            // Use Utils
-            '@use': fileURLToPath(new URL('./src/shared/utils', import.meta.url))
-        }
-    },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: `
+const setAliasPath = (path) => fileURLToPath(new URL(path, import.meta.url));
+
+const aliases = {
+    '@': setAliasPath('./src'),
+    '@api': setAliasPath('./src/shared/api'),
+    '@axios': setAliasPath('./src/shared/api/config/axiosInstance'),
+    '@assets': setAliasPath('./src/shared/assets'),
+    '@styles': setAliasPath('./src/app/styles'),
+    '@libs': setAliasPath('./src/shared/libs'),
+    '@UI': setAliasPath('./src/shared/UI'),
+    '@use': setAliasPath('./src/shared/helpers/hooks'),
+    '@directives': setAliasPath('./src/shared/helpers/directives'),
+    // FSD
+    '@app': setAliasPath('./src/app'),
+    '@pages': setAliasPath('./src/pages'),
+    '@widgets': setAliasPath('./src/widgets'),
+    '@features': setAliasPath('./src/features'),
+    '@entities': setAliasPath('./src/entities'),
+    '@shared': setAliasPath('./src/shared')
+};
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+
+    // const isProd = env.NODE_ENV === 'production';
+    // const isDev = env.NODE_ENV === 'development';
+
+    const clientURL = env.VITE_CLIENT_URL;
+    const serverURL = env.VITE_BACKEND_URL;
+
+    return {
+        plugins: [vue()],
+        define: {
+            __APP__CLIENT__DOMAIN__: JSON.stringify(clientURL),
+            __APP__SERVER__DOMAIN__: JSON.stringify(serverURL)
+        },
+        resolve: {
+            alias: {
+                ...aliases
+            }
+        },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: `
                     @import '@styles/main';
                 `
+                }
             }
         }
-    }
+    };
 });

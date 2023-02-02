@@ -1,8 +1,8 @@
 <script setup>
-import { sidebarMenu } from '@components/sidebar/utils/sidebarMenu';
+import { sidebarMenu } from '@widgets/sidebar/utils/sidebarMenu';
 import { ref } from 'vue';
 import VTooltip from '@UI/tooltip/VTooltip.vue';
-import { useResizeObserver } from '@use/useResizeObserver';
+import { useResizeObserver } from '@use';
 
 defineProps({
     sidebarCondition: {

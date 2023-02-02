@@ -1,4 +1,4 @@
-import { useSupported } from '@shared/utils/useSupported';
+import { useSupported } from '@use';
 import { unref, watch } from 'vue';
 const defaultWindow = window;
 

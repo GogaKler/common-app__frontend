@@ -13,7 +13,7 @@ import VInput from '@UI/input/VInput.vue';
 import VButton from '@UI/button/VButton.vue';
 
 // DIRECTIVES
-import { clickOutside } from '@shared/directives/click-outside';
+import { clickOutside } from '@shared/helpers/directives';
 
 const app = createApp(App);
 
@@ -22,7 +22,7 @@ app.use(router);
 
 app.directive('click-outside', clickOutside);
 
-app.component('font-awesome-icon', FontAwesomeIcon)
+app.component('FontAwesomeIcon', FontAwesomeIcon)
     .component('VSwitch', VSwitch)
     .component('VInput', VInput)
     .component('VButton', VButton);

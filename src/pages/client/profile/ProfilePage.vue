@@ -2,8 +2,7 @@
 import { useUsersStore } from '@/stores/users';
 import { computed, ref, watchPostEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import VUser from '@UI/user/VUser.vue';
-// import { useAuthStore } from '@/stores/auth';
+import { UserAvatar } from '@/entities/User';
 
 const route = useRoute();
 
@@ -31,7 +30,7 @@ const user = computed(() => usersStore.userById);
         <div class="container">
             <div class="profile__title">{{ user.name }}</div>
             <div class="profile__user">
-                <v-user :name="user.name" :logo="user.avatar" size="10x" />
+                <UserAvatar :name="user.name" :logo="user.avatar" size="10x" />
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useBreakpoint } from '@shared/utils/useBreakpoint';
+import { useBreakpoint } from '@use';
 
 export const useAppStore = defineStore('app', {
     state: () => ({

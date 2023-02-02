@@ -1,5 +1,5 @@
 <script setup>
-import VUser from '@UI/user/VUser.vue';
+import { UserAvatar } from '@/entities/User';
 import VUpload from 'vue-image-crop-upload';
 import { shallowRef, ref } from 'vue';
 import { accountFields } from '@pages/client/settings/account/utils/accountFields';
@@ -49,7 +49,7 @@ const cropSuccess = async (imgUrl) => {
                 </div>
                 <div class="account-logo">
                     <div class="mb-3 whitespace-nowrap">Изображение в профиле</div>
-                    <v-user :name="user.name" :logo="user.avatar" size="9x">
+                    <UserAvatar :name="user.name" :logo="user.avatar" size="9x">
                         <template #inner>
                             <v-button theme="outlined" size="sm" @click="toggleUpload">
                                 <font-awesome-icon
@@ -60,7 +60,7 @@ const cropSuccess = async (imgUrl) => {
                                 Изменить
                             </v-button>
                         </template>
-                    </v-user>
+                    </UserAvatar>
                 </div>
             </div>
         </div>

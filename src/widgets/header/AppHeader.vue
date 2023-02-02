@@ -3,9 +3,10 @@ import { computed, reactive, ref } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
-import { useResizeObserver } from '@use/useResizeObserver';
-import VUser from '@UI/user/VUser.vue';
+import { useResizeObserver } from '@use';
+import { UserAvatar } from '@entities/User';
 import VModal from '@UI/modal/VModal.vue';
+import VSwitch from '@UI/switch/VSwitch.vue';
 const router = useRouter();
 const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
 const header_REFLINK = ref(null);
@@ -81,7 +82,7 @@ const isShowLogoutModal = ref(false);
     <div ref="header_REFLINK" class="header">
         <div class="header-left">
             <div class="header-left__logo" onmousedown="return false">
-                <font-awesome-icon
+                <FontAwesomeIcon
                     ref="sidebar"
                     icon="fa-solid fa-bars"
                     size="lg"
@@ -93,7 +94,7 @@ const isShowLogoutModal = ref(false);
         </div>
         <div class="header-right">
             <div class="header-right__theme">
-                <v-switch
+                <VSwitch
                     v-model:checked="switchValue"
                     :icon="{
                         on: 'fa-regular fa-moon',
@@ -102,7 +103,7 @@ const isShowLogoutModal = ref(false);
                 />
             </div>
             <div v-click-outside="closeUserMenu" class="header-right__user">
-                <v-user
+                <UserAvatar
                     :name="user.name"
                     :logo="user.avatar"
                     class="cursor-pointer"
@@ -115,12 +116,12 @@ const isShowLogoutModal = ref(false);
                         size="sm"
                         :rotation="headerRotateIcon"
                     />
-                </v-user>
+                </UserAvatar>
 
                 <Transition name="dropdown">
                     <div v-if="isUserMenuOpen" class="dropdown">
                         <div class="dropdown-user block">
-                            <v-user
+                            <UserAvatar
                                 :name="user.name"
                                 :logo="user.avatar"
                                 show-name
@@ -149,7 +150,7 @@ const isShowLogoutModal = ref(false);
                         </div>
                     </div>
                 </Transition>
-                <v-modal
+                <VModal
                     v-model="isShowLogoutModal"
                     confirmed
                     @onCancel="isShowLogoutModal = false"
@@ -157,7 +158,7 @@ const isShowLogoutModal = ref(false);
                 >
                     <template #header>Подтверждение выхода</template>
                     <template #body>Вы уверены, что хотите выйти?</template>
-                </v-modal>
+                </VModal>
             </div>
         </div>
     </div>

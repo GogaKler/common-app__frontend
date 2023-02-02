@@ -1,8 +1,8 @@
 <script setup>
 import { computed, reactive } from 'vue';
 import { RouterView } from 'vue-router';
-import AppHeader from '@components/header/AppHeader.vue';
-import AppSidebar from '@components/sidebar/AppSidebar.vue';
+import AppHeader from '@widgets/header/AppHeader.vue';
+import AppSidebar from '@widgets/sidebar/AppSidebar.vue';
 import { useAppStore } from '@app/store/useAppStore';
 
 const appStore = useAppStore();
