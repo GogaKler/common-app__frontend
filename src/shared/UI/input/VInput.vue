@@ -44,6 +44,7 @@ const updateValue = (event) => {
 
 const focusOnInput = () => {
     VInput.value.focus();
+    if (focused.value) focusOnInput();
 };
 
 const toggleInputState = (event) => {

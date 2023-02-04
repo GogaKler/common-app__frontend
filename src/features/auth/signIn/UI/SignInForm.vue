@@ -50,7 +50,7 @@ const onSubmit = handleSubmit(async ({ username, password }) => {
             :loading="isSubmitting"
             :disabled="!isValid"
             radius="20"
-            primary
+            theme="primary"
         >
             Войти
         </v-button>

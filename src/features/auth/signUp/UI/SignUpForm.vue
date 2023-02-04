@@ -66,7 +66,7 @@ watch(password, () => {
 
         <v-button
             type="submit"
-            primary
+            theme="primary"
             full-width
             radius="20"
             :disabled="!isValid"

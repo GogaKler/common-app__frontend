@@ -4,11 +4,13 @@ import { computed } from 'vue';
 
 const route = useRoute();
 
+const isLoginPage = computed(() => route.name === 'login');
+
 const textState = computed(() => ({
-    contentTitle: route.name === 'login' ? 'Войти в систему' : 'Регистрация',
-    signText: route.name === 'login' ? 'Нет аккаунта?' : 'Есть аккаунт?',
-    linkText: route.name === 'login' ? 'Зарегистрироваться' : 'Войти в ситсему',
-    redirectPath: route.name === 'login' ? 'register' : 'login'
+    contentTitle: isLoginPage.value ? 'Войти в систему' : 'Регистрация',
+    signText: isLoginPage.value ? 'Нет аккаунта?' : 'Есть аккаунт?',
+    linkText: isLoginPage.value ? 'Зарегистрироваться' : 'Войти в ситсему',
+    redirectPath: isLoginPage.value ? 'register' : 'login'
 }));
 </script>
 
@@ -90,7 +92,7 @@ const textState = computed(() => ({
     padding: 0 15px;
 
     &__wrapper {
-        padding: 120px 40px;
+        padding: 80px 40px;
         height: 100%;
         border-radius: 20px;
 
