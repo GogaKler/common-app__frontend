@@ -1,22 +1,14 @@
 <script setup>
 import { useField, useForm, useIsFormValid } from 'vee-validate';
-import { useAuthStore } from '@/stores/auth';
-import * as Yup from 'yup';
-import { reactive, watch } from 'vue';
+import { watch } from 'vue';
 import VSelect from '@UI/select/VSelect.vue';
+import { useAuthStoreNew } from '@features/auth/model/useAuthStore';
+import { genderOptions, validationSchema } from '@features/auth/signUp/lib';
 
-const schema = Yup.object({
-    name: Yup.string().required('Логин для входа обязателен.'),
-    email: Yup.string().required('E-mail обязателен').email('Неккоректный E-mail.'),
-    password: Yup.string().required().min(6, 'Минимальная длина 6 символов.'),
-    confirmPassword: Yup.string()
-        .required('Подтверждение пароля обязательно.')
-        .oneOf([Yup.ref('password'), null], 'Пароли не совпадают.'),
-    gender: Yup.string().required('Укажите свой пол.')
-});
+const authStoreNew = useAuthStoreNew();
 
 const { errors, handleSubmit, isSubmitting } = useForm({
-    validationSchema: schema,
+    validationSchema,
     initialValues: {
         name: '',
         email: '',
@@ -34,30 +26,17 @@ const { value: password } = useField('password');
 const { value: confirmPassword } = useField('confirmPassword');
 const { value: gender } = useField('gender');
 
-const authStore = useAuthStore();
-
 const onSubmit = handleSubmit(async (payload) => {
-    await authStore.register(payload);
+    await authStoreNew.register(payload);
 });
 
 watch(password, () => {
     if (!password.value.length) confirmPassword.value = '';
 });
-
-const genderOptions = reactive([
-    {
-        title: 'Мужчина',
-        value: 'male'
-    },
-    {
-        title: 'Женщина',
-        value: 'female'
-    }
-]);
 </script>
 
 <template>
-    <form :validation-schema="schema" @submit="onSubmit">
+    <form :validation-schema="validationSchema" @submit="onSubmit">
         <v-input
             v-model="name"
             type="name"

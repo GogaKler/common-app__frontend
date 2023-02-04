@@ -8,13 +8,12 @@ const setAliasPath = (path) => fileURLToPath(new URL(path, import.meta.url));
 const aliases = {
     '@': setAliasPath('./src'),
     '@api': setAliasPath('./src/shared/api'),
-    '@axios': setAliasPath('./src/shared/api/config/axiosInstance'),
+    '@axios': setAliasPath('./src/shared/api/axiosInstance'),
     '@assets': setAliasPath('./src/shared/assets'),
     '@styles': setAliasPath('./src/app/styles'),
-    '@libs': setAliasPath('./src/shared/libs'),
-    '@UI': setAliasPath('./src/shared/UI'),
-    '@use': setAliasPath('./src/shared/helpers/hooks'),
+    '@use': setAliasPath('./src/shared/lib/hooks'),
     '@directives': setAliasPath('./src/shared/helpers/directives'),
+    '@UI': setAliasPath('./src/shared/UI'),
     // FSD
     '@app': setAliasPath('./src/app'),
     '@pages': setAliasPath('./src/pages'),

@@ -6,7 +6,7 @@ const isAuthPage = (page) => {
     return pages.includes(page);
 };
 
-export default async (to, from, next) => {
+export const authGuard = async (to, from, next) => {
     const IS_USER_AUTH = Cookie.get('Authentication') ?? null;
 
     if (!isAuthPage(to.name) && !IS_USER_AUTH) {

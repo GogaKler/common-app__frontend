@@ -1,9 +1,9 @@
 import StatusModal from '@pages/client/settings/account/modals/StatusModal.vue';
 import { computed, shallowRef } from 'vue';
-import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
-const authStore = useAuthStore();
-const { user } = storeToRefs(authStore);
+import { useUserStore } from '@entities/User';
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 
 export const accountFields = computed(() => [
     {

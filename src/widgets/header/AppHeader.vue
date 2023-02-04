@@ -1,12 +1,13 @@
 <script setup>
 import { computed, reactive, ref } from 'vue';
 import { useAppStore } from '@app/store/useAppStore';
-import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import { useResizeObserver } from '@use';
-import { UserAvatar } from '@entities/User';
+import { UserAvatar, useUserStore } from '@entities/User';
 import VModal from '@UI/modal/VModal.vue';
 import VSwitch from '@UI/switch/VSwitch.vue';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
 const router = useRouter();
 const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
 const header_REFLINK = ref(null);
@@ -51,9 +52,10 @@ const switchValue = computed({
 /*
  * USER LOGIC
  * */
+const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const user = computed(() => authStore.user);
+const { user, userId } = storeToRefs(userStore);
 
 const isUserMenuOpen = ref(false);
 const closeUserMenu = () => {
@@ -66,7 +68,7 @@ const goToProfile = () => {
     router.push({
         name: 'profile',
         params: {
-            id: authStore.userId
+            id: userId.value
         }
     });
     isUserMenuOpen.value = false;

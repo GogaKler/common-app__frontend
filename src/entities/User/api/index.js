@@ -1,26 +1,6 @@
 import API from '@axios';
 
-class _Users {
-    async getUsers() {
-        try {
-            const response = await API.get('users');
-
-            return response.data;
-        } catch (e) {
-            throw new Error(e);
-        }
-    }
-
-    async getUserById({ id }) {
-        try {
-            const response = await API.get(`users/${id}`);
-
-            return response.data;
-        } catch (e) {
-            throw new Error(e);
-        }
-    }
-
+class _User {
     async changeUserStatus({ status }) {
         try {
             const response = await API.put(`users/status`, {
@@ -52,6 +32,24 @@ class _Users {
             throw new Error(e);
         }
     }
+
+    async getUserById({ id }) {
+        try {
+            const response = await API.get(`users/${id}`);
+
+            return response.data;
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+
+    async me() {
+        const response = await API.get('auth/me');
+
+        return response.data;
+    }
 }
-const Users = new _Users();
-export default Users;
+
+const User = new _User();
+
+export default User;

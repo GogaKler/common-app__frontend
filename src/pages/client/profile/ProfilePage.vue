@@ -1,28 +1,27 @@
 <script setup>
-import { useUsersStore } from '@/stores/users';
-import { computed, ref, watchPostEffect } from 'vue';
+import { ref, watchPostEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { UserAvatar } from '@/entities/User';
+import { UserAvatar, useUserStore } from '@/entities/User';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute();
 
-const usersStore = useUsersStore();
-// const authStore = useAuthStore();
 const isLoading = ref(false);
+
+const userStore = useUserStore();
+const { userByID } = storeToRefs(userStore);
+const user = userByID;
 
 watchPostEffect(async () => {
     isLoading.value = true;
     try {
-        await usersStore.requestUserByID(route.params.id);
+        await userStore.requestUserByID(route.params.id);
     } catch (e) {
         throw new Error(e);
     } finally {
         isLoading.value = false;
     }
 });
-
-const user = computed(() => usersStore.userById);
-// const isMe = computed(() => user.value.id === authStore.userId);
 </script>
 
 <template>

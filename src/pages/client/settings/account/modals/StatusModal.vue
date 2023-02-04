@@ -2,12 +2,10 @@
 import { ref, toRefs, computed } from 'vue';
 import VModal from '@UI/modal/VModal.vue';
 import VInput from '@UI/input/VInput.vue';
-import { useUsersStore } from '@/stores/users';
-import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
-const usersStore = useUsersStore();
-const authStore = useAuthStore();
-const { user } = storeToRefs(authStore);
+import { useUserStore } from '@entities/User';
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 
 const emit = defineEmits(['closeModal']);
 const props = defineProps({
@@ -42,7 +40,7 @@ const changeStatus = async () => {
         showModal.value = false;
         return;
     }
-    await usersStore.changeUserStatus(status.value);
+    await userStore.changeUserStatus(status.value);
     closeModal();
 };
 </script>

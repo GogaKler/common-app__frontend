@@ -1,3 +1,6 @@
-import UserAvatar from '@/entities/User/components/userAvatar/indexUserAvatar.vue';
-
+// Components
+import UserAvatar from '@/entities/User/UI/userAvatar/UserAvatar.vue';
 export { UserAvatar };
+
+// Store
+export { useUserStore } from '@entities/User/model/useUserStore';

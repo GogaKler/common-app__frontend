@@ -1,15 +1,12 @@
 <script setup>
-import { UserAvatar } from '@/entities/User';
+import { UserAvatar, useUserStore } from '@/entities/User';
 import VUpload from 'vue-image-crop-upload';
 import { shallowRef, ref } from 'vue';
 import { accountFields } from '@pages/client/settings/account/utils/accountFields';
-import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import VButton from '@UI/button/VButton.vue';
-import { useUsersStore } from '@/stores/users';
-const authStore = useAuthStore();
-const userStore = useUsersStore();
-const { user } = storeToRefs(authStore);
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 
 const currentModalComponent = shallowRef(null);
 
@@ -51,14 +48,14 @@ const cropSuccess = async (imgUrl) => {
                     <div class="mb-3 whitespace-nowrap">Изображение в профиле</div>
                     <UserAvatar :name="user.name" :logo="user.avatar" size="9x">
                         <template #inner>
-                            <v-button theme="outlined" size="sm" @click="toggleUpload">
-                                <font-awesome-icon
+                            <VButton theme="outlined" size="sm" @click="toggleUpload">
+                                <FontAwesomeIcon
                                     icon="fa-solid fa-pencil"
                                     size="sm"
                                     class="mr-1.5"
                                 />
                                 Изменить
-                            </v-button>
+                            </VButton>
                         </template>
                     </UserAvatar>
                 </div>
@@ -68,7 +65,7 @@ const cropSuccess = async (imgUrl) => {
         <component :is="currentModalComponent" :show="showModal" @closeModal="showModalToggle" />
 
         <Teleport to="body">
-            <v-upload
+            <VUpload
                 v-model="showUpload"
                 field="img"
                 :width="200"

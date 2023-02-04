@@ -1,19 +1,12 @@
 <script setup>
-import * as Yup from 'yup';
 import { useField, useForm, useIsFormValid } from 'vee-validate';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStoreNew } from '@features/auth/model/useAuthStore';
+import { validationSchema } from '@features/auth/signIn/lib';
 
-const authStore = useAuthStore();
-
-const schema = Yup.object({
-    username: Yup.string().required('Логин обязателен'),
-    password: Yup.string()
-        .required('Пароль обязателен')
-        .min(6, 'Пароль должен быть не меньше 6 символов')
-});
+const authStoreNew = useAuthStoreNew();
 
 const { errors, handleSubmit, isSubmitting } = useForm({
-    validationSchema: schema,
+    validationSchema,
     initialValues: {
         username: '',
         password: ''
@@ -27,7 +20,7 @@ const { value: password } = useField('password');
 
 const onSubmit = handleSubmit(async ({ username, password }) => {
     try {
-        await authStore.login({ username, password });
+        await authStoreNew.login({ username, password });
     } catch (e) {
         console.error(e);
     }
@@ -35,7 +28,7 @@ const onSubmit = handleSubmit(async ({ username, password }) => {
 </script>
 
 <template>
-    <form :validation-schema="schema" @submit="onSubmit">
+    <form :validation-schema="validationSchema" @submit="onSubmit">
         <v-input
             v-model="username"
             name="username"
