@@ -8,6 +8,7 @@ import VModal from '@UI/modal/VModal.vue';
 import VSwitch from '@UI/switch/VSwitch.vue';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import VDropdown from '@UI/dropdown/VDropdown.vue';
 const router = useRouter();
 const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
 const header_REFLINK = ref(null);
@@ -58,9 +59,6 @@ const authStore = useAuthStore();
 const { user, userId } = storeToRefs(userStore);
 
 const isUserMenuOpen = ref(false);
-const closeUserMenu = () => {
-    isUserMenuOpen.value = false;
-};
 
 const headerRotateIcon = computed(() => (isUserMenuOpen.value ? 180 : null));
 
@@ -104,65 +102,59 @@ const isShowLogoutModal = ref(false);
                     }"
                 />
             </div>
-            <div v-click-outside="closeUserMenu" class="header-right__user">
-                <UserAvatar
-                    :name="user.name"
-                    :logo="user.avatar"
-                    class="cursor-pointer"
-                    size="2x"
-                    @click="isUserMenuOpen = !isUserMenuOpen"
-                >
-                    <font-awesome-icon
-                        class="header-right__user--toggle"
-                        icon="fa-solid fa-chevron-down"
-                        size="sm"
-                        :rotation="headerRotateIcon"
-                    />
-                </UserAvatar>
-
-                <Transition name="dropdown">
-                    <div v-if="isUserMenuOpen" class="dropdown">
-                        <div class="dropdown-user block">
-                            <UserAvatar
-                                :name="user.name"
-                                :logo="user.avatar"
-                                show-name
-                                @onClick:name="goToProfile"
+            <div class="header-right__dropdown">
+                <VDropdown @status="isUserMenuOpen = $event">
+                    <template #open="{ open }">
+                        <UserAvatar
+                            :name="user.name"
+                            :logo="user.avatar"
+                            class="cursor-pointer"
+                            size="2x"
+                            @click="open"
+                        >
+                            <FontAwesomeIcon
+                                class="header-right__toggle"
+                                icon="fa-solid fa-chevron-down"
+                                size="sm"
+                                :rotation="headerRotateIcon"
                             />
+                        </UserAvatar>
+                    </template>
+                    <template #header-content>
+                        <UserAvatar
+                            :name="user.name"
+                            :logo="user.avatar"
+                            show-name
+                            @onClick:name="goToProfile"
+                        />
+                    </template>
+                    <template #content>
+                        <router-link :to="{ name: 'settings' }" class="dropdown-user__link">
+                            Настройки
+                        </router-link>
+                    </template>
+                    <template #footer-content>
+                        <div class="dropdown-user__exit" @click="isShowLogoutModal = true">
+                            <font-awesome-icon
+                                class="mr-2"
+                                icon="fa-solid fa-arrow-right-from-bracket"
+                                size="xs"
+                            />
+                            <span>Выйти</span>
                         </div>
-                        <ul class="dropdown-list">
-                            <li class="dropdown__item">
-                                <router-link
-                                    :to="{ name: 'settings' }"
-                                    class="dropdown__item--link"
-                                >
-                                    Настройки
-                                </router-link>
-                            </li>
-                        </ul>
-                        <div class="dropdown-exit block">
-                            <div class="dropdown-exit__item" @click="isShowLogoutModal = true">
-                                <font-awesome-icon
-                                    class="mr-2"
-                                    icon="fa-solid fa-arrow-right-from-bracket"
-                                    size="xs"
-                                />
-                                <span>Выйти</span>
-                            </div>
-                        </div>
-                    </div>
-                </Transition>
-                <VModal
-                    v-model="isShowLogoutModal"
-                    confirmed
-                    @onCancel="isShowLogoutModal = false"
-                    @onAccept="headerLogout"
-                >
-                    <template #header>Подтверждение выхода</template>
-                    <template #body>Вы уверены, что хотите выйти?</template>
-                </VModal>
+                    </template>
+                </VDropdown>
             </div>
         </div>
+        <VModal
+            v-model="isShowLogoutModal"
+            confirmed
+            @onCancel="isShowLogoutModal = false"
+            @onAccept="headerLogout"
+        >
+            <template #header>Подтверждение выхода</template>
+            <template #body>Вы уверены, что хотите выйти?</template>
+        </VModal>
     </div>
 </template>
 
@@ -214,107 +206,39 @@ const isShowLogoutModal = ref(false);
         margin-right: 25px;
     }
 
-    &__user {
-        position: relative;
+    &__toggle {
+        margin-top: 3px;
+        transition: $transition-fast;
+    }
+}
 
-        &--toggle {
-            margin-top: 3px;
-            transition: $transition-fast;
+.dropdown-user {
+    &__link {
+        display: flex;
+        align-items: center;
+        padding: 4px 20px;
+        transition: $transition-fast;
+
+        &:hover {
+            @include themed() {
+                background: rgba(t($background-secondary), 0.5);
+            }
         }
     }
-
-    .logout {
+    &__exit {
+        display: flex;
+        align-items: center;
         cursor: pointer;
-    }
-}
 
-.dropdown-enter-active,
-.dropdown-leave-active {
-    transition: opacity 0.2s ease;
-}
-
-.dropdown-enter-from,
-.dropdown-leave-to {
-    opacity: 0;
-}
-
-.dropdown {
-    position: absolute;
-    min-width: 140px;
-    top: 50px;
-    right: 5px;
-    border-radius: 8px;
-
-    @include themed() {
-        background: t($background);
-        box-shadow: 0 0 55px 10px t($box-shadow);
-    }
-
-    &:after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 0;
-        border: 9px solid transparent;
-        left: 50%;
-        bottom: 100%;
-        margin-left: 23px;
-
-        @include themed() {
-            border-bottom-color: t($background);
-        }
-    }
-
-    // FIRST BLOCK
-    &-list {
-        padding: 15px 0;
-
-        @include themed() {
-            border-top: 1px solid t($border);
-            border-bottom: 1px solid t($border);
-        }
-    }
-
-    &__item {
-        margin-bottom: 10px;
-
-        &:last-child {
-            margin-bottom: 0;
-        }
-
-        &--link {
-            display: flex;
-            align-items: center;
-            padding: 4px 20px;
-            transition: $transition-fast;
-
-            &:hover {
-                @include themed() {
-                    background: rgba(t($background-secondary), 0.5);
-                }
-            }
-        }
-    }
-
-    // SECOND BLOCK
-    .block {
-        margin: 12px 15px;
-    }
-    &-exit {
-        &__item {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-
-            &:hover {
-                @include themed() {
-                    color: t($primary);
-                }
+        &:hover {
+            @include themed() {
+                color: t($primary);
             }
         }
     }
 }
 
+// MEDIA
 .header {
     @include for-size('md') {
         padding: 10px;

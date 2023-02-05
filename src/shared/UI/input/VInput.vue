@@ -44,7 +44,6 @@ const updateValue = (event) => {
 
 const focusOnInput = () => {
     VInput.value.focus();
-    if (focused.value) focusOnInput();
 };
 
 const toggleInputState = (event) => {
@@ -57,7 +56,7 @@ const toggleInputState = (event) => {
 
 watchPostEffect(() => {
     if (modelValue.value?.length) toggleInputState(true);
-    if (focused) focusOnInput();
+    if (focused.value) focusOnInput();
 });
 </script>
 
