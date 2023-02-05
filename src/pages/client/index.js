@@ -4,6 +4,8 @@ const MessengerPage = () => import('@pages/client/messenger/MessengerPage.vue');
 const ProfilePage = () => import('@pages/client/profile/ProfilePage.vue');
 const AccountPage = () => import('@pages/client/settings/account/AccountPage.vue');
 
+const PageNotFound = () => import('@pages/client/404/PageNotFound.vue');
+
 export const clientRouter = [
     {
         path: '/home',
@@ -32,5 +34,10 @@ export const clientRouter = [
                 component: AccountPage
             }
         ]
+    },
+    {
+        path: ':catchAll(.*)',
+        name: 'not-found',
+        component: PageNotFound
     }
 ];

@@ -24,12 +24,6 @@ const errorInterceptor = async (error) => {
         return Promise.reject(error);
     }
 
-    if (response.status !== 401) {
-        console.error(message);
-
-        return Promise.reject(error);
-    }
-
     if (response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
 
@@ -49,6 +43,16 @@ const errorInterceptor = async (error) => {
 
             return await router.push({ name: 'login' });
         }
+    }
+
+    if (response.status === 404) {
+        return await router.push('/404');
+    }
+
+    if (response.status !== 401) {
+        console.error(message);
+
+        return Promise.reject(error);
     }
 
     return Promise.reject(error);

@@ -1,10 +1,5 @@
-<script setup>
-import VButton from '@UI/button/VButton.vue';
-</script>
+<script setup></script>
 
 <template>
-    <main>
-        Главная страница
-        <VButton outlined theme="secondary"> Привет крастока</VButton>
-    </main>
+    <main>Главная страница</main>
 </template>
