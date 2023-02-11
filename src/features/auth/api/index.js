@@ -30,11 +30,7 @@ class _Auth {
 
         return res.data;
     }
-
-    async refresh() {
-        return API.get('auth/refresh');
-    }
 }
 
-const AuthFSD = new _Auth();
-export default AuthFSD;
+const Auth = new _Auth();
+export default Auth;

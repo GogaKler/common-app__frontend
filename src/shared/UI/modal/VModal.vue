@@ -31,12 +31,12 @@ const { modelValue, noClickOutside, buttonTheme } = toRefs(props);
 const emit = defineEmits(['update:modelValue', 'onCancel', 'onAccept']);
 const updateModelValue = (flag) => emit('update:modelValue', flag);
 
+const closeModal = () => updateModelValue(false);
+
 const closeModalOnClickOutside = () => {
     if (noClickOutside.value) return;
-    updateModelValue(false);
+    closeModal();
 };
-
-const closeModal = () => updateModelValue(false);
 
 watch(modelValue, () => {
     if (modelValue.value) {

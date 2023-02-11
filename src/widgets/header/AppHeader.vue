@@ -4,11 +4,10 @@ import { useAppStore } from '@app/store/useAppStore';
 import { useRouter } from 'vue-router';
 import { useResizeObserver } from '@use';
 import { UserAvatar, useUserStore } from '@entities/User';
-import VModal from '@UI/modal/VModal.vue';
 import VSwitch from '@UI/switch/VSwitch.vue';
-import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import VDropdown from '@UI/dropdown/VDropdown.vue';
+import { LogoutModal } from '@features/logout';
 const router = useRouter();
 const emit = defineEmits(['click:bar', 'onUpdate:headerValues', 'onChange:switch-theme']);
 const header_REFLINK = ref(null);
@@ -54,7 +53,6 @@ const switchValue = computed({
  * USER LOGIC
  * */
 const userStore = useUserStore();
-const authStore = useAuthStore();
 
 const { user, userId } = storeToRefs(userStore);
 
@@ -72,9 +70,6 @@ const goToProfile = () => {
     isUserMenuOpen.value = false;
 };
 
-const headerLogout = async () => {
-    await authStore.logout();
-};
 const isShowLogoutModal = ref(false);
 </script>
 
@@ -146,15 +141,7 @@ const isShowLogoutModal = ref(false);
                 </VDropdown>
             </div>
         </div>
-        <VModal
-            v-model="isShowLogoutModal"
-            confirmed
-            @onCancel="isShowLogoutModal = false"
-            @onAccept="headerLogout"
-        >
-            <template #header>Подтверждение выхода</template>
-            <template #body>Вы уверены, что хотите выйти?</template>
-        </VModal>
+        <LogoutModal :show="isShowLogoutModal" @close-modal="isShowLogoutModal = false" />
     </div>
 </template>
 

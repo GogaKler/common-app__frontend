@@ -48,6 +48,10 @@ class _User {
 
         return response.data;
     }
+
+    async logout() {
+        return API.post('auth/logout');
+    }
 }
 
 const User = new _User();

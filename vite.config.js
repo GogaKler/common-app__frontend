@@ -32,8 +32,14 @@ export default defineConfig(({ mode }) => {
     const clientURL = env.VITE_CLIENT_URL;
     const serverURL = env.VITE_BACKEND_URL;
 
+    const PORT = env.VITE_PORT;
+
     return {
         plugins: [vue()],
+        server: {
+            host: clientURL,
+            port: PORT
+        },
         define: {
             __APP__CLIENT__DOMAIN__: JSON.stringify(clientURL),
             __APP__SERVER__DOMAIN__: JSON.stringify(serverURL)

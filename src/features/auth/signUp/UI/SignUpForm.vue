@@ -2,10 +2,10 @@
 import { useField, useForm, useIsFormValid } from 'vee-validate';
 import { watch } from 'vue';
 import VSelect from '@UI/select/VSelect.vue';
-import { useAuthStoreNew } from '@features/auth/model/useAuthStore';
+import { useAuthStore } from '@features/auth/model/useAuthStore';
 import { genderOptions, validationSchema } from '@features/auth/signUp/lib';
 
-const authStoreNew = useAuthStoreNew();
+const authStoreNew = useAuthStore();
 
 const { errors, handleSubmit, isSubmitting } = useForm({
     validationSchema,

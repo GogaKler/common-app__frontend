@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { urlToFile } from '@shared/lib/helpers';
 import Cookie from 'js-cookie';
 import User from '@entities/User/api';
+import router from '@app/router';
 
 const ERROR_PREFIX = 'UserStore';
 export const useUserStore = defineStore('user', {
@@ -34,6 +35,10 @@ export const useUserStore = defineStore('user', {
             return res;
         },
 
+        async requestUserByID(id) {
+            this.userByID = await User.getUserById({ id });
+        },
+
         async me() {
             try {
                 const res = await User.me();
@@ -45,8 +50,14 @@ export const useUserStore = defineStore('user', {
             }
         },
 
-        async requestUserByID(id) {
-            this.userByID = await User.getUserById({ id });
+        async logout() {
+            try {
+                await User.logout();
+
+                await router.push('/login');
+            } catch (e) {
+                throw new Error(`${ERROR_PREFIX}: ${e}`);
+            }
         }
     }
 });

@@ -1,9 +1,11 @@
 <script setup>
 import { useField, useForm, useIsFormValid } from 'vee-validate';
-import { useAuthStoreNew } from '@features/auth/model/useAuthStore';
+import { useAuthStore } from '@features/auth/model/useAuthStore';
 import { validationSchema } from '@features/auth/signIn/lib';
+import VInput from '@UI/input/VInput.vue';
+import VButton from '@UI/button/VButton.vue';
 
-const authStoreNew = useAuthStoreNew();
+const authStoreNew = useAuthStore();
 
 const { errors, handleSubmit, isSubmitting } = useForm({
     validationSchema,
@@ -29,14 +31,14 @@ const onSubmit = handleSubmit(async ({ username, password }) => {
 
 <template>
     <form :validation-schema="validationSchema" @submit="onSubmit">
-        <v-input
+        <VInput
             v-model="username"
             name="username"
             label="Логин или E-mail"
             type="name"
             :errors="errors.username"
         />
-        <v-input
+        <VInput
             v-model="password"
             name="password"
             label="Пароль"
@@ -44,7 +46,7 @@ const onSubmit = handleSubmit(async ({ username, password }) => {
             :errors="errors.password"
         />
 
-        <v-button
+        <VButton
             type="submit"
             full-width
             :loading="isSubmitting"
@@ -53,7 +55,7 @@ const onSubmit = handleSubmit(async ({ username, password }) => {
             theme="primary"
         >
             Войти
-        </v-button>
+        </VButton>
     </form>
 </template>
 
