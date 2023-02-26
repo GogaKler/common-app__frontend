@@ -8,7 +8,6 @@ const initTheme = async () => {
 };
 
 initTheme();
-// throw new Error();
 </script>
 
 <template>
