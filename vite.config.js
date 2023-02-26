@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
 
     // const isProd = env.NODE_ENV === 'production';
-    // const isDev = env.NODE_ENV === 'development';
+    const isDev = env.NODE_ENV === 'development';
 
     const clientURL = env.VITE_CLIENT_URL;
     const serverURL = env.VITE_BACKEND_URL;
@@ -51,6 +51,7 @@ export default defineConfig(({ mode }) => {
             }
         },
         css: {
+            devSourcemap: isDev,
             preprocessorOptions: {
                 scss: {
                     additionalData: `
@@ -58,6 +59,12 @@ export default defineConfig(({ mode }) => {
                 `
                 }
             }
+        },
+        json: {
+            stringify: true
+        },
+        build: {
+            sourcemap: isDev
         }
     };
 });
