@@ -62,9 +62,6 @@ export default defineConfig(({ mode }) => {
         },
         json: {
             stringify: true
-        },
-        build: {
-            sourcemap: isDev
         }
     };
 });
