@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { urlToFile } from '@shared/lib/helpers';
 import Cookie from 'js-cookie';
-import User from '@entities/User/api';
+import User from '@entities/user/api';
 import router from '@app/router';
 
 const ERROR_PREFIX = 'UserStore';

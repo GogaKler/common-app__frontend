@@ -14,7 +14,7 @@ export const propsIconValidationSwitch = ({ icon }) => {
     const typeParam = icon.constructor;
 
     if (typeParam !== Object && typeParam !== String) {
-        error(`Ошибка входного параметра! icon должен быть Object || String.`);
+        error('Ошибка входного параметра! icon должен быть Object || String.');
     }
 
     try {

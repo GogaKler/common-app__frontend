@@ -1,9 +1,8 @@
 <script setup>
 import { ref, toRefs, computed } from 'vue';
-import VModal from '@UI/modal/VModal.vue';
-import VInput from '@UI/input/VInput.vue';
+import { VModal, VInput } from '@UI';
 import { storeToRefs } from 'pinia';
-import { useUserStore } from '@entities/User';
+import { useUserStore } from '@entities/user';
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
@@ -46,7 +45,12 @@ const changeStatus = async () => {
 </script>
 
 <template>
-    <v-modal v-model="showModal" confirmed @onCancel="closeModal" @onAccept="changeStatus">
+    <v-modal
+        v-model="showModal"
+        confirmed
+        @onCancel="closeModal"
+        @onAccept="changeStatus"
+    >
         <template #header>Изменение статуса</template>
         <template #body>
             <v-input

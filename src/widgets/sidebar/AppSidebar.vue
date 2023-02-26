@@ -1,7 +1,7 @@
 <script setup>
 import { sidebarMenu } from '@widgets/sidebar/utils/sidebarMenu';
+import { VTooltip } from '@UI';
 import { ref } from 'vue';
-import VTooltip from '@UI/tooltip/VTooltip.vue';
 import { useResizeObserver } from '@use';
 
 defineProps({
@@ -26,17 +26,21 @@ useResizeObserver(sidebar_REFLINK, ({ width, height }) => {
 <template>
     <div ref="sidebar_REFLINK" class="sidebar">
         <ul class="sidebar__list">
-            <v-tooltip
+            <VTooltip
                 v-for="(item, index) in sidebarMenu"
                 :key="index"
                 class="sidebar__list-item--wrapper"
                 :label="item.title"
                 position="right"
             >
-                <router-link class="sidebar__list-item" :to="{ name: item.to }">
-                    <font-awesome-icon size="lg" :icon="item.icon" class="sidebar__list-icon" />
-                </router-link>
-            </v-tooltip>
+                <RouterLink class="sidebar__list-item" :to="{ name: item.to }">
+                    <FontAwesomeIcon
+                        size="lg"
+                        :icon="item.icon"
+                        class="sidebar__list-icon"
+                    />
+                </RouterLink>
+            </VTooltip>
         </ul>
     </div>
 </template>

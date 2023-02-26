@@ -56,7 +56,12 @@ const isButtonDisabled = computed(() => disabled.value || loading.value);
 </script>
 
 <template>
-    <button v-bind="$attrs" :class="classes" :style="styles" :disabled="isButtonDisabled">
+    <button
+        v-bind="$attrs"
+        :class="classes"
+        :style="styles"
+        :disabled="isButtonDisabled"
+    >
         <span class="button__text">
             <slot></slot>
             <font-awesome-icon

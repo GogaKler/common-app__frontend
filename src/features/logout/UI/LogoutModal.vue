@@ -1,7 +1,7 @@
 <script setup>
-import VModal from '@UI/modal/VModal.vue';
+import { VModal } from '@UI';
 import { computed, toRefs } from 'vue';
-import { useUserStore } from '@entities/User';
+import { useUserStore } from '@entities/user';
 const userStore = useUserStore();
 
 const props = defineProps({
@@ -32,7 +32,12 @@ const logoutFromSystem = async () => {
 </script>
 
 <template>
-    <VModal v-model="showModal" confirmed @onCancel="closeModal" @onAccept="logoutFromSystem">
+    <VModal
+        v-model="showModal"
+        confirmed
+        @onCancel="closeModal"
+        @onAccept="logoutFromSystem"
+    >
         <template #header>Подтверждение выхода</template>
         <template #body>Вы уверены, что хотите выйти?</template>
     </VModal>

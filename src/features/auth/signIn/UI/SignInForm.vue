@@ -2,8 +2,7 @@
 import { useField, useForm, useIsFormValid } from 'vee-validate';
 import { useAuthStore } from '@features/auth/model/useAuthStore';
 import { validationSchema } from '@features/auth/signIn/lib';
-import VInput from '@UI/input/VInput.vue';
-import VButton from '@UI/button/VButton.vue';
+import { VInput, VButton } from '@UI';
 
 const authStoreNew = useAuthStore();
 

@@ -16,6 +16,7 @@ const aliases = {
     '@UI': setAliasPath('./src/shared/UI'),
     // FSD
     '@app': setAliasPath('./src/app'),
+    '@processes': setAliasPath('./src/processes'),
     '@pages': setAliasPath('./src/pages'),
     '@widgets': setAliasPath('./src/widgets'),
     '@features': setAliasPath('./src/features'),

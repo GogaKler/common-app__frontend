@@ -1,7 +1,7 @@
 <script setup>
 import { useField, useForm, useIsFormValid } from 'vee-validate';
 import { watch } from 'vue';
-import VSelect from '@UI/select/VSelect.vue';
+import { VSelect, VInput, VButton } from '@UI';
 import { useAuthStore } from '@features/auth/model/useAuthStore';
 import { genderOptions, validationSchema } from '@features/auth/signUp/lib';
 
@@ -37,15 +37,21 @@ watch(password, () => {
 
 <template>
     <form :validation-schema="validationSchema" @submit="onSubmit">
-        <v-input
+        <VInput
             v-model="name"
             type="name"
             name="name"
             label="Ваш логин для входа"
             :errors="errors.name"
         />
-        <v-input v-model="email" type="email" name="email" label="E-mail" :errors="errors.email" />
-        <v-input
+        <VInput
+            v-model="email"
+            type="email"
+            name="email"
+            label="E-mail"
+            :errors="errors.email"
+        />
+        <VInput
             v-model="password"
             type="password"
             name="password"
@@ -53,7 +59,7 @@ watch(password, () => {
             :errors="errors.password"
         />
 
-        <v-input
+        <VInput
             v-model="confirmPassword"
             type="password"
             name="password"
@@ -62,9 +68,14 @@ watch(password, () => {
             :errors="errors.confirmPassword"
         />
 
-        <v-select v-model="gender" label="Пол" :options="genderOptions" :errors="errors.gender" />
+        <v-select
+            v-model="gender"
+            label="Пол"
+            :options="genderOptions"
+            :errors="errors.gender"
+        />
 
-        <v-button
+        <VButton
             type="submit"
             theme="primary"
             full-width
@@ -73,6 +84,6 @@ watch(password, () => {
             :loading="isSubmitting"
         >
             Зарегистрироваться
-        </v-button>
+        </VButton>
     </form>
 </template>

@@ -26,7 +26,11 @@ defineProps({
 </script>
 
 <template>
-    <span v-bind="$attrs" :data-label="label" :class="[{ tooltip: label }, position, 'timeout']">
+    <span
+        v-bind="$attrs"
+        :data-label="label"
+        :class="[{ tooltip: label }, position, 'timeout']"
+    >
         <slot />
     </span>
 </template>

@@ -1,10 +1,10 @@
 <script setup>
-import { UserAvatar, useUserStore } from '@/entities/User';
+import { UserAvatar, useUserStore } from '@/entities/user';
 import VUpload from 'vue-image-crop-upload';
 import { shallowRef, ref } from 'vue';
 import { accountFields } from '@pages/client/settings/account/utils/accountFields';
 import { storeToRefs } from 'pinia';
-import VButton from '@UI/button/VButton.vue';
+import { VButton } from '@UI';
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
@@ -33,7 +33,11 @@ const cropSuccess = async (imgUrl) => {
         <div class="container-small">
             <div class="account__content">
                 <div class="account-list">
-                    <div v-for="field in accountFields" :key="field" class="account-list__item">
+                    <div
+                        v-for="field in accountFields"
+                        :key="field"
+                        class="account-list__item"
+                    >
                         <div class="account-list__item--name">{{ field.title }}</div>
                         <div
                             class="account-list__item--value"
@@ -46,7 +50,11 @@ const cropSuccess = async (imgUrl) => {
                 </div>
                 <div class="account-logo">
                     <div class="mb-3 whitespace-nowrap">Изображение в профиле</div>
-                    <UserAvatar :name="user.name" :logo="user.avatar" size="9x">
+                    <UserAvatar
+                        :name="user.name"
+                        :logo="user.avatar"
+                        size="9x"
+                    >
                         <template #inner>
                             <VButton size="sm" @click="toggleUpload">
                                 <FontAwesomeIcon
@@ -62,7 +70,11 @@ const cropSuccess = async (imgUrl) => {
             </div>
         </div>
 
-        <component :is="currentModalComponent" :show="showModal" @closeModal="showModalToggle" />
+        <component
+            :is="currentModalComponent"
+            :show="showModal"
+            @closeModal="showModalToggle"
+        />
 
         <Teleport to="body">
             <VUpload

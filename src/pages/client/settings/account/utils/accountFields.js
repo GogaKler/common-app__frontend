@@ -1,7 +1,7 @@
 import StatusModal from '@pages/client/settings/account/modals/StatusModal.vue';
 import { computed, shallowRef } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useUserStore } from '@entities/User';
+import { useUserStore } from '@entities/user';
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 

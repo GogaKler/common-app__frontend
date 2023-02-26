@@ -1,16 +1,11 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from '@app/App.vue';
-import router from '@/app/router';
+import router from '@app/router';
 
 // ICONS
 import '@shared/lib/icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-// COMPONENTS
-import VSwitch from '@UI/switch/VSwitch.vue';
-import VInput from '@UI/input/VInput.vue';
-import VButton from '@UI/button/VButton.vue';
 
 // DIRECTIVES
 import { clickOutside } from '@shared/lib/directives';
@@ -22,9 +17,7 @@ app.use(router);
 
 app.directive('click-outside', clickOutside);
 
-app.component('FontAwesomeIcon', FontAwesomeIcon)
-    .component('VSwitch', VSwitch)
-    .component('VInput', VInput)
-    .component('VButton', VButton);
+app
+    .component('FontAwesomeIcon', FontAwesomeIcon);
 
 app.mount('#app');

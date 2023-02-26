@@ -12,7 +12,7 @@ const axiosConfig = {
     validateStatus: (status) => status >= 200 && status < 300
 };
 
-const instance = axios.create({ ...axiosConfig });
+export const API = axios.create({ ...axiosConfig });
 
 const errorInterceptor = async (error) => {
     const { response, message, config } = error;
@@ -34,7 +34,7 @@ const errorInterceptor = async (error) => {
 
             originalConfig.headers = { ...originalConfig.headers };
 
-            return await instance.request(config);
+            return await API.request(config);
         } catch (e) {
             console.error(e);
 
@@ -57,7 +57,4 @@ const errorInterceptor = async (error) => {
 
     return Promise.reject(error);
 };
-
-instance.interceptors.response.use((res) => res, errorInterceptor);
-
-export default instance;
+API.interceptors.response.use((res) => res, errorInterceptor);

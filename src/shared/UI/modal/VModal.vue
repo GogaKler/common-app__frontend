@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onUnmounted, toRefs, watch } from 'vue';
-import VButton from '@UI/button/VButton.vue';
+import { VButton } from '@UI';
 
 const props = defineProps({
     modelValue: {
@@ -76,20 +76,20 @@ const cancelThemeButton = computed(() => buttonTheme.value.cancel);
                         <slot name="body" />
                     </div>
                     <div v-if="confirmed" class="modal__footer">
-                        <v-button
+                        <VButton
                             class="modal__footer--button"
                             :theme="cancelThemeButton"
                             @click="$emit('onCancel')"
                         >
                             Отменить
-                        </v-button>
-                        <v-button
+                        </VButton>
+                        <VButton
                             class="modal__footer--button"
                             :theme="acceptThemeButton"
                             @click="$emit('onAccept')"
                         >
                             Применить
-                        </v-button>
+                        </VButton>
                     </div>
                 </div>
             </div>

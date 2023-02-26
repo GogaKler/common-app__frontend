@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { authGuard } from '@app/router/guards/AuthGuard';
-import { useUserStore } from '@entities/User';
+import { authGuard } from '@processes';
+import { useUserStore } from '@entities/user';
 import { authRouter } from '@pages/auth';
 import { clientRouter } from '@pages/client';
 
@@ -9,7 +9,11 @@ const AppPage = () => import('@pages/client/AppPage.vue');
 
 const requestUser = async () => {
     const userStore = useUserStore();
-    await userStore.me();
+    try {
+        await userStore.me();
+    } catch (e) {
+        console.log(e);
+    }
 };
 
 const router = createRouter({

@@ -5,7 +5,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
     root: true,
-    extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/eslint-config-prettier'],
+    extends: ['plugin:vue/vue3-essential', 'eslint:recommended'],
     env: {
         browser: true,
         amd: true,
@@ -18,35 +18,61 @@ module.exports = {
     rules: {
         'no-console': isProd ? 'warn' : 'off',
         'no-debugger': isProd ? 'warn' : 'off',
-        'prettier/prettier': [
-            'error',
-            {
-                singleQuote: true,
-                semi: true,
-                trailingComma: 'none',
-                printWidth: 100,
-                tabWidth: 4,
-                useTabs: false
-            }
+        'indent': ['error', 4, { 'SwitchCase': 1 }],
+        'vue/html-indent': ['error', 4, {
+            'attribute': 1,
+            'baseIndent': 1,
+            'closeBracket': 0,
+            'alignAttributesVertically': true,
+            'ignores': []
+        }],
+        'max-len': ['error', {
+            code: 120,
+            'ignoreTrailingComments': true
+        }
         ],
-        'vue/attributes-order': [
-            'error',
-            {
-                order: [
-                    'DEFINITION',
-                    'LIST_RENDERING',
-                    'CONDITIONALS',
-                    'RENDER_MODIFIERS',
-                    'GLOBAL',
-                    ['UNIQUE', 'SLOT'],
-                    'TWO_WAY_BINDING',
-                    'OTHER_DIRECTIVES',
-                    'OTHER_ATTR',
-                    'EVENTS',
-                    'CONTENT'
-                ]
+        'vue/html-closing-bracket-newline': ['error', {
+            'singleline': 'never',
+            'multiline': 'always'
+        }],
+        'quotes': ['error', 'single', { 'avoidEscape': true }],
+        'array-bracket-spacing': ['error', 'never'],
+        'object-curly-spacing': ['error', 'always'],
+        'semi': ['error', 'always'],
+        'vue/max-attributes-per-line': ['error', {
+            'singleline': {
+                'max': 2
+            },
+            'multiline': {
+                'max': 1
             }
-        ],
+        }],
+        'vue/multiline-html-element-content-newline': ['error', {
+            'ignoreWhenEmpty': true,
+            'allowEmptyLines': false
+        }],
+        'vue/first-attribute-linebreak': ['error', {
+            'singleline': 'ignore',
+            'multiline': 'below'
+        }],
+        'vue/no-spaces-around-equal-signs-in-attribute': ['error'],
+        'vue/attributes-order': ['error', {
+            'order': [
+                'DEFINITION',
+                'LIST_RENDERING',
+                'CONDITIONALS',
+                'RENDER_MODIFIERS',
+                'GLOBAL',
+                ['UNIQUE', 'SLOT'],
+                'TWO_WAY_BINDING',
+                'OTHER_DIRECTIVES',
+                'OTHER_ATTR',
+                'EVENTS',
+                'CONTENT'
+            ],
+            'alphabetical': false
+        }],
+        'comma-dangle': ['error', 'never'],
         'arrow-body-style': ['error', 'as-needed'],
         'arrow-spacing': [
             'error',

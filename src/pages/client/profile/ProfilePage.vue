@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watchPostEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { UserAvatar, useUserStore } from '@/entities/User';
+import { UserAvatar, useUserStore } from '@entities/user';
 import { storeToRefs } from 'pinia';
 
 const route = useRoute();
@@ -29,7 +29,11 @@ watchPostEffect(async () => {
         <div class="container">
             <div class="profile__title">{{ user.name }}</div>
             <div class="profile__user">
-                <UserAvatar :name="user.name" :logo="user.avatar" size="10x" />
+                <UserAvatar
+                    :name="user.name"
+                    :logo="user.avatar"
+                    size="10x"
+                />
             </div>
         </div>
     </div>

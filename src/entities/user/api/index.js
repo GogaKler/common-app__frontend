@@ -1,9 +1,9 @@
-import API from '@axios';
+import { API } from '@axios';
 
 class _User {
     async changeUserStatus({ status }) {
         try {
-            const response = await API.put(`users/status`, {
+            const response = await API.put('users/status', {
                 status
             });
 
@@ -16,7 +16,7 @@ class _User {
     async uploadUserAvatar({ avatar }) {
         try {
             const response = await API.post(
-                `users/avatar`,
+                'users/avatar',
                 {
                     avatar
                 },

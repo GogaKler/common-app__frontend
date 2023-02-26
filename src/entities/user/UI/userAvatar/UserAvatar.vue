@@ -39,13 +39,21 @@ const userWithoutLogo = computed(
 <template>
     <div class="user">
         <div :class="['user__logo', `user__logo--${size}`, { avatar: logo }]">
-            <img v-if="logo" :src="logo" :alt="name" />
+            <img
+                v-if="logo"
+                :src="logo"
+                :alt="name"
+            />
             <span v-else>{{ userWithoutLogo }}</span>
             <div class="user__inner-content">
                 <slot name="inner"></slot>
             </div>
         </div>
-        <span v-if="showName" class="user__name mr-2 cursor-pointer" @click="clickOnName">
+        <span
+            v-if="showName"
+            class="user__name mr-2 cursor-pointer"
+            @click="clickOnName"
+        >
             {{ name }}
         </span>
         <slot></slot>
